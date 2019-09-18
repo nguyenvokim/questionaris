@@ -7,7 +7,6 @@ use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
 use App\Events\Frontend\Auth\UserLoggedIn;
 use App\Events\Frontend\Auth\UserLoggedOut;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
 
 /**
@@ -15,7 +14,7 @@ use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
  */
 class LoginController extends Controller
 {
-    use AuthenticatesUsers;
+    use AuthenticatesUsersExtend;
 
     /**
      * Where to redirect users after login.

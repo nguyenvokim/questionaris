@@ -8,6 +8,8 @@
 import '../bootstrap';
 import '../plugins';
 import Vue from 'vue';
+import Datepicker from 'vuejs-datepicker';
+import BootstrapVue from 'bootstrap-vue';
 
 window.Vue = Vue;
 
@@ -22,7 +24,12 @@ window.Vue = Vue;
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+Vue.use(BootstrapVue)
+
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('custom-select-list', require('./components/CustomSelectList').default);
+Vue.component('datepicker', Datepicker);
+Vue.component('user-dashboard', require('./components/UserDashboard/UserDashboard').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -30,6 +37,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+import store from './store';
+
 const app = new Vue({
     el: '#app',
+    store
 });

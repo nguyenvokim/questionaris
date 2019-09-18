@@ -14,6 +14,7 @@
         "altek/accountant": "^1.2",
         "altek/eventually": "^1.0",
         "arcanedev/log-viewer": "^5.0",
+        "aws/aws-sdk-php": "^3.112",
         "creativeorange/gravatar": "~1.0",
         "davejamesmiller/laravel-breadcrumbs": "^5.0",
         "fideloper/proxy": "^4.0",
@@ -105,7 +106,6 @@
             "phpunit --coverage-text"
         ],
         "format": [
-            "php-cs-fixer fix --show-progress=estimating --config=.php_cs.dist"
         ]
     }
 }

@@ -17,7 +17,15 @@
             @endif
 
             @auth
-                <li class="nav-item"><a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">@lang('navs.frontend.dashboard')</a></li>
+                <li class="nav-item">
+                    <a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Banana Metric</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('frontend.client.index')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Manage Clients</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('frontend.battery.index')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Manage Batteries</a>
+                </li>
             @endauth
 
             @guest
@@ -42,7 +50,7 @@
                 </li>
             @endguest
 
-            <li class="nav-item"><a href="{{route('frontend.contact')}}" class="nav-link {{ active_class(Route::is('frontend.contact')) }}">@lang('navs.frontend.contact')</a></li>
+            {{--<li class="nav-item"><a href="{{route('frontend.contact')}}" class="nav-link {{ active_class(Route::is('frontend.contact')) }}">@lang('navs.frontend.contact')</a></li>--}}
         </ul>
     </div>
 </nav>
