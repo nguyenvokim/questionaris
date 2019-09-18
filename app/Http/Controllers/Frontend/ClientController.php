@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 class ClientController extends Controller
 {
     public function index() {
-        $paginator = Client::paginate(20);
+        $paginator = Client::where([
+            ['user_id', '=', \Auth::id()]
+        ])->paginate(20);
         return view('frontend.clients.index', [
             'paginator' => $paginator
         ]);

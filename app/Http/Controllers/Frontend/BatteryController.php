@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 class BatteryController extends Controller
 {
     public function index() {
-        $paginator = Battery::paginate(20);
+        $paginator = Battery::where([
+            ['user_id', '=', \Auth::id()]
+        ])->paginate(20);
         return view('frontend.batteries.index', [
             'paginator' => $paginator
         ]);
