@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Requests\Frontend\Battery\CreateBatteryRequest;
+use App\Http\Requests\Frontend\Client\CreateClientRequest;
 use App\Models\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class ClientController extends Controller
         ]);
     }
 
-    public function create(CreateBatteryRequest $createClientRequest) {
+    public function create(CreateClientRequest $createClientRequest) {
         $email = $createClientRequest->get('email');
         $client = Client::getUserClientByEmail($email);
         if ($client) {
@@ -44,7 +45,7 @@ class ClientController extends Controller
             'client' => $client
         ]);
     }
-    public function edit($id, CreateBatteryRequest $createClientRequest) {
+    public function edit($id, CreateClientRequest $createClientRequest) {
         $client = Client::getUserClientById($id);
         if (!$client) {
             return redirect(route('frontend.client.createView'));
