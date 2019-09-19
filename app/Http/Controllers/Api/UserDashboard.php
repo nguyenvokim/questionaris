@@ -24,7 +24,7 @@ class UserDashboard extends Controller
         return response()->json(ClientBattery::getActivatingClientBattery($clientId));
     }
 
-    public function createUserBattery(CreateUserBatteryRequest $request) {
+    public function createClientBattery(CreateUserBatteryRequest $request) {
         $activatingClientBattery = ClientBattery::getActivatingClientBattery($request->get('client_id'));
         if ($activatingClientBattery) {
             return response()->json($activatingClientBattery);
