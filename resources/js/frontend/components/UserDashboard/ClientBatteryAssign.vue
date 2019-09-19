@@ -48,7 +48,7 @@
 <script>
 
     import { mapActions, mapState } from 'vuex';
-    import { format, compareAsc } from 'date-fns'
+    import { format, compareAsc } from 'date-fns';
 
     export default {
         props: {

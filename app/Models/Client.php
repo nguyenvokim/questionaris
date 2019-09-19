@@ -68,9 +68,24 @@ class Client extends Model
         ])->first();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection[Client]
+     */
     public static function getClients() {
         return Client::where([
             ['user_id', '=', \Auth::id()]
         ])->get();
+    }
+
+    /**
+     * @param $personalCode
+     * @param $birthDate
+     * @return Client
+     */
+    public static function getClientByPersonalCodeAndBirthDate($personalCode, $birthDate) {
+        return Client::where([
+            ['personal_code', '=', $personalCode],
+            ['birth_date', '=', $birthDate]
+        ])->first();
     }
 }

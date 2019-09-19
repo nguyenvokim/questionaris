@@ -31,11 +31,15 @@ class Battery extends Model
         'name'
     ];
 
-    public function getTests() {
+    public function getTests($withQuestion = false) {
         $batteryTests = BatteryTest::whereBatteryId($this->id)->get();
         $tests = [];
         foreach ($batteryTests as $batteryTest) {
-            $tests[] = $batteryTest->test;
+            if ($withQuestion) {
+                $tests[] = Test::with('questions')->find($batteryTest->test_id);
+            } else {
+                $tests[] = $batteryTest->test;
+            }
         }
         return collect($tests);
     }

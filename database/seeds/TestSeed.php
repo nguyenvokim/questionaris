@@ -42,8 +42,19 @@ class TestSeed extends Seeder
                     'name' => 'Stress subscale',
                     'items' => [1, 6, 8, 11, 12, 14, 18]
                 ],
-            ]
+            ],
+            'isShowHeaderTable' => true
         ];
+        $test->description = "This brief questionnaire evaluates your general mood and levels of stress and anxiety over the past week.<br/>
+            <br/>
+            Please read each statement and select the option that indicates how much the statement applied to you OVER THE PAST WEEK. There are no right or wrong answers. Do not spend too much time on any statement.<br/>
+               <br/>
+            The rating scale is as follows:<br/>
+            <br/>
+            0  -  Did not apply to me at all - NEVER<br/>
+            1  -  Applied to me to some degree, or some of the time - SOMETIMES<br/>
+            2  -  Applied to me to a considerable degree, or a good part of time - OFTEN<br/>
+            3  -  Applied to me very much, or most of the time - ALMOST ALWAYS<br/>";
         $test->save();
 
         $baseQuestionArr = [
@@ -130,6 +141,7 @@ class TestSeed extends Seeder
         $test->id = 2;
         $test->title = "SIDAS";
         $test->config = [];
+        $test->description = "The following questions are about thoughts and behaviours relating to ending your life by suicide. Answering these will help your treating mental health professional to assess your safety and help you manage it. Please read each statement and answer using the 0 to 10 scale.";
         $test->save();
         $baseQuestionArr = [
             'test_id' => 2,

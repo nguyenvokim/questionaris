@@ -34,4 +34,8 @@ class Test extends Model
     protected $casts = array(
         'config' => 'array'
     );
+
+    public function questions() {
+        return $this->hasMany(Question::class);
+    }
 }

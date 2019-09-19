@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -27,6 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ClientBattery whereStatus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ClientBattery whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Battery $battery
+ * @property-read \App\Models\Client $client
  */
 class ClientBattery extends Model
 {
@@ -50,6 +53,11 @@ class ClientBattery extends Model
         'status'
     ];
 
+    protected $casts = [
+        'start_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d'
+    ];
+
     protected $attributes = [
         'status' => self::STATUS_WAITING_FOR_CLIENT
     ];
@@ -64,14 +72,39 @@ class ClientBattery extends Model
         return $this->belongsTo(Battery::class);
     }
 
+    /**
+     * @param $clientId
+     * @return ClientBattery
+     */
     public static function getActivatingClientBattery($clientId)
     {
-        return ClientBattery::with(['client', 'battery'])
+        $clientBattery = ClientBattery::with(['client', 'battery'])
             ->join('clients', 'clients.id', '=', 'client_id')
             ->where([
                 ['client_id', '=', $clientId],
                 ['status', '=', self::STATUS_WAITING_FOR_CLIENT],
-                ['clients.user_id', '=', \Auth::id()]
+                ['clients.user_id', '=', \Auth::id()],
+                ['start_date' , '<' , Carbon::now()],
+                ['end_date', '>', Carbon::now()->subDay()]
             ])->first();
+
+        return $clientBattery;
+    }
+
+    /**
+     * @param $clientId
+     * @return ClientBattery
+     */
+    public static function getActivatingClientBatteryForTest($clientId)
+    {
+        $clientBattery = ClientBattery::with(['client', 'battery'])
+            ->where([
+                ['client_id', '=', $clientId],
+                ['status', '=', self::STATUS_WAITING_FOR_CLIENT],
+                ['start_date' , '<' , Carbon::now()],
+                ['end_date', '>', Carbon::now()->subDay()]
+            ])->first();
+
+        return $clientBattery;
     }
 }

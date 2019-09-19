@@ -1,0 +1,7 @@
+
+const CONST = {
+    QUESTION_TYPE_FOUR_OPTION: 1,
+    QUESTION_TYPE_TEN_OPTION: 2,
+};
+
+export default CONST;

@@ -28,6 +28,7 @@ class InitFirst extends Migration
             $table->increments('id');
             $table->string('title', 500);
             $table->text('config');
+            $table->text('description');
             $table->timestamps();
         });
         Schema::create('questions', function (Blueprint $table) {

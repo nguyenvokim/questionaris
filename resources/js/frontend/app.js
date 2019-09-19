@@ -30,6 +30,7 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 Vue.component('custom-select-list', require('./components/CustomSelectList').default);
 Vue.component('datepicker', Datepicker);
 Vue.component('user-dashboard', require('./components/UserDashboard/UserDashboard').default);
+Vue.component('client-battery', require('./components/ClientBattery/ClientBattery').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
