@@ -10,7 +10,6 @@ use App\Models\Question;
 use App\Models\Test;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use mysql_xdevapi\Exception;
 
 class ClientBatteryController extends Controller
 {

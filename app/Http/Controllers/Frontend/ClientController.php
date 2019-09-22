@@ -12,8 +12,6 @@ use Illuminate\Http\Request;
 class ClientController extends Controller
 {
     public function index() {
-        $client = ClientTestResult::find(3);
-        $client->calcTestSummary();
         $paginator = Client::where([
             ['user_id', '=', \Auth::id()]
         ])->paginate(20);
