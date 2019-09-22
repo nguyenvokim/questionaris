@@ -1,6 +1,10 @@
 <template>
-    <div class="padding_8" v-if="detailTestResults.length">
-        <apexchart width="500" type="line" :options="options" :series="series"></apexchart>
+    <div class="padding_8" v-if="detailTestResults.length > 1">
+        <div class="row justify-content-center align-items-center">
+            <div class="col col-sm-12 col-md-8 align-self-center">
+                <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -19,7 +23,6 @@
             }
         },
         async mounted() {
-            console.log(this.detailTestResults, "XXXX");
         },
         methods: {
             ...mapActions({
@@ -51,6 +54,16 @@
                             text: "Score"
                         }
                     },
+                    grid: {
+                        xaxis: {
+                            lines: {
+                                show: true
+                            }
+                        },
+                        padding: {
+                            left: 24
+                        }
+                    }
                 }
             },
             series: function () {
