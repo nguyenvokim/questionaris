@@ -7,7 +7,7 @@ const state = {
     tests: [],
     battery: {},
     answers: {},
-    currentDisplayTestId: -1
+    currentDisplayTestId: -1,
 };
 const getters = {
 
@@ -24,6 +24,13 @@ const actions = {
             return error.response.data;
         });
     },
+    sendSaveAnswer: async function({state, commit}, data) {
+        return axios.post('/api/clientBattery/save', data).then((response) => {
+            return response.data;
+        }).catch((error) => {
+            return error.response.data;
+        });
+    }
 };
 
 const mutations = {

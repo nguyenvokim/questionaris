@@ -27,7 +27,15 @@
         components: {},
         props: {
             question: Object,
-            index: Number
+            index: Number,
+            viewOnly: {
+                type: Boolean,
+                default: false
+            },
+            initScore: {
+                type: Number,
+                default: -1
+            }
         },
         data: function() {
             return {
@@ -39,6 +47,9 @@
         async mounted() {
             if (this.question.config.isReverser) {
                 this.scores = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
+            }
+            if (this.initScore !== -1) {
+                this.score = this.initScore;
             }
         },
         methods: {

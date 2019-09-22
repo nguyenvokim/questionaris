@@ -5,7 +5,12 @@ const state = {
     clients: [],
     batteries: [],
     selectedClient: 0,
-    activatingClientBattery: {}
+    activatingClientBattery: {},
+    client: {},
+    finishedTests: [],
+    detailTestResults: [],
+    selectedTestId: 0,
+    clientDetailTestResult: {}
 };
 const getters = {
 
@@ -33,6 +38,24 @@ const actions = {
             commit('setActivatingClientBattery', response.data);
             return response;
         })
+    },
+    loadClientTestsInfo: async function({state, commit}, clientId) {
+        return axios.get(`/api/dashboard/clientTestsInfo/${clientId}`).then((response) => {
+            commit('setClientTestsInfo', response.data);
+            return response;
+        })
+    },
+    loadClientTestResult: async function({state, commit}, data) {
+        return axios.get(`/api/dashboard/clientTestResults/${data.clientId}/${data.testId}`).then((response) => {
+            commit('setDetailTestResults', response.data);
+            return response;
+        })
+    },
+    loadClientDetailTestResult: async function({state, commit}, id) {
+        return axios.get(`/api/dashboard/clientDetailTestResult/${id}`).then((response) => {
+            commit('setClientDetailTestResult', response.data);
+            return response;
+        })
     }
 };
 
@@ -46,6 +69,20 @@ const mutations = {
     },
     setActivatingClientBattery: function (state, activatingClientBattery) {
         state.activatingClientBattery = activatingClientBattery;
+    },
+    setClientTestsInfo: function (state, {client, finishedTests, detailTestResults}) {
+        state.client = client;
+        state.finishedTests = finishedTests;
+        state.detailTestResults = detailTestResults;
+    },
+    setDetailTestResults: function (state, data) {
+        state.detailTestResults = data;
+    },
+    setSelectedTestId: function (state, testId) {
+        state.selectedTestId = testId;
+    },
+    setClientDetailTestResult: function (state, data) {
+        state.clientDetailTestResult = data;
     }
 };
 

@@ -33,7 +33,8 @@ mix.setPublicPath('public')
         'sweetalert2',
         'lodash',
         'vuejs-datepicker',
-        'bootstrap-vue'
+        'bootstrap-vue',
+        'apexcharts'
     ])
     .sourceMaps();
 

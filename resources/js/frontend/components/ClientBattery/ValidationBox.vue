@@ -77,10 +77,10 @@
                         test.questions.forEach((question) => {
                             switch (question.type) {
                                 case CONST.QUESTION_TYPE_FOUR_OPTION:
-                                    resultTemplate[test.id][question.id] = 0;
+                                    resultTemplate[test.id][question.id] = -1;
                                     break;
                                 case CONST.QUESTION_TYPE_TEN_OPTION:
-                                    resultTemplate[test.id][question.id] = 0;
+                                    resultTemplate[test.id][question.id] = -1;
                                     break;
                             }
                         })

@@ -6,6 +6,8 @@ use App\Http\Requests\Frontend\Api\CreateUserBatteryRequest;
 use App\Models\Battery;
 use App\Models\Client;
 use App\Models\ClientBattery;
+use App\Models\ClientTestResult;
+use App\Models\Test;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -31,5 +33,34 @@ class UserDashboard extends Controller
         }
         $clientBattery = ClientBattery::create($request->all());
         return response()->json(ClientBattery::getActivatingClientBattery($clientBattery->client_id));
+    }
+
+    public function getClientTestsInfo($clientId) {
+        $client = Client::getUserClientById($clientId);
+        $finishedTests = Test::getUniqueTestDoneOfClient($clientId);
+        $detailTestResults = collect();
+        if ($finishedTests->count()) {
+            $firstTestId = $finishedTests[0]->id;
+            $detailTestResults = ClientTestResult::getTestResultOfClientByTestId($clientId, $firstTestId);
+        }
+        return response()->json([
+            'client' => $client,
+            'finishedTests' => $finishedTests,
+            'detailTestResults' => $detailTestResults
+        ]);
+    }
+
+    public function getClientTestResults($clientId, $testId) {
+        $client = Client::getUserClientById($clientId);
+        if (!$client) {
+            abort(404);
+        }
+        $detailTestResults = ClientTestResult::getTestResultOfClientByTestId($clientId, $testId);
+        return response()->json($detailTestResults);
+    }
+    public function getClientDetailTestResult($id) {
+        $clientTestResult = ClientTestResult::with('test_result_questions')
+            ->find($id);
+        return response()->json($clientTestResult);
     }
 }

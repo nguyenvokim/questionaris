@@ -36,7 +36,8 @@ class ClientBattery extends Model
 
     const STATUS_WAITING_FOR_CLIENT = 1;
     const STATUS_CANCEL = 2;
-    const STATUS_FINISHED = 3;
+    const STATUS_TIME_EXPIRED= 3;
+    const STATUS_FINISHED = 4;
 
     protected $table = 'client_batteries';
 

@@ -22,7 +22,15 @@
         components: {},
         props: {
             question: Object,
-            index: Number
+            index: Number,
+            viewOnly: {
+                type: Boolean,
+                default: false
+            },
+            initScore: {
+                type: Number,
+                default: -1
+            }
         },
         data: function() {
             return {
@@ -31,9 +39,10 @@
             }
         },
         async mounted() {
-            this.$nextTick(() => {
-
-            })
+            if (this.initScore !== -1) {
+                this.score = this.initScore;
+            }
+            console.log(this.score);
         },
         methods: {
             ...mapActions({
@@ -42,6 +51,9 @@
                 setAnswer: 'clientBattery/setAnswer'
             }),
             selectAnswer: function (scoreEle) {
+                if (this.viewOnly) {
+                    return;
+                }
                 this.score = scoreEle;
                 this.setAnswer({
                     testId: this.question.test_id,

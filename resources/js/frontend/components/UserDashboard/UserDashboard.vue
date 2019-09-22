@@ -21,6 +21,7 @@
             <div class="card-header">
                 <client-battery-assign :key="selectedClient"></client-battery-assign>
             </div>
+            <client-test-info :key="selectedClient"></client-test-info>
         </div>
     </div>
 </template>
@@ -28,10 +29,11 @@
 <script>
 
     import { mapActions, mapState, mapMutations } from 'vuex';
-    import ClientBatteryAssign from './ClientBatteryAssign'
+    import ClientBatteryAssign from './ClientBatteryAssign';
+    import ClientTestInfo from './ClientTestInfo';
 
     export default {
-        components: {ClientBatteryAssign},
+        components: {ClientTestInfo, ClientBatteryAssign},
         props: {
         },
         data: function() {

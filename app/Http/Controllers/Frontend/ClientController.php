@@ -6,11 +6,14 @@ use App\Http\Requests\Frontend\Battery\CreateBatteryRequest;
 use App\Http\Requests\Frontend\Client\CreateClientRequest;
 use App\Models\Client;
 use App\Http\Controllers\Controller;
+use App\Models\ClientTestResult;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
 {
     public function index() {
+        $client = ClientTestResult::find(3);
+        $client->calcTestSummary();
         $paginator = Client::where([
             ['user_id', '=', \Auth::id()]
         ])->paginate(20);

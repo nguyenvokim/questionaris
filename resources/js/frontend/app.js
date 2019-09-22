@@ -10,6 +10,7 @@ import '../plugins';
 import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import BootstrapVue from 'bootstrap-vue';
+import VueApexCharts from 'vue-apexcharts'
 
 window.Vue = Vue;
 
@@ -25,7 +26,7 @@ window.Vue = Vue;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.use(BootstrapVue)
-
+Vue.component('apexchart', VueApexCharts);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('custom-select-list', require('./components/CustomSelectList').default);
 Vue.component('datepicker', Datepicker);

@@ -21,6 +21,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Test whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Test whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $description
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Question[] $questions
+ * @property-read int|null $questions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Test whereDescription($value)
  */
 class Test extends Model
 {
@@ -37,5 +41,19 @@ class Test extends Model
 
     public function questions() {
         return $this->hasMany(Question::class);
+    }
+
+    /**
+     * @param $clientId
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getUniqueTestDoneOfClient($clientId) {
+        $clientTestResults = ClientTestResult::where('client_id', '=', $clientId)
+            ->groupBy(['test_id'])
+            ->get();
+        $testIds = $clientTestResults->map(function ($clientTestResult) {
+            return $clientTestResult->test_id;
+        });
+        return Test::whereIn('id', $testIds)->get();
     }
 }

@@ -1,7 +1,7 @@
 <template>
     <div>
-        <validation-box v-if="!client.id"></validation-box>
-        <div class="row justify-content-center align-items-center" v-if="client.id">
+        <validation-box v-if="!client.id && !isFinished"></validation-box>
+        <div class="row justify-content-center align-items-center" v-if="client.id && !isFinished">
             <div class="col col-sm-8 align-self-center">
                 <div class="card">
                     <div class="card-header">
@@ -11,6 +11,7 @@
                         <div v-for="test in tests" v-if="currentDisplayTestId === test.id">
                             <div class="test_description" v-html="test.description"></div>
                             <test :key="test.id"
+                                  :test="test"
                                   :test-id="test.id"
                                   :questions="test.questions"
                             />
@@ -26,6 +27,18 @@
                         <button class="btn btn-primary" @click="sendAnswer">
                             <i class="fa fa-fw fa-save"></i> Submit
                         </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center align-items-center" v-if="isFinished">
+            <div class="col col-sm-8 align-self-center">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>THANK YOU</h2>
+                    </div>
+                    <div class="card-body">
+                        <h5>Your answers has been saved</h5>
                     </div>
                 </div>
             </div>
@@ -47,7 +60,9 @@
         },
         data: function() {
             return {
-                isLoaded: false
+                isLoaded: false,
+                isFinished: false,
+                onRequestSaving: false
             }
         },
         async mounted() {
@@ -57,7 +72,8 @@
         },
         methods: {
             ...mapActions({
-                validateClient: 'clientBattery/validateClient'
+                validateClient: 'clientBattery/validateClient',
+                sendSaveAnswer: 'clientBattery/sendSaveAnswer'
             }),
             ...mapMutations({
                 setCurrentDisplayTestId: 'clientBattery/setCurrentDisplayTestId',
@@ -80,7 +96,30 @@
                 }
             },
             sendAnswer: function () {
-                this.$refs.notice_modal.show();
+                //Validate answers got all response
+                if (this.onRequestSaving) {
+                    return;
+                }
+                let allQuestionGotAnswer = true;
+                Object.keys(this.answers).forEach((testId) => {
+                    Object.keys(this.answers[testId]).forEach((questionId) => {
+                        if (this.answers[testId][questionId] === -1) {
+                            allQuestionGotAnswer = false;
+                        }
+                    })
+                });
+                if (!allQuestionGotAnswer) {
+                    this.$refs.notice_modal.show();
+                    return;
+                }
+                this.onRequestSaving = true;
+                this.sendSaveAnswer({
+                    clientId: this.client.id,
+                    testResultData: this.answers
+                }).then(() => {
+                    this.isFinished = true;
+                    this.onRequestSaving = false;
+                })
             }
         },
         computed: {
