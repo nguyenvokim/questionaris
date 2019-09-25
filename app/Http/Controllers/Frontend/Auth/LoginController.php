@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Auth;
 
-use App\Http\CustomPasswordRule;
+use App\Http\Requests\CustomPasswordRule;
 use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;

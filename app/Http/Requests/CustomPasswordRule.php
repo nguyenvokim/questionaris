@@ -1,5 +1,5 @@
 <?php
-namespace App\Http;
+namespace App\Http\Requests;
 
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
 use LangleyFoxall\LaravelNISTPasswordRules\Rules\ContextSpecificWords;
