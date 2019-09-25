@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Battery;
 use App\Models\Client;
 use App\Models\ClientBattery;
 use App\Models\ClientTestResult;
@@ -14,21 +15,21 @@ use App\Http\Controllers\Controller;
 class ClientBatteryController extends Controller
 {
     public function validateClient(Request $request) {
-        $personalCode = $request->get('personal_code');
-        $birthDate = $request->get('birth_date');
+        $personalCode = $request->get('personalCode');
+        $birthDate = $request->get('birthDate');
+        $batteryId = $request->get('batteryId');
         $client = Client::getClientByPersonalCodeAndBirthDate($personalCode, $birthDate);
-        if (!$client) {
+
+        //$clientBattery = ClientBattery::getActivatingClientBatteryForTest($client->id);
+        $battery = Battery::find($batteryId);
+        if (!$client OR !$battery OR $client->user_id != $battery->user_id) {
             return response()->json(['error' => true, 'message' => 'Your information is not correct']);
-        }
-        $clientBattery = ClientBattery::getActivatingClientBatteryForTest($client->id);
-        if (!$clientBattery) {
-            return response()->json(['error' => true, 'message' => 'You do not have any test now']);
         }
         return response()->json([
             'client' => $client,
-            'clientBattery' => $clientBattery,
-            'battery' => $clientBattery->battery,
-            'tests' => $clientBattery->battery->getTests(true)
+            'clientBattery' => [],
+            'battery' => $battery,
+            'tests' => $battery->getTests(true)
         ]);
     }
 
@@ -38,7 +39,7 @@ class ClientBatteryController extends Controller
         try {
             \DB::beginTransaction();
 
-            $clientBattery = $this->getActivatingClientBatteryForTestOrFail($clientId);
+            //$clientBattery = $this->getActivatingClientBatteryForTestOrFail($clientId);
 
             foreach ($testResultData as $testId => $testData) {
                 $test = Test::findOrFail($testId);
@@ -68,8 +69,8 @@ class ClientBatteryController extends Controller
                 //For now, test data will not modify, it save to store on config
                 $clientTestResult->calcTestSummary();
             }
-            $clientBattery->status = ClientBattery::STATUS_FINISHED;
-            $clientBattery->save();
+            //$clientBattery->status = ClientBattery::STATUS_FINISHED;
+            //$clientBattery->save();
 
             \DB::commit();
         } catch (\Exception $ex) {

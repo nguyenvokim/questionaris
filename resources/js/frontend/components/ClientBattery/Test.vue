@@ -8,9 +8,16 @@
             <div class="item">3 - Almost Always</div>
         </div>
         <div class="" :key="question.id" v-for="(question, index) in questions">
-            <questions-four-option v-if="question.type === CONST.QUESTION_TYPE_FOUR_OPTION" :question="question" :index="index"></questions-four-option>
+            <questions-four-option
+                    v-if="question.type === CONST.QUESTION_TYPE_FOUR_OPTION"
+                    :question="question"
+                    :index="index"
+            />
             <div v-if="question.type === CONST.QUESTION_TYPE_TEN_OPTION">
-                <questions-ten-option :question="question" :index="index"></questions-ten-option>
+                <questions-ten-option
+                        :question="question"
+                        :index="index"
+                />
             </div>
         </div>
     </div>
@@ -38,7 +45,6 @@
             }
         },
         async mounted() {
-            console.log(this.test);
             this.$nextTick(() => {
 
             })

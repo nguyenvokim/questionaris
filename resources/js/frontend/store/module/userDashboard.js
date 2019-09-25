@@ -56,6 +56,13 @@ const actions = {
             commit('setClientDetailTestResult', response.data);
             return response;
         })
+    },
+    sendEmailBattery: async function({state, commit}, data) {
+        return axios.post('/api/dashboard/sendEmailBattery', data).then((response) => {
+            return response.data;
+        }).catch((error) => {
+            return error.response.data;
+        });
     }
 };
 

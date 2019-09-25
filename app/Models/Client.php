@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * App\Models\Client
@@ -34,6 +35,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Client extends Model
 {
+
+    use Notifiable;
+
     protected $table = 'clients';
 
     protected $fillable = [

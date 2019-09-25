@@ -8,6 +8,12 @@ const state = {
     battery: {},
     answers: {},
     currentDisplayTestId: -1,
+    batteryId: 0,
+    focusAnswer: {
+        testId: 0,
+        questionIndex: 0,
+        answerIndex: 0
+    }
 };
 const getters = {
 
@@ -48,6 +54,12 @@ const mutations = {
     },
     setCurrentDisplayTestId: function (state, testId) {
         state.currentDisplayTestId = testId;
+    },
+    setBatteryId: function (state, batteryId) {
+        state.batteryId = batteryId;
+    },
+    setFocusAnswer: function (state, data) {
+        state.focusAnswer = data;
     }
 };
 

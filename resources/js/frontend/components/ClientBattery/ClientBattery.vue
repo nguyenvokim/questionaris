@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="form_battery">
         <validation-box v-if="!client.id && !isFinished"></validation-box>
         <div class="row justify-content-center align-items-center" v-if="client.id && !isFinished">
             <div class="col col-sm-8 align-self-center">
@@ -18,13 +18,13 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-dark" @click="prevTest">
+                        <button class="btn btn-dark" @click="prevTest" v-if="currentTestIndex !== 0">
                             <i class="fa fa-fw fa-caret-left"></i> Back
                         </button>
-                        <button class="btn btn-success" @click="nextTest">
+                        <button class="btn btn-success" @click="nextTest" v-if="currentTestIndex !== tests.length - 1">
                             <i class="fa fa-fw fa-caret-right"></i> Next
                         </button>
-                        <button class="btn btn-primary" @click="sendAnswer">
+                        <button class="btn btn-primary" @click="sendAnswer" v-if="currentTestIndex === tests.length - 1">
                             <i class="fa fa-fw fa-save"></i> Submit
                         </button>
                     </div>
@@ -57,18 +57,25 @@
     export default {
         components: {ValidationBox, Test},
         props: {
+            batteryId: {
+                type: Number,
+                default: 0
+            }
         },
         data: function() {
             return {
                 isLoaded: false,
                 isFinished: false,
-                onRequestSaving: false
+                onRequestSaving: false,
+                testIndex: 0
             }
         },
         async mounted() {
+            this.setBatteryId(this.batteryId);
             this.$nextTick(() => {
 
-            })
+            });
+            document.addEventListener('keydown', this.handleKeyPress)
         },
         methods: {
             ...mapActions({
@@ -77,22 +84,23 @@
             }),
             ...mapMutations({
                 setCurrentDisplayTestId: 'clientBattery/setCurrentDisplayTestId',
+                setBatteryId: 'clientBattery/setBatteryId',
+                setFocusAnswer: 'clientBattery/setFocusAnswer'
             }),
             nextTest: function () {
-                const currentTestIndex = this.tests.findIndex((test) => {
-                    return test.id === this.currentDisplayTestId;
-                });
-                if (currentTestIndex !== -1 && this.tests[currentTestIndex + 1]) {
-                    this.setCurrentDisplayTestId(this.tests[currentTestIndex + 1].id);
+                if (this.currentTestIndex !== -1 && this.tests[this.currentTestIndex + 1]) {
+                    this.setCurrentDisplayTestId(this.tests[this.currentTestIndex + 1].id);
+                    this.$nextTick(() => {
+                        this.setFocusOnCurrentTest();
+                    });
                 }
             },
             prevTest: function () {
-                const currentTestIndex = this.tests.findIndex((test) => {
-                    return test.id === this.currentDisplayTestId;
-                });
-                console.log(currentTestIndex);
-                if (currentTestIndex !== -1 && this.tests[currentTestIndex - 1]) {
-                    this.setCurrentDisplayTestId(this.tests[currentTestIndex - 1].id);
+                if (this.currentTestIndex !== -1 && this.tests[this.currentTestIndex - 1]) {
+                    this.setCurrentDisplayTestId(this.tests[this.currentTestIndex - 1].id);
+                    this.$nextTick(() => {
+                        this.setFocusOnCurrentTest();
+                    });
                 }
             },
             sendAnswer: function () {
@@ -120,6 +128,45 @@
                     this.isFinished = true;
                     this.onRequestSaving = false;
                 })
+            },
+            handleKeyPress: function (e) {
+                if (e.keyCode === 9) { // Tab button
+                    e.preventDefault();
+                    const test = this.tests[this.currentTestIndex];
+                    if (test.questions[this.focusAnswer.questionIndex + 1]) {
+                        this.setFocusAnswer({
+                            ...this.focusAnswer,
+                            answerIndex: 0,
+                            questionIndex: this.focusAnswer.questionIndex + 1
+                        })
+                    }
+                }
+                if (e.keyCode === 40) { // Key down
+                    e.preventDefault();
+                    const test = this.tests[this.currentTestIndex];
+                    if (test.questions[this.focusAnswer.questionIndex + 1]) {
+                        this.setFocusAnswer({
+                            ...this.focusAnswer,
+                            questionIndex: this.focusAnswer.questionIndex + 1
+                        })
+                    }
+                }
+                if (e.keyCode === 38) { // Key up
+                    const test = this.tests[this.currentTestIndex];
+                    if (test.questions[this.focusAnswer.questionIndex - 1]) {
+                        this.setFocusAnswer({
+                            ...this.focusAnswer,
+                            questionIndex: this.focusAnswer.questionIndex - 1
+                        })
+                    }
+                }
+            },
+            setFocusOnCurrentTest: function () {
+                this.setFocusAnswer({
+                    testId: this.currentDisplayTestId,
+                    answerIndex: 0,
+                    questionIndex: 0
+                });
             }
         },
         computed: {
@@ -130,7 +177,16 @@
                 battery: (state) => state.clientBattery.battery,
                 answers: state => state.clientBattery.answers,
                 currentDisplayTestId: state => state.clientBattery.currentDisplayTestId,
-            })
+                focusAnswer: state => state.clientBattery.focusAnswer
+            }),
+            currentTestIndex: function () {
+                return this.tests.findIndex((test) => {
+                    return test.id === this.currentDisplayTestId;
+                });
+            }
+        },
+        destroyed: function () {
+            document.removeEventListener('keydown', this.handleKeyPress);
         }
     }
 </script>

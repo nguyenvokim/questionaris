@@ -4,12 +4,14 @@
             <div class="card-body">
                 <div class="form-inline" v-if="clients.length">
                     <label class="mr-sm-2">Select a client to view their dashboard: </label>
-                    <select v-model="preSelectClientId" class="form-control mr-sm-2">
+                    <select v-model="preSelectClientId" class="form-control mr-sm-2" @change="viewClient">
                         <option v-for="client in clients" :value="client.id">{{getFullNameClient(client)}}</option>
                     </select>
-                    <button class="btn btn-primary" @click="viewClient">
-                        <i class="fa fa-fw fa-eye"></i> View
-                    </button>
+                    <div class="sink_and_right">
+                        <button class="btn btn-primary" @click="refreshClient">
+                            <i class="fa fa-fw fa-sync"></i> Refresh
+                        </button>
+                    </div>
                 </div>
                 <div class="form-inline" v-if="clients.length === 0">
                     <label class="mr-sm-2">You do not have any client yet, please create new one </label>
@@ -64,6 +66,12 @@
             },
             viewClient: function () {
                 this.setSelectedClient(this.preSelectClientId);
+            },
+            refreshClient: function () {
+                this.setSelectedClient(0);
+                this.$nextTick(() => {
+                    this.setSelectedClient(this.preSelectClientId);
+                })
             }
         },
         computed: {

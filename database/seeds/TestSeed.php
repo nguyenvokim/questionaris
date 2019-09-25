@@ -101,9 +101,6 @@ class TestSeed extends Seeder
                 'title' => 'I found it difficult to relax',
             ]),
             array_merge($baseQuestionArr, [
-                'title' => 'I found it difficult to relax',
-            ]),
-            array_merge($baseQuestionArr, [
                 'title' => 'I felt down-hearted and blue',
             ]),
             array_merge($baseQuestionArr, [

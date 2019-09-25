@@ -10,7 +10,8 @@ import '../plugins';
 import Vue from 'vue';
 import Datepicker from 'vuejs-datepicker';
 import BootstrapVue from 'bootstrap-vue';
-import VueApexCharts from 'vue-apexcharts'
+import VueApexCharts from 'vue-apexcharts';
+import Clipboard from 'v-clipboard'
 
 window.Vue = Vue;
 
@@ -26,12 +27,14 @@ window.Vue = Vue;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.use(BootstrapVue)
+Vue.use(Clipboard);
 Vue.component('apexchart', VueApexCharts);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('custom-select-list', require('./components/CustomSelectList').default);
 Vue.component('datepicker', Datepicker);
 Vue.component('user-dashboard', require('./components/UserDashboard/UserDashboard').default);
 Vue.component('client-battery', require('./components/ClientBattery/ClientBattery').default);
+Vue.component('button-copy', require('./common/ButtonCopy').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

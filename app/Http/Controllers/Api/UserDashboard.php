@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Frontend\Api\BatteryEmailLinkRequest;
 use App\Http\Requests\Frontend\Api\CreateUserBatteryRequest;
 use App\Models\Battery;
 use App\Models\Client;
 use App\Models\ClientBattery;
+use App\Models\ClientEmailLog;
 use App\Models\ClientTestResult;
 use App\Models\Test;
+use App\Notifications\Frontend\BatteryLinkEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -62,5 +65,25 @@ class UserDashboard extends Controller
         $clientTestResult = ClientTestResult::with('test_result_questions')
             ->find($id);
         return response()->json($clientTestResult);
+    }
+
+    public function createBatteryEmail(BatteryEmailLinkRequest $batteryEmailLinkRequest) {
+        $client = Client::getUserClientById($batteryEmailLinkRequest->get('clientId'));
+        if (!$client) {
+            throw new \Exception("Client not correct");
+        }
+        $battery = Battery::findOrFail($batteryEmailLinkRequest->get('batteryId'));
+        $client->notify(new BatteryLinkEmail($client, $battery));
+        ClientEmailLog::create([
+            'client_id' => $client->id,
+            'relate_object_id' => $battery->id,
+            'type' => ClientEmailLog::TYPE_BATTERY
+        ]);
+        return response()->json([
+            'success' => 1
+        ]);
+    }
+    public function lastBatteryEmail($clientId) {
+        return response()->json(ClientEmailLog::getLastBatteryEmail($clientId));
     }
 }

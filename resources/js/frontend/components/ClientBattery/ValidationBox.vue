@@ -17,10 +17,10 @@
                             </div>
                             <div class="form-group">
                                 <label>Birth Date</label>
-                                <datepicker v-model="birthDate" placeholder="Select Birth Date" :input-class="'form-control'"></datepicker>
+                                <datepicker placeholder="mm/dd/yyyy" v-model="birthDate" :typeable="true" format="MM/dd/yyyy" :input-class="'form-control'"></datepicker>
                             </div>
                             <div class="form-group">
-                                <button @click="startValidate" class="btn btn-success">Login</button>
+                                <button @click="startValidate" class="btn btn-success">Start</button>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
         data: function() {
             return {
                 personalCode: "",
-                birthDate: Date.now(),
+                birthDate: null,
                 errorMsg: ""
             }
         },
@@ -55,16 +55,18 @@
         },
         methods: {
             ...mapActions({
-                validateClient: 'clientBattery/validateClient'
+                validateClient: 'clientBattery/validateClient',
             }),
             ...mapMutations({
                 setInitAnswers: 'clientBattery/setInitAnswers',
                 setCurrentDisplayTestId: 'clientBattery/setCurrentDisplayTestId',
+                setFocusAnswer: 'clientBattery/setFocusAnswer'
             }),
             startValidate: async function () {
                 const response = await this.validateClient({
-                    personal_code: this.personalCode,
-                    birth_date: format(this.birthDate, 'yyyy-MM-dd')
+                    personalCode: this.personalCode,
+                    birthDate: format(this.birthDate, 'yyyy-MM-dd'),
+                    batteryId: this.batteryId
                 });
                 if (response.error) {
                     this.errorMsg = response.message;
@@ -86,6 +88,11 @@
                         })
                     })
                     this.setInitAnswers(resultTemplate);
+                    this.setFocusAnswer({
+                        testId: this.tests[0].id,
+                        answerIndex: 0,
+                        questionIndex: 0
+                    });
                 }
             }
         },
@@ -95,6 +102,7 @@
                 clientBattery: (state) => state.clientBattery.clientBattery,
                 tests: (state) => state.clientBattery.tests,
                 battery: (state) => state.clientBattery.battery,
+                batteryId: (state) => state.clientBattery.batteryId,
             })
         }
     }

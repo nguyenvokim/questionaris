@@ -85,6 +85,16 @@ class BatteryController extends Controller
         return redirect(route('frontend.battery.editView', ['id' => $id]))->withFlashSuccess('Updated battery success');
     }
 
+    public function clientBattery($batteryId) {
+        $battery = Battery::find($batteryId);
+        if (!$battery) {
+            abort(404);
+        }
+        return view('frontend.batteries.clientBattery', [
+            'batteryId' => $batteryId
+        ]);
+    }
+
     protected function getTestsJson() {
         return Test::all()->map(function ($item) {
             return [

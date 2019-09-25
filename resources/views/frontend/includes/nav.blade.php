@@ -18,7 +18,7 @@
 
             @auth
                 <li class="nav-item">
-                    <a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Banana Metric</a>
+                    <a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{route('frontend.client.index')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Manage Clients</a>
@@ -29,10 +29,12 @@
             @endauth
 
             @guest
-                <li class="nav-item"><a href="{{route('frontend.auth.login')}}" class="nav-link {{ active_class(Route::is('frontend.auth.login')) }}">@lang('navs.frontend.login')</a></li>
+                @if(Route::currentRouteName() !== 'frontend.battery.clientBattery')
+                    <li class="nav-item"><a href="{{route('frontend.auth.login')}}" class="nav-link {{ active_class(Route::is('frontend.auth.login')) }}">@lang('navs.frontend.login')</a></li>
 
-                @if(config('access.registration'))
-                    <li class="nav-item"><a href="{{route('frontend.auth.register')}}" class="nav-link {{ active_class(Route::is('frontend.auth.register')) }}">@lang('navs.frontend.register')</a></li>
+                    @if(config('access.registration'))
+                        <li class="nav-item"><a href="{{route('frontend.auth.register')}}" class="nav-link {{ active_class(Route::is('frontend.auth.register')) }}">@lang('navs.frontend.register')</a></li>
+                    @endif
                 @endif
             @else
                 <li class="nav-item dropdown">

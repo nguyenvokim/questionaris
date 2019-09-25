@@ -3,9 +3,9 @@
         <div class="title">
             {{question.title}}
         </div>
-        <div class="item" v-for="scoreEle in scores">
-            <div class="answer_box" @click="selectAnswer(scoreEle)">
-                <div class="answer_ele" v-bind:class="{active: score === scoreEle}"></div>
+        <div class="item" v-for="(scoreEle, index) in scores">
+            <div class="answer_box" @click="selectAnswer(scoreEle)" v-bind:class="getCssClass(scoreEle, index)">
+                <div class="answer_ele"></div>
             </div>
         </div>
     </div>
@@ -14,12 +14,13 @@
 <script>
 
     import { mapActions, mapState, mapMutations } from 'vuex';
-    import { format, compareAsc } from 'date-fns';
+    import clientBatteryMixing from './clientBatteryMixing';
     import CONST from '../../const';
 
 
     export default {
         components: {},
+        mixins: [clientBatteryMixing],
         props: {
             question: Object,
             index: Number,
@@ -35,35 +36,30 @@
         data: function() {
             return {
                 scores: [0, 1, 2, 3],
-                score: -1
+                score: -1,
             }
         },
         async mounted() {
             if (this.initScore !== -1) {
                 this.score = this.initScore;
+            } else {
+                if (this.answers[this.question.test_id] && this.answers[this.question.test_id][this.question.id] !== -1) {
+                    this.score = this.answers[this.question.test_id][this.question.id]
+                }
             }
-            console.log(this.score);
         },
         methods: {
             ...mapActions({
             }),
             ...mapMutations({
-                setAnswer: 'clientBattery/setAnswer'
+                setAnswer: 'clientBattery/setAnswer',
+                setFocusAnswer: 'clientBattery/setFocusAnswer'
             }),
-            selectAnswer: function (scoreEle) {
-                if (this.viewOnly) {
-                    return;
-                }
-                this.score = scoreEle;
-                this.setAnswer({
-                    testId: this.question.test_id,
-                    questionId: this.question.id,
-                    score: this.score
-                });
-            }
         },
         computed: {
             ...mapState({
+                answers: state => state.clientBattery.answers,
+                focusAnswer: state => state.clientBattery.focusAnswer
             })
         }
     }

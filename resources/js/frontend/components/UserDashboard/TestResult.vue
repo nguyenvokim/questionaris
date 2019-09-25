@@ -18,6 +18,7 @@
                 <questions-ten-option
                     :question="question"
                     :index="index"
+                    :view-only="true"
                     :init-score="question.score"
                 />
             </div>
@@ -47,7 +48,6 @@
             }
         },
         async mounted() {
-            console.log(this.test);
             this.$nextTick(() => {
 
             })

@@ -26,12 +26,18 @@
                             <tr>
                                 <td>Name</td>
                                 <td>Test Including</td>
+                                <td>Copy</td>
                                 <td>Action</td>
                             </tr>
                             @foreach($paginator->items() as $item)
                                 <tr>
                                     <td>{{$item->name}}</td>
                                     <td>{{implode(", ", $item->getTestNameArr())}}</td>
+                                    <td>
+                                        <button-copy :copy-text="'{{route('frontend.battery.clientBattery', ['batteryId' => $item->id])}}'" success-text="Battery link success copied to your clip board">
+                                            <i class="fa fa-fw fa-copy"></i> Copy Test Link
+                                        </button-copy>
+                                    </td>
                                     <td>
                                         <div class="btn-group-sm">
                                             <a href="{{route('frontend.battery.editView', ['id' => $item->id])}}" class="btn btn-success">

@@ -1,21 +1,17 @@
 <template>
-    <div v-if="selectedClient && isLoaded">
+    <div>
         <div v-if="batteries.length === 0" class="form-inline">
             <label class="mr-sm-2">You do not have any battery yet, please create new one </label>
             <a href="/batteries/create" class="btn btn-primary">Create Battery</a>
         </div>
         <div v-if="batteries.length">
-            <div v-if="activatingClientBattery.id">
-                Currently, <strong>{{activatingClientBattery.client.first_name}}</strong> already in change for battery <strong>{{activatingClientBattery.battery.name}}</strong><br/>
-                Period from: {{activatingClientBattery.start_date}} to {{activatingClientBattery.end_date}}
-            </div>
-            <div v-if="!activatingClientBattery.id">
-                <button class="btn btn-success" v-b-modal="'add_battery_modal'">
-                    Launch battery for client
+            <div>
+                <button class="btn btn-success" v-b-modal="'send_email_modal'">
+                    <i class="fa fa-fw fa-mail-bulk"></i> Send email battery for client
                 </button>
             </div>
         </div>
-        <b-modal ref="add_battery_modal" id="add_battery_modal" title="Launch battery for client" @ok="handleCreateBattery">
+        <b-modal ref="send_email_modal" id="send_email_modal" title="Select battery to send" @ok="handleSendBattery">
             <div class="form">
                 <div v-if="errorMsg.length" role="alert" class="alert alert-danger">
                     {{errorMsg}}
@@ -29,17 +25,19 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-form-label">Select Start Date</label>
+                    <label class="col-form-label">Email Text</label>
                     <div>
-                        <datepicker v-model="selectedStartDate" placeholder="Select Start Date" :input-class="'form-control'"></datepicker>
+                        <textarea class="form-control" v-model="emailText"></textarea>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-form-label">Select End Date</label>
-                    <div>
-                        <datepicker v-model="selectedEndDate" placeholder="Select End Date" :input-class="'form-control'"></datepicker>
-                    </div>
+                <div class="form-group" v-if="lastEmailBattery.id">
+                    <strong><i>Last email has been sent to clent at: {{lastEmailBattery.created_at}}</i></strong>
                 </div>
+            </div>
+        </b-modal>
+        <b-modal ok-only ref="email_send_success" id="email_send_success" title="Success">
+            <div class="form">
+                <h4>Email send to client success</h4>
             </div>
         </b-modal>
     </div>
@@ -48,19 +46,19 @@
 <script>
 
     import { mapActions, mapState } from 'vuex';
-    import { format, compareAsc } from 'date-fns';
+    import axios from 'axios';
 
     export default {
         props: {
         },
         data: function() {
             return {
-                selectedStartDate: Date.now(),
-                selectedEndDate: Date.now(),
                 selectedBatteryId: 0,
                 onAjaxRequesting: false,
                 errorMsg: "",
                 isLoaded: false,
+                emailText: "",
+                lastEmailBattery: {},
             }
         },
         async mounted() {
@@ -68,34 +66,27 @@
                 if (this.batteries.length) {
                     this.selectedBatteryId = this.batteries[0].id;
                 }
-                this.loadActivatingClientBattery(this.selectedClient).then(() => {
-                    this.isLoaded = true;
-                });
+            })
+            axios.get(`/api/dashboard/lastBatteryEmail/${this.selectedClient}`).then((response) => {
+                this.lastEmailBattery = response.data;
             })
         },
         methods: {
             ...mapActions({
-                createUserBattery: 'userDashboard/createUserBattery',
-                loadActivatingClientBattery: 'userDashboard/loadActivatingClientBattery'
+                sendEmailBattery: 'userDashboard/sendEmailBattery',
             }),
-            handleCreateBattery: async function (bvModalEvt) {
-                if (this.onAjaxRequesting) {
-                    return;
-                }
-                bvModalEvt.preventDefault();
-                this.onAjaxRequesting = true;
+            handleSendBattery: async function () {
                 const data = {
-                    client_id: this.selectedClient,
-                    battery_id: this.selectedBatteryId,
-                    start_date: format(this.selectedStartDate, 'yyyy-MM-dd'),
-                    end_date: format(this.selectedEndDate, 'yyyy-MM-dd'),
-                };
-                const response = await this.createUserBattery(data);
+                    clientId: this.selectedClient,
+                    batteryId: this.selectedBatteryId
+                }
+                const response = await this.sendEmailBattery(data);
                 this.onAjaxRequesting = false;
-                if (response.errors) {
-                    this.errorMsg = response.message;
+                if (response.exception || response.error) {
+                    this.message = response.message;
                 } else {
-                    this.$refs.add_battery_modal.hide();
+                    this.$refs.send_email_modal.hide();
+                    this.$refs.email_send_success.show();
                 }
             }
         },
@@ -103,7 +94,6 @@
             ...mapState({
                 batteries: (state) => state.userDashboard.batteries,
                 selectedClient: (state) => state.userDashboard.selectedClient,
-                activatingClientBattery: (state) => state.userDashboard.activatingClientBattery,
             })
         }
     }
