@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Auth;
 
+use App\Http\CustomPasswordRule;
 use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
 use App\Http\Controllers\Controller;
@@ -56,7 +57,7 @@ class LoginController extends Controller
     {
         $request->validate([
             $this->username() => 'required|string',
-            'password' => PasswordRules::login(),
+            'password' => CustomPasswordRule::login(),
             'g-recaptcha-response' => ['required_if:captcha_status,true', 'captcha'],
         ], [
             'g-recaptcha-response.required_if' => __('validation.required', ['attribute' => 'captcha']),

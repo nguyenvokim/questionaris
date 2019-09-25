@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Frontend\User;
 
+use App\Http\CustomPasswordRule;
 use App\Rules\Auth\UnusedPassword;
 use Illuminate\Foundation\Http\FormRequest;
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
@@ -34,7 +35,7 @@ class UpdatePasswordRequest extends FormRequest
                 [
                     new UnusedPassword($this->user()),
                 ],
-                PasswordRules::changePassword(
+                CustomPasswordRule::changePassword(
                     $this->email,
                     config('access.users.password_history') ? 'old_password' : null
                 )

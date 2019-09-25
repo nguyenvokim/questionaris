@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Frontend\Auth;
 
+use App\Http\CustomPasswordRule;
 use App\Rules\Auth\UnusedPassword;
 use Illuminate\Foundation\Http\FormRequest;
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
@@ -35,7 +36,7 @@ class ResetPasswordRequest extends FormRequest
                 [
                     new UnusedPassword($this->get('token')),
                 ],
-                PasswordRules::changePassword($this->email)
+                CustomPasswordRule::changePassword($this->email)
             ),
         ];
     }
