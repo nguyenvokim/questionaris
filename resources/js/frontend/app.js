@@ -12,7 +12,6 @@ import Datepicker from 'vuejs-datepicker';
 import BootstrapVue from 'bootstrap-vue';
 import VueApexCharts from 'vue-apexcharts';
 import Clipboard from 'v-clipboard';
-import VCalendar from 'v-calendar';
 
 window.Vue = Vue;
 
@@ -29,7 +28,6 @@ window.Vue = Vue;
 
 Vue.use(BootstrapVue)
 Vue.use(Clipboard);
-Vue.use(VCalendar);
 Vue.component('apexchart', VueApexCharts);
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('custom-select-list', require('./components/CustomSelectList').default);
