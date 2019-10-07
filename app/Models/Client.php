@@ -32,11 +32,19 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Client whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Client whereUserId($value)
  * @mixin \Eloquent
+ * @property int $gender
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Client whereGender($value)
  */
 class Client extends Model
 {
 
     use Notifiable;
+
+    const GENDER_MALE = 0;
+    const GENDER_FEMALE = 1;
+    const GENDER_OTHER = 2;
 
     protected $table = 'clients';
 
@@ -47,8 +55,23 @@ class Client extends Model
         'email',
         'personal_code',
         'birth_date',
-        'user_id'
+        'user_id',
+        'gender'
     ];
+
+    protected $dates = [
+        'birth_date',
+    ];
+
+    public function getGenderText() {
+        if ($this->gender == self::GENDER_MALE) {
+            return  'Male';
+        } elseif ($this->gender == self::GENDER_FEMALE) {
+            return 'Female';
+        } else {
+            return 'Other';
+        }
+    }
 
     /**
      * @param $email

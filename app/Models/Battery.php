@@ -21,14 +21,24 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property int $user_id
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Battery whereUserId($value)
+ * @property int $is_default
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Battery whereIsDefault($value)
  */
 class Battery extends Model
 {
     protected $table = "batteries";
 
+    const BATTERY_DEFAULT = 1;
+    const BATTERY_NOT_DEFAULT = 0;
+
     protected $fillable = [
         'user_id',
-        'name'
+        'name',
+        'is_default'
+    ];
+
+    protected $attributes = [
+        'is_default' => 0
     ];
 
     public function getTests($withQuestion = false) {

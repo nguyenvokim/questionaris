@@ -10,8 +10,8 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <h4 class="card-title mb-0">
-                            Batteries Management
-                            <small class="text-muted">Create new Battery</small>
+                            Create new Battery
+                            <small class="text-muted"></small>
                         </h4>
                     </div>
                 </div>

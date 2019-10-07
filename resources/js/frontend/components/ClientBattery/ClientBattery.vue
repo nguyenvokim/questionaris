@@ -130,9 +130,9 @@
                 })
             },
             handleKeyPress: function (e) {
-                if (e.keyCode === 9) { // Tab button
+                const test = this.tests[this.currentTestIndex];
+                if (e.keyCode === 9 && test) { // Tab button
                     e.preventDefault();
-                    const test = this.tests[this.currentTestIndex];
                     if (test.questions[this.focusAnswer.questionIndex + 1]) {
                         this.setFocusAnswer({
                             ...this.focusAnswer,
@@ -141,9 +141,8 @@
                         })
                     }
                 }
-                if (e.keyCode === 40) { // Key down
+                if (e.keyCode === 40 && test) { // Key down
                     e.preventDefault();
-                    const test = this.tests[this.currentTestIndex];
                     if (test.questions[this.focusAnswer.questionIndex + 1]) {
                         this.setFocusAnswer({
                             ...this.focusAnswer,
@@ -151,8 +150,8 @@
                         })
                     }
                 }
-                if (e.keyCode === 38) { // Key up
-                    const test = this.tests[this.currentTestIndex];
+                if (e.keyCode === 38 && test) { // Key up
+                    e.preventDefault();
                     if (test.questions[this.focusAnswer.questionIndex - 1]) {
                         this.setFocusAnswer({
                             ...this.focusAnswer,

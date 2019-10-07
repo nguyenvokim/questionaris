@@ -17,7 +17,12 @@
                             </div>
                             <div class="form-group">
                                 <label>Birth Date</label>
-                                <datepicker placeholder="mm/dd/yyyy" v-model="birthDate" :typeable="true" format="MM/dd/yyyy" :input-class="'form-control'"></datepicker>
+                                <custom-datepicker
+                                        v-model="birthDate"
+                                        format="dd-MM-yyyy"
+                                        placeholder="dd-mm-yyyy"
+                                        :input-class="'form-control'">
+                                </custom-datepicker>
                             </div>
                             <div class="form-group">
                                 <button @click="startValidate" class="btn btn-success">Start</button>
@@ -63,6 +68,13 @@
                 setFocusAnswer: 'clientBattery/setFocusAnswer'
             }),
             startValidate: async function () {
+                if (!this.birthDate) {
+                    this.errorMsg = "Your birth date is not valid format";
+                    setTimeout(() => {
+                        this.errorMsg = "";
+                    }, 6000);
+                    return;
+                }
                 const response = await this.validateClient({
                     personalCode: this.personalCode,
                     birthDate: format(this.birthDate, 'yyyy-MM-dd'),

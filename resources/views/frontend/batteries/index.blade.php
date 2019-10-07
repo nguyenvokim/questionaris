@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <h4 class="card-title mb-0">
-                        <small class="text-muted">List Batteries</small>
+                        <small class="text-muted">Test Batteries</small>
                     </h4>
                 </div>
                 <div class="col-sm-6">
@@ -26,6 +26,7 @@
                             <tr>
                                 <td>Name</td>
                                 <td>Test Including</td>
+                                <td class="text-center">Default Battery</td>
                                 <td>Copy</td>
                                 <td>Action</td>
                             </tr>
@@ -33,17 +34,26 @@
                                 <tr>
                                     <td>{{$item->name}}</td>
                                     <td>{{implode(", ", $item->getTestNameArr())}}</td>
+                                    <td class="text-center">
+                                        @if($item->is_default == \App\Models\Battery::BATTERY_DEFAULT)
+                                        <span class="badge badge-success">
+                                            <i class="fa fa-fw fa-check" ></i>
+                                        </span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <button-copy :copy-text="'{{route('frontend.battery.clientBattery', ['batteryId' => $item->id])}}'" success-text="Battery link success copied to your clip board">
                                             <i class="fa fa-fw fa-copy"></i> Copy Test Link
                                         </button-copy>
                                     </td>
                                     <td>
-                                        <div class="btn-group-sm">
-                                            <a href="{{route('frontend.battery.editView', ['id' => $item->id])}}" class="btn btn-success">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </a>
-                                        </div>
+                                        @if($item->is_default != \App\Models\Battery::BATTERY_DEFAULT)
+                                            <div class="btn-group-sm">
+                                                <a href="{{route('frontend.battery.editView', ['id' => $item->id])}}" class="btn btn-success">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </a>
+                                            </div>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

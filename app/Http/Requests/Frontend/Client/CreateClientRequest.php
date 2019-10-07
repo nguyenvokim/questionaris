@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Frontend\Client;
 
+use App\Http\FormRequestValidateOption;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -27,12 +28,13 @@ class CreateClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required'],
-            'last_name' => ['required'],
-            'personal_code' => ['required'],
-            'email' => ['required', 'email'],
-            'birth_date' => ['required', 'date'],
-            'title' => ['required'],
+            'first_name' => [FormRequestValidateOption::REQUIRED],
+            'last_name' => [FormRequestValidateOption::REQUIRED],
+            'personal_code' => [FormRequestValidateOption::REQUIRED],
+            'email' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::EMAIL],
+            'birth_date' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::DATE],
+            'title' => [FormRequestValidateOption::REQUIRED],
+            'gender' => [FormRequestValidateOption::REQUIRED],
         ];
     }
 

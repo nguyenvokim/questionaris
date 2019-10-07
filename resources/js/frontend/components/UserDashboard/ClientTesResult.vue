@@ -4,22 +4,23 @@
             <table class="table table-striped" v-if="firstDetailTestResult.config">
                 <tr>
                     <th>Date</th>
-                    <th v-for="item in firstDetailTestResult.config.summaryOptions">
+                    <th class="text-center" v-for="item in firstDetailTestResult.config.summaryOptions">
                         {{item.name}}
                     </th>
-                    <th>Score</th>
+                    <th class="text-center">Total</th>
                 </tr>
                 <tr v-for="detailTestResult in detailTestResults">
                     <td>
-                        <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent">
+                        <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent text-primary">
                             <i class="fa fa-fw fa-search"></i>
                             {{detailTestResult.created_at}}
                         </button>
                     </td>
-                    <td v-for="item in detailTestResult.config.summaryOptions">
-                        {{item.score}}
+                    <td class="text-center" v-for="(item, index) in detailTestResult.config.summaryOptions">
+                        {{item.score}}<br/>
+                        {{getScoreDescription(index, item.score)}}
                     </td>
-                    <td>{{detailTestResult.config.score}}</td>
+                    <td class="text-center">{{detailTestResult.config.score}}</td>
                 </tr>
             </table>
         </div>
@@ -27,11 +28,11 @@
             <table class="table table-striped" v-if="firstDetailTestResult.config">
                 <tr>
                     <th>Date</th>
-                    <th>Score</th>
+                    <th>Total</th>
                 </tr>
                 <tr v-for="detailTestResult in detailTestResults">
                     <td>
-                        <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent">
+                        <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent text-primary">
                             <i class="fa fa-fw fa-search"></i>
                             {{detailTestResult.created_at}}
                         </button>
@@ -64,7 +65,90 @@
         },
         data: function() {
             return {
-                firstDetailTestResult: {}
+                firstDetailTestResult: {},
+                dassStressLevels: [
+                    [
+                        {
+                            from: 0,
+                            to: 4,
+                            text: 'Normal'
+                        },
+                        {
+                            from: 5,
+                            to: 6,
+                            text: 'Mild'
+                        },
+                        {
+                            from: 7,
+                            to: 10,
+                            text: 'Moderate'
+                        },
+                        {
+                            from: 11,
+                            to: 13,
+                            text: 'Severe'
+                        },
+                        {
+                            from: 14,
+                            to: 9999,
+                            text: 'Extremely Severe'
+                        },
+                    ],
+                    [
+                        {
+                            from: 0,
+                            to: 3,
+                            text: 'Normal'
+                        },
+                        {
+                            from: 4,
+                            to: 5,
+                            text: 'Mild'
+                        },
+                        {
+                            from: 6,
+                            to: 7,
+                            text: 'Moderate'
+                        },
+                        {
+                            from: 8,
+                            to: 9,
+                            text: 'Severe'
+                        },
+                        {
+                            from: 10,
+                            to: 9999,
+                            text: 'Extremely Severe'
+                        },
+                    ],
+                    [
+                        {
+                            from: 0,
+                            to: 7,
+                            text: 'Normal'
+                        },
+                        {
+                            from: 8,
+                            to: 9,
+                            text: 'Mild'
+                        },
+                        {
+                            from: 10,
+                            to: 12,
+                            text: 'Moderate'
+                        },
+                        {
+                            from: 13,
+                            to: 16,
+                            text: 'Severe'
+                        },
+                        {
+                            from: 14,
+                            to: 9999,
+                            text: 'Extremely Severe'
+                        },
+                    ],
+                ]
             }
         },
         async mounted() {
@@ -87,6 +171,17 @@
                 this.setClientDetailTestResult({id: 0});
                 this.loadClientDetailTestResult(testResultId);
                 this.$refs.test_result_detail.show();
+            },
+            getScoreDescription: function (index, score) {
+                const dassStressLevel = this.dassStressLevels[0];
+                const foundLevel = dassStressLevel.find((level) => {
+                    return level.to >= score && level.from <= score;
+                });
+                if (foundLevel) {
+                    return foundLevel.text;
+                } else {
+                    return '';
+                }
             }
         },
         computed: {

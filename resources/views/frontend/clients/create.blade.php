@@ -10,8 +10,8 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <h4 class="card-title mb-0">
-                            Client Management
-                            <small class="text-muted">Create new Client</small>
+                            Create new client
+                            <small class="text-muted"></small>
                         </h4>
                     </div>
                 </div>
@@ -50,7 +50,23 @@
                         <div class="form-group row">
                             <label class="col-md-2 form-control-lable">Birth date</label>
                             <div class="col-md-10">
-                                <datepicker value="{{old('birth_date')}}" format="yyyy-MM-dd" name="birth_date" placeholder="Select birth date" :input-class="'form-control'"></datepicker>
+                                <custom-datepicker
+                                        init-value="{{old('birth_date')}}"
+                                        format="dd-MM-yyyy"
+                                        name="birth_date"
+                                        placeholder="Select birth date"
+                                        :input-class="'form-control'">
+                                </custom-datepicker>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 form-control-lable">Gender</label>
+                            <div class="col-md-10">
+                                <select name="gender" id="gender" class="form-control">
+                                    <option value="0">Male</option>
+                                    <option value="1" @if(old('gender') == 1)selected="selected"@endif>Female</option>
+                                    <option value="2" @if(old('gender') == 2)selected="selected"@endif>Other</option>
+                                </select>
                             </div>
                         </div>
                     </div>

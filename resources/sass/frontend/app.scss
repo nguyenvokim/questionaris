@@ -13,3 +13,23 @@
 // Pages
 @import 'pages/dashboard';
 @import 'pages/clientTest';
+
+.zero_width {
+  width: 0px !important;
+}
+.inline_block {
+  display: inline-block !important;
+}
+.custom_datepicker_wrapper {
+  display: flex;
+  flex-flow: row;
+  div.input_box {
+    flex-grow: 1;
+  }
+  div:first-child {
+    width: 0px;
+    >input {
+      visibility: hidden;
+    }
+  }
+}

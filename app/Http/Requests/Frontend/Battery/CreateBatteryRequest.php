@@ -39,6 +39,7 @@ class CreateBatteryRequest extends FormRequest
     public function messages()
     {
         return [
+            'test_ids.required' => 'Please add at least one test to the battery.'
         ];
     }
 }

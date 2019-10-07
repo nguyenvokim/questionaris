@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Battery\CreateBatteryRequest;
+use App\Http\Requests\Frontend\Battery\UpdateBatteryRequest;
 use App\Models\Battery;
 use App\Models\BatteryTest;
 use App\Models\Test;
@@ -14,7 +15,7 @@ class BatteryController extends Controller
     public function index() {
         $paginator = Battery::where([
             ['user_id', '=', \Auth::id()]
-        ])->paginate(20);
+        ])->orderByDesc('is_default')->paginate(20);
         return view('frontend.batteries.index', [
             'paginator' => $paginator
         ]);
@@ -44,12 +45,12 @@ class BatteryController extends Controller
             ]);
         }
 
-        return redirect(route('frontend.battery.index'))->withFlashSuccess('Create battery success');
+        return redirect(route('frontend.battery.index'))->withFlashSuccess('Battery successfully created!');
     }
 
     public function editView($id) {
         $battery = Battery::getUserBattery($id);
-        if (!$battery) {
+        if (!$battery OR $battery->is_default == Battery::BATTERY_DEFAULT) {
             return redirect(route('frontend.battery.index'));
         }
         $testJson = $this->getTestsJson();
@@ -64,11 +65,11 @@ class BatteryController extends Controller
             'testIdsJson' => $testIdsJson
         ]);
     }
-    public function edit($id, CreateBatteryRequest $createBatteryRequest) {
-        $testIds = explode(",", $createBatteryRequest->get('test_ids'));
-        $name = $createBatteryRequest->get('name');
+    public function edit($id, UpdateBatteryRequest $updateBatteryRequest) {
+        $testIds = explode(",", $updateBatteryRequest->get('test_ids'));
+        $name = $updateBatteryRequest->get('name');
         $battery = Battery::getUserBattery($id);
-        if (!$battery) {
+        if (!$battery OR $battery->is_default == Battery::BATTERY_DEFAULT) {
             return redirect(route('frontend.battery.index'));
         }
         $battery->update([

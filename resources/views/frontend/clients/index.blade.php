@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <h4 class="card-title mb-0">
-                        <small class="text-muted">List Clients</small>
+                        <small class="text-muted">Clients</small>
                     </h4>
                 </div>
                 <div class="col-sm-6">
@@ -28,6 +28,7 @@
                                 <th>Last Name</th>
                                 <th>Email</th>
                                 <th>Personal Code</th>
+                                <th>Gender</th>
                                 <th>Birth Date</th>
                                 <th>Action</th>
                             </tr>
@@ -37,7 +38,8 @@
                                     <td>{{$client->last_name}}</td>
                                     <td>{{$client->email}}</td>
                                     <td>{{$client->personal_code}}</td>
-                                    <td>{{$client->birth_date}}</td>
+                                    <td>{{$client->getGenderText()}}</td>
+                                    <td>{{$client->birth_date->format('d-m-Y')}}</td>
                                     <td>
                                         <div class="btn-group-sm">
                                             <a href="{{route('frontend.client.editView', ['id' => $client->id])}}" class="btn btn-success">

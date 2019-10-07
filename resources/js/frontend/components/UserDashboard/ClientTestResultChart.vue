@@ -1,5 +1,5 @@
 <template>
-    <div class="padding_8" v-if="detailTestResults.length > 1">
+    <div class="padding_8" v-if="detailTestResults && detailTestResults.length > 1">
         <div class="row justify-content-center align-items-center">
             <div class="col col-sm-12 col-md-8 align-self-center">
                 <apexchart width="100%" type="line" :options="options" :series="series"></apexchart>
@@ -79,6 +79,9 @@
                     ]
                 } else if (this.selectedTestId === 1) {
                     const firstData = this.detailTestResults[0].config.summaryOptions;
+                    if (!firstData) {
+                        return;
+                    }
                     const series = firstData.map((data) => {
                         return {
                             name: data.name,

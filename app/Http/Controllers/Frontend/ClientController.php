@@ -7,6 +7,7 @@ use App\Http\Requests\Frontend\Client\CreateClientRequest;
 use App\Models\Client;
 use App\Http\Controllers\Controller;
 use App\Models\ClientTestResult;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -35,6 +36,7 @@ class ClientController extends Controller
         }
         $createClientArr = $createClientRequest->toArray();
         $createClientArr['user_id'] = \Auth::id();
+        $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);
         Client::create($createClientArr);
         return redirect(route('frontend.client.index'))->withFlashSuccess('Create client success');
     }
@@ -58,7 +60,9 @@ class ClientController extends Controller
             $createClientRequest->session()->flashInput($createClientRequest->toArray());
             return redirect(route('frontend.client.editView', ['id' => $id]))->withErrors(['Client email already in use']);
         }
-        $client->update($createClientRequest->toArray());
+        $createClientArr = $createClientRequest->toArray();
+        $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);
+        $client->update($createClientArr);
         return redirect(route('frontend.client.editView', ['id' => $id]))->withFlashSuccess('Updated client success');
     }
 }
