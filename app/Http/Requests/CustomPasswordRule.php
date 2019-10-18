@@ -24,4 +24,17 @@ class CustomPasswordRule extends PasswordRules {
             //new BreachedPasswords(),
         ];
     }
+
+    public static function changePassword($username, $oldPassword = null)
+    {
+        $rules = self::register($username);
+
+        if ($oldPassword) {
+            $rules = array_merge($rules, [
+                'different:'.$oldPassword,
+            ]);
+        }
+
+        return $rules;
+    }
 }
