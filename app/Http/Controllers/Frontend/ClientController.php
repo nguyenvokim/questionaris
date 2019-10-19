@@ -34,6 +34,11 @@ class ClientController extends Controller
             $createClientRequest->session()->flashInput($createClientRequest->toArray());
             return redirect(route('frontend.client.createView'))->withErrors(['Client email already in use']);
         }
+        $client = Client::getUserClientByCode($createClientRequest->get('personal_code'));
+        if ($client) {
+            $createClientRequest->session()->flashInput($createClientRequest->toArray());
+            return redirect(route('frontend.client.createView'))->withErrors(['Personal Code already exits']);
+        }
         $createClientArr = $createClientRequest->toArray();
         $createClientArr['user_id'] = \Auth::id();
         $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);
@@ -59,6 +64,11 @@ class ClientController extends Controller
         if ($testedClient AND $testedClient->id != $client->id) {
             $createClientRequest->session()->flashInput($createClientRequest->toArray());
             return redirect(route('frontend.client.editView', ['id' => $id]))->withErrors(['Client email already in use']);
+        }
+        $testCodeClient = Client::getUserClientByCode($createClientRequest->get('personal_code'));
+        if ($testCodeClient AND $testCodeClient->id != $client->id) {
+            $createClientRequest->session()->flashInput($createClientRequest->toArray());
+            return redirect(route('frontend.client.createView'))->withErrors(['Personal Code already exits']);
         }
         $createClientArr = $createClientRequest->toArray();
         $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);

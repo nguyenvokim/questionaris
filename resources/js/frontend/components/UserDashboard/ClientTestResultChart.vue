@@ -12,6 +12,7 @@
 
     import { mapActions, mapState, mapMutations } from 'vuex';
     import TestResult from './TestResult';
+    import { format, compareAsc } from 'date-fns';
 
     export default {
         components: {TestResult},
@@ -34,12 +35,30 @@
             ...mapState({
                 selectedTestId: (state) => state.userDashboard.selectedTestId,
                 detailTestResults: (state) => state.userDashboard.detailTestResults,
+                finishedTests: (state) => state.userDashboard.finishedTests,
             }),
+            currentTestName: function() {
+                const test = this.finishedTests.find((test) => {
+                    return test.id == this.selectedTestId;
+                });
+                if (test) {
+                    return test.title;
+                } else {
+                    return '';
+                }
+            },
             options: function () {
                 const categories = this.detailTestResults.map((detailTestResult) => {
-                    return detailTestResult.created_at.substring(0, 10);
+                    return format(new Date(detailTestResult.created_at), 'dd-MM-yyyy');
                 });
                 return {
+                    title: {
+                        text: this.currentTestName,
+                        align: 'center'
+                    },
+                    stroke: {
+                        curve: 'smooth'
+                    },
                     chart: {
                         id: 'vuechart-example'
                     },
@@ -61,9 +80,13 @@
                             }
                         },
                         padding: {
-                            left: 24
+                            left: 24,
+                            right: 16
                         }
-                    }
+                    },
+                    markers: {
+                        size: 6
+                    },
                 }
             },
             series: function () {

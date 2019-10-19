@@ -8,10 +8,18 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <h4 class="card-title mb-0">
-                            Batteries Management
-                            <small class="text-muted">Create new Battery</small>
+                            Edit battery
+                            <small class="text-muted"></small>
+                            <div class="float-right">
+                                <delete-battery
+                                        :reload-after-delete="false"
+                                        redirect-link="{{route('frontend.battery.index')}}"
+                                        :id="{{ $battery->id }}">
+
+                                </delete-battery>
+                            </div>
                         </h4>
                     </div>
                 </div>
@@ -24,7 +32,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-2 form-control-lable">Including Test</label>
+                            <label class="col-md-2 form-control-lable">Tests</label>
                             <div class="col-md-10">
                                 <custom-select-list :init-select='{{$testIdsJson}}' input-name="test_ids" v-bind:list='{{$testJson}}'></custom-select-list>
                             </div>

@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="col-sm-6">
                         <h4 class="card-title mb-0">
-                            Create new Battery
+                            Create new battery
                             <small class="text-muted"></small>
                         </h4>
                     </div>
@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         <div class="form-group row">
-                            <label class="col-md-2 form-control-lable">Including Test</label>
+                            <label class="col-md-2 form-control-lable">Tests</label>
                             <div class="col-md-10">
                                 <custom-select-list input-name="test_ids" v-bind:list='{{$testJson}}'></custom-select-list>
                             </div>

@@ -71,9 +71,17 @@ class ClientTestResult extends Model
     }
 
     public static function getTestResultOfClientByTestId($clientId, $testId) {
-        return ClientTestResult::where([
-            ['client_id', '=', $clientId],
-            ['test_id', '=', $testId]
-        ])->orderBy('id', 'ASC')->get();
+        if ($testId == Test::TEST_SIDAS_ID) {
+            return ClientTestResult::with('test_result_questions')
+            ->where([
+                ['client_id', '=', $clientId],
+                ['test_id', '=', $testId]
+            ])->orderBy('id', 'ASC')->get();
+        } else {
+            return ClientTestResult::where([
+                ['client_id', '=', $clientId],
+                ['test_id', '=', $testId]
+            ])->orderBy('id', 'ASC')->get();
+        }
     }
 }

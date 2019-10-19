@@ -35,6 +35,7 @@ Vue.component('datepicker', Datepicker);
 Vue.component('user-dashboard', require('./components/UserDashboard/UserDashboard').default);
 Vue.component('client-battery', require('./components/ClientBattery/ClientBattery').default);
 Vue.component('button-copy', require('./common/ButtonCopy').default);
+Vue.component('delete-battery', require('./standalone/DeleteBattery').default);
 Vue.component('custom-datepicker', require('./common/CustomDatepicker').default);
 
 /**

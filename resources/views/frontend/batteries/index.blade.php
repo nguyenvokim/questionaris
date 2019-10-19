@@ -24,11 +24,11 @@
                     <div class="table-responsive">
                         <table class="table">
                             <tr>
-                                <td>Name</td>
-                                <td>Test Including</td>
-                                <td class="text-center">Default Battery</td>
-                                <td>Copy</td>
-                                <td>Action</td>
+                                <th>Name</th>
+                                <th>Included Tests</th>
+                                <th class="text-center">Default Battery</th>
+                                <th>Copy Link</th>
+                                <th>Edit</th>
                             </tr>
                             @foreach($paginator->items() as $item)
                                 <tr>
@@ -42,18 +42,19 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <button-copy :copy-text="'{{route('frontend.battery.clientBattery', ['batteryId' => $item->id])}}'" success-text="Battery link success copied to your clip board">
+                                        <button-copy :copy-text="'{{route('frontend.battery.clientBattery', ['batteryId' => $item->id])}}'" success-text="Link successfully copied to clipboard">
                                             <i class="fa fa-fw fa-copy"></i> Copy Test Link
                                         </button-copy>
                                     </td>
                                     <td>
-                                        @if($item->is_default != \App\Models\Battery::BATTERY_DEFAULT)
-                                            <div class="btn-group-sm">
+                                        <div class="btn-group-sm">
+                                            @if($item->is_default != \App\Models\Battery::BATTERY_DEFAULT)
                                                 <a href="{{route('frontend.battery.editView', ['id' => $item->id])}}" class="btn btn-success">
                                                     <i class="fa fa-edit"></i> Edit
                                                 </a>
-                                            </div>
-                                        @endif
+                                                <delete-battery :id="{{ $item->id }}"></delete-battery>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach

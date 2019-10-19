@@ -28,6 +28,11 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Test extends Model
 {
+
+    //Test is hard code, feel safe to had const
+    const TEST_DASS_ID = 1;
+    const TEST_SIDAS_ID = 2;
+
     protected $table = 'tests';
 
     protected $fillable = [

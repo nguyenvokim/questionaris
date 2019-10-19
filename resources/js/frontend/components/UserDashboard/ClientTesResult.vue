@@ -3,17 +3,23 @@
         <div class="test_dass" v-if="selectedTestId === 1">
             <table class="table table-striped" v-if="firstDetailTestResult.config">
                 <tr>
-                    <th>Date</th>
+                    <th>
+                        Date
+                        <button class="btn btn-transparent float-right" @click="toggleSort">
+                            <i v-if="sort === 'up'" class="fa fa-caret-up"></i>
+                            <i v-if="sort === 'down'" class="fa fa-caret-down"></i>
+                        </button>
+                    </th>
                     <th class="text-center" v-for="item in firstDetailTestResult.config.summaryOptions">
                         {{item.name}}
                     </th>
                     <th class="text-center">Total</th>
                 </tr>
-                <tr v-for="detailTestResult in detailTestResults">
+                <tr v-for="detailTestResult in sortedDetailTestResults">
                     <td>
                         <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent text-primary">
                             <i class="fa fa-fw fa-search"></i>
-                            {{detailTestResult.created_at}}
+                            {{displayCreatedDate(detailTestResult.created_at)}}
                         </button>
                     </td>
                     <td class="text-center" v-for="(item, index) in detailTestResult.config.summaryOptions">
@@ -27,17 +33,31 @@
         <div class="test_sida" v-if="selectedTestId === 2">
             <table class="table table-striped" v-if="firstDetailTestResult.config">
                 <tr>
-                    <th>Date</th>
-                    <th>Total</th>
+                    <th>
+                        Date
+                        <button class="btn btn-transparent float-right" @click="toggleSort">
+                            <i v-if="sort === 'up'" class="fa fa-caret-up"></i>
+                            <i v-if="sort === 'down'" class="fa fa-caret-down"></i>
+                        </button>
+                    </th>
+                    <th class="text-center small">Frequency of thoughts</th>
+                    <th class="text-center small">Control over thoughts</th>
+                    <th class="text-center small">How close to attempt</th>
+                    <th class="text-center small">Tormented by thoughts</th>
+                    <th class="text-center small">Interference with activities</th>
+                    <th class="text-center">Total</th>
                 </tr>
-                <tr v-for="detailTestResult in detailTestResults">
+                <tr v-for="detailTestResult in sortedDetailTestResults">
                     <td>
                         <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent text-primary">
                             <i class="fa fa-fw fa-search"></i>
-                            {{detailTestResult.created_at}}
+                            {{displayCreatedDate(detailTestResult.created_at)}}
                         </button>
                     </td>
-                    <td>{{detailTestResult.config.score}}</td>
+                    <td class="text-center" v-for="testResultQuestion in detailTestResult.test_result_questions">
+                        {{testResultQuestion.score}}
+                    </td>
+                    <td class="text-center">{{detailTestResult.config.score}}</td>
                 </tr>
             </table>
         </div>
@@ -58,6 +78,7 @@
 
     import { mapActions, mapState, mapMutations } from 'vuex';
     import TestResult from './TestResult';
+    import { format, compareAsc, parse } from 'date-fns';
 
     export default {
         components: {TestResult},
@@ -148,7 +169,8 @@
                             text: 'Extremely Severe'
                         },
                     ],
-                ]
+                ],
+                sort: 'down',
             }
         },
         async mounted() {
@@ -173,7 +195,7 @@
                 this.$refs.test_result_detail.show();
             },
             getScoreDescription: function (index, score) {
-                const dassStressLevel = this.dassStressLevels[0];
+                const dassStressLevel = this.dassStressLevels[index];
                 const foundLevel = dassStressLevel.find((level) => {
                     return level.to >= score && level.from <= score;
                 });
@@ -181,6 +203,16 @@
                     return foundLevel.text;
                 } else {
                     return '';
+                }
+            },
+            displayCreatedDate: function (createdAt) {
+                return format(new Date(createdAt), 'dd-MM-yyyy');
+            },
+            toggleSort: function () {
+                if (this.sort === 'down') {
+                    this.sort = 'up';
+                } else {
+                    this.sort = 'down';
                 }
             }
         },
@@ -190,7 +222,22 @@
                 selectedTestId: (state) => state.userDashboard.selectedTestId,
                 selectedClient: (state) => state.userDashboard.selectedClient,
                 clientDetailTestResult: (state) => state.userDashboard.clientDetailTestResult,
-            })
+            }),
+            sortedDetailTestResults: function () {
+                if (!this.detailTestResults) {
+                    return [];
+                }
+                const detailTestResults = [...this.detailTestResults];
+                return detailTestResults.sort((a, b) => {
+                    const dateA = new Date(a.created_at);
+                    const dateB = new Date(b.created_at);
+                    if (this.sort === 'up') {
+                        return compareAsc(dateA, dateB);
+                    } else {
+                        return compareAsc(dateB, dateA);
+                    }
+                });
+            }
         }
     }
 </script>

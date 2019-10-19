@@ -76,4 +76,19 @@ class Battery extends Model
             ['user_id', '=', \Auth::id()]
         ])->get();
     }
+
+    public static function createDefaultBatteryForUser($user) {
+        $tests = Test::all();
+        foreach ($tests as $test) {
+            $battery = \App\Models\Battery::create([
+                'user_id' => $user->id,
+                'name' => $test->title,
+                'is_default' => self::BATTERY_DEFAULT
+            ]);
+            BatteryTest::create([
+                'test_id' => $test->id,
+                'battery_id' => $battery->id
+            ]);
+        }
+    }
 }

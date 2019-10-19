@@ -53,10 +53,8 @@
                 errorMsg: ""
             }
         },
-        async mounted() {
-            this.$nextTick(() => {
-
-            })
+        mounted() {
+            document.addEventListener('keydown', this.handleKeyPress)
         },
         methods: {
             ...mapActions({
@@ -106,6 +104,12 @@
                         questionIndex: 0
                     });
                 }
+            },
+            handleKeyPress: function (e) {
+                if (e.keyCode === 13) { // Enter button
+                    e.preventDefault();
+                    this.startValidate();
+                }
             }
         },
         computed: {
@@ -116,6 +120,9 @@
                 battery: (state) => state.clientBattery.battery,
                 batteryId: (state) => state.clientBattery.batteryId,
             })
+        },
+        destroyed: function () {
+            document.removeEventListener('keydown', this.handleKeyPress);
         }
     }
 </script>

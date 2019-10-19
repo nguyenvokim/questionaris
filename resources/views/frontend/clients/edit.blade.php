@@ -8,10 +8,12 @@
         <div class="card">
             <div class="card-body">
                 <div class="row">
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <h4 class="card-title mb-0">
-                            Client Management
-                            <small class="text-muted">Edit Client #{{$client->id}}</small>
+                            Edit Client Details
+                            <small class="text-muted">
+                                &nbsp;{{$client->title}}&nbsp;{{$client->first_name}}
+                            </small>
                         </h4>
                     </div>
                 </div>

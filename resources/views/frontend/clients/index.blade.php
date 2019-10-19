@@ -30,7 +30,7 @@
                                 <th>Personal Code</th>
                                 <th>Gender</th>
                                 <th>Birth Date</th>
-                                <th>Action</th>
+                                <th>Edit</th>
                             </tr>
                             @foreach($paginator->items() as $client)
                                 <tr>

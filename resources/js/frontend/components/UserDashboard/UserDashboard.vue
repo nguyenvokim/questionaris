@@ -13,13 +13,16 @@
                         </button>
                     </div>
                 </div>
-                <div class="form-inline" v-if="clients.length === 0">
-                    <label class="mr-sm-2">You do not have any client yet, please create new one </label>
-                    <a href="/clients/create" class="btn btn-primary">Create client</a>
+                <div class="form_inline_space_between" v-if="clients.length === 0">
+                    <label class="mr-sm-2">You do not have any clients yet. Please add your first client! </label>
+                    <a href="/clients/create" class="btn btn-primary float-right">
+                        <i class="fa fa-plus"></i>
+                        Create client
+                    </a>
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card" v-if="clients.length > 0">
             <div class="card-header">
                 <client-battery-assign :key="selectedClient"></client-battery-assign>
             </div>

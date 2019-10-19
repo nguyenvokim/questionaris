@@ -85,6 +85,17 @@ class Client extends Model
     }
 
     /**
+     * @param $code
+     * @return Client
+     */
+    public static function getUserClientByCode($personalCode) {
+        return Client::where([
+            ['user_id', '=', \Auth::id()],
+            ['personal_code', '=', $personalCode]
+        ])->first();
+    }
+
+    /**
      * @param $id
      * @return Client
      */

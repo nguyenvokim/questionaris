@@ -38,7 +38,7 @@
                         <h2>THANK YOU</h2>
                     </div>
                     <div class="card-body">
-                        <h5>Your answers has been saved</h5>
+                        <h5>Your responses have been saved</h5>
                     </div>
                 </div>
             </div>

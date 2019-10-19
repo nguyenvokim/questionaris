@@ -11,3 +11,13 @@
   margin: 0 !important;
   border-radius: 0 !important;
 }
+
+.rotate_45 {
+  transform: rotate(45deg);
+}
+.form_inline_space_between {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-between;
+}
