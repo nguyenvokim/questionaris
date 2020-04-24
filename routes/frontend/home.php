@@ -22,7 +22,6 @@ Route::post('contact/send', [ContactController::class, 'send'])->name('frontend.
 Route::group(['middleware' => ['auth', 'password_expires']], function () {
     // User Dashboard Specific
     Route::get('dashboard', [DashboardController::class, 'index'])->name('frontend.user.dashboard');
-
     // User Account Specific
     Route::get('account', [AccountController::class, 'index'])->name('frontend.user.account');
 

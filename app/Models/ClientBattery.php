@@ -108,4 +108,23 @@ class ClientBattery extends Model
 
         return $clientBattery;
     }
+
+    public static function getRecentBatteries($userId) {
+        if (!$userId) {
+            return [];
+        }
+        $result = ClientBattery::with(['client', 'battery'])
+            ->select('cb.*')
+            ->from('client_batteries', 'cb')
+            ->leftJoin('clients', 'clients.id', '=', 'cb.client_id')
+            ->leftJoin('users', 'users.id', '=', 'clients.user_id')
+            ->limit(50)
+            ->orderBy('cb.updated_at', 'DESC')
+            ->where([
+                ['users.id', '=', $userId],
+                ['cb.status', '=', self::STATUS_FINISHED]
+            ])
+            ->get();
+        return $result;
+    }
 }

@@ -6,6 +6,9 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+        @if(Route::is('frontend.user.dashboard'))
+            <search-client-box></search-client-box>
+        @endif
         <ul class="navbar-nav">
             @if(config('locale.status') && count(config('locale.languages')) > 1)
                 <li class="nav-item dropdown">
@@ -21,10 +24,10 @@
                     <a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('frontend.client.index')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Manage Clients</a>
+                    <a href="{{route('frontend.client.index')}}" class="nav-link {{ active_class(Route::is('frontend.client.index')) }}">Manage Clients</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{route('frontend.battery.index')}}" class="nav-link {{ active_class(Route::is('frontend.user.dashboard')) }}">Manage Batteries</a>
+                    <a href="{{route('frontend.battery.index')}}" class="nav-link {{ active_class(Route::is('frontend.battery.index')) }}">Manage Batteries</a>
                 </li>
             @endauth
 

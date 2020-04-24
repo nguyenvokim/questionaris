@@ -206,9 +206,12 @@ class UserRepository extends BaseRepository
                 $user->password_changed_at = now()->toDateTimeString();
             }
 
-            return $user->update(['password' => $input['password']]);
+            $result = $user->update(['password' => $input['password']]);
+            if ($result) {
+                \Auth::login($user);
+            }
+            return $result;
         }
-
         throw new GeneralException(__('exceptions.frontend.auth.password.change_mismatch'));
     }
 

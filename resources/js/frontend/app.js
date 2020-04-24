@@ -37,6 +37,8 @@ Vue.component('client-battery', require('./components/ClientBattery/ClientBatter
 Vue.component('button-copy', require('./common/ButtonCopy').default);
 Vue.component('delete-battery', require('./standalone/DeleteBattery').default);
 Vue.component('custom-datepicker', require('./common/CustomDatepicker').default);
+Vue.component('search-client-box', require('./components/SearchClientBox').default);
+Vue.component('recent-finished-test', require('./components/RecentFinishedTest/RecentFinishedTest').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -45,6 +47,8 @@ Vue.component('custom-datepicker', require('./common/CustomDatepicker').default)
  */
 
 import store from './store';
+
+Vue.mixin(require('./mixin').default);
 
 const app = new Vue({
     el: '#app',

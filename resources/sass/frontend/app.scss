@@ -33,3 +33,31 @@
     }
   }
 }
+.search_box_wrapper {
+  position: relative;
+  >input {
+    width: 300px !important;
+  }
+  .search_result_wrapper {
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+    left: 0%;
+    top: 36px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.04), 0 2px 8px 0 rgba(112,92,92,.06), 0 2px 4px 0 rgba(0,0,0,.08);
+    background-color: white;
+    padding: 8px;
+    >li {
+      list-style: none;
+      padding: 8px;
+      border-bottom: solid 1px #DDD;
+      &:last-child {
+        border-bottom: none;
+      }
+      >a {
+        color: black;
+        text-decoration: none;
+      }
+    }
+  }
+}

@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                {{ html()->label(__('validation.attributes.frontend.password'))->for('password') }}
+                {{ html()->label('New Password')->for('password') }}
 
                 {{ html()->password('password')
                     ->class('form-control')
@@ -29,7 +29,7 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                {{ html()->label(__('validation.attributes.frontend.password_confirmation'))->for('password_confirmation') }}
+                {{ html()->label('Re-enter New Password')->for('password_confirmation') }}
 
                 {{ html()->password('password_confirmation')
                     ->class('form-control')
@@ -46,4 +46,5 @@
             </div><!--form-group-->
         </div><!--col-->
     </div><!--row-->
+    <input type="hidden" name="active_tab" value="password" />
 {{ html()->form()->close() }}

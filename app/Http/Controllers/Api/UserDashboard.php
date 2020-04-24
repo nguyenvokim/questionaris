@@ -86,4 +86,11 @@ class UserDashboard extends Controller
     public function lastBatteryEmail($clientId) {
         return response()->json(ClientEmailLog::getLastBatteryEmail($clientId));
     }
+
+    public function getRecentTests() {
+        return response()->json([
+            'user' => \Auth::user(),
+            'tests' => ClientTestResult::getRecentTests()
+        ]);
+    }
 }

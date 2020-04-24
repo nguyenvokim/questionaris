@@ -91,4 +91,8 @@ class Battery extends Model
             ]);
         }
     }
+
+    public static function getByName($name) {
+        return Battery::whereName($name)->first();
+    }
 }

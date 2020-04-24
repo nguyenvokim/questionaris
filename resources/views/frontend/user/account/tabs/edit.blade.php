@@ -80,6 +80,7 @@
             </div><!--form-group-->
         </div><!--col-->
     </div><!--row-->
+    <input type="hidden" name="active_tab" value="password" />
 {{ html()->closeModelForm() }}
 
 @push('after-scripts')

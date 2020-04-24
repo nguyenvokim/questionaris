@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Casts\ImportantString;
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
@@ -63,6 +65,15 @@ class Client extends Model
         'birth_date',
     ];
 
+    protected $casts = [
+        'email' => ImportantString::class,
+        'personal_code' => ImportantString::class
+    ];
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
     public function getGenderText() {
         if ($this->gender == self::GENDER_MALE) {
             return  'Male';
@@ -121,9 +132,11 @@ class Client extends Model
      * @return Client
      */
     public static function getClientByPersonalCodeAndBirthDate($personalCode, $birthDate) {
-        return Client::where([
-            ['personal_code', '=', $personalCode],
+        $clients = Client::where([
             ['birth_date', '=', $birthDate]
-        ])->first();
+        ])->get();
+        return $clients->first(function ($client, $key) use ($personalCode) {
+            return $client->personal_code == $personalCode;
+        });
     }
 }

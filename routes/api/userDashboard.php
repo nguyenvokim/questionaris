@@ -8,4 +8,5 @@ Route::group(['middleware' => 'auth', 'prefix' => 'api'], function() {
     Route::get('dashboard/clientTestResults/{clientId}/{testId}', 'Api\UserDashboard@getClientTestResults')->name('api.dashboard.clientTestResults');
     Route::get('dashboard/clientDetailTestResult/{id}', 'Api\UserDashboard@getClientDetailTestResult')->name('api.dashboard.clientDetailTestResult');
     Route::get('dashboard/lastBatteryEmail/{clientId}', 'Api\UserDashboard@lastBatteryEmail')->name('api.dashboard.lastBatteryEmail');
+    Route::get('dashboard/recentTests', 'Api\UserDashboard@getRecentTests')->name('api.dashboard.getRecentTest');
 });

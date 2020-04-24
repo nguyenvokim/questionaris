@@ -10,10 +10,16 @@ const state = {
     finishedTests: [],
     detailTestResults: [],
     selectedTestId: 0,
-    clientDetailTestResult: {}
+    clientDetailTestResult: {},
+    user: {},
+    recentTests: []
 };
 const getters = {
-
+    selectedClientData: state => {
+        return state.clients.find(client => {
+            return client.id === state.selectedClient;
+        })
+    }
 };
 
 const actions = {
@@ -63,6 +69,11 @@ const actions = {
         }).catch((error) => {
             return error.response.data;
         });
+    },
+    loadRecentTest: async  function({state, commit}) {
+        const response = await axios.get('/api/dashboard/recentTests');
+        commit('setRecentTests', response.data.tests);
+        commit('setUser', response.data.user);
     }
 };
 
@@ -90,6 +101,12 @@ const mutations = {
     },
     setClientDetailTestResult: function (state, data) {
         state.clientDetailTestResult = data;
+    },
+    setRecentTests: function (state, data) {
+        state.recentTests = data;
+    },
+    setUser: function (state, data) {
+        state.user = data
     }
 };
 

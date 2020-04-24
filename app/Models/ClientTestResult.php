@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Casts\ImportantArray;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 
 /**
  * App\Models\ClientTestResult
@@ -43,8 +45,16 @@ class ClientTestResult extends Model
     ];
 
     protected $casts = array(
-        'config' => 'array'
+        'config' => ImportantArray::class
     );
+
+    public function client() {
+        return $this->belongsTo(Client::class);
+    }
+
+    public function test() {
+        return $this->belongsTo(Test::class);
+    }
 
     public function test_result_questions() {
         return $this->hasMany(ClientTestResultQuestion::class, 'test_result_id', 'id');
@@ -83,5 +93,22 @@ class ClientTestResult extends Model
                 ['test_id', '=', $testId]
             ])->orderBy('id', 'ASC')->get();
         }
+    }
+
+    public static function getRecentTests() {
+        $userId = \Auth::id();
+        if (!$userId) {
+            return [];
+        }
+        $result = ClientTestResult::with(['client', 'test'])
+            ->select('ctr.*')
+            ->from('client_test_results', 'ctr')
+            ->leftJoin('clients', 'clients.id', '=', 'ctr.client_id')
+            ->leftJoin('users', 'users.id', '=', 'clients.user_id')
+            ->limit(50)
+            ->orderBy('id', 'DESC')
+            ->where('users.id', '=', $userId)
+            ->get();
+        return $result;
     }
 }

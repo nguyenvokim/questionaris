@@ -33,7 +33,12 @@ class BatteryController extends Controller
     public function create(CreateBatteryRequest $createBatteryRequest) {
         $testIds = explode(",", $createBatteryRequest->get('test_ids'));
         $name = $createBatteryRequest->get('name');
-
+        $oldBattery = Battery::getByName($name);
+        if ($oldBattery) {
+            $createBatteryRequest->flash();
+            return redirect(route('frontend.battery.createView'))
+                ->withFlashDanger('There is already another battery with the same name. Please choose a different name for this battery.');
+        }
         $battery = Battery::create([
             'user_id' => \Auth::id(),
             'name' => $name
@@ -68,6 +73,11 @@ class BatteryController extends Controller
     public function edit($id, UpdateBatteryRequest $updateBatteryRequest) {
         $testIds = explode(",", $updateBatteryRequest->get('test_ids'));
         $name = $updateBatteryRequest->get('name');
+        $oldBattery = Battery::getByName($name);
+        if ($oldBattery && $oldBattery->id != $id) {
+            return redirect(route('frontend.battery.editView', ['id' => $id]))
+                ->withFlashDanger('There is already another battery with the same name. Please choose a different name for this battery.');
+        }
         $battery = Battery::getUserBattery($id);
         if (!$battery OR $battery->is_default == Battery::BATTERY_DEFAULT) {
             return redirect(route('frontend.battery.index'));
