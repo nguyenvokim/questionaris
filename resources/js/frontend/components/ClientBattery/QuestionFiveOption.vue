@@ -1,17 +1,12 @@
 <template>
-    <div class="question_ten_block">
-        <h5 class="question_ten_title">{{question.title}}</h5>
-        <div class="question_content">
-            <div class="start_text">{{question.config.startText}}</div>
-            <div class="answers">
-                <label v-for="(label, index) in labels" @click="selectAnswer(scores[index])">
-                    <div class="title">{{label}}</div>
-                    <div class="answer_box" v-bind:class="getCssClass(scores[index], index)">
-                        <div class="answer_ele"></div>
-                    </div>
-                </label>
+    <div class="question_five_block" v-bind:class="{gray: index % 2 === 1}">
+        <div class="title">
+            {{question.title}}
+        </div>
+        <div class="item" v-for="(scoreEle, index) in scores">
+            <div class="answer_box" @click="selectAnswer(scoreEle)" v-bind:class="getCssClass(scoreEle, index)">
+                <div class="answer_ele"></div>
             </div>
-            <div class="end_text">{{question.config.endText}}</div>
         </div>
     </div>
 </template>
@@ -41,15 +36,11 @@
         },
         data: function() {
             return {
-                scores: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                scores: [1, 2, 3, 4, 5],
                 score: -1,
             }
         },
         async mounted() {
-            if (this.question.config.isReverser) {
-                this.scores = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0]
-            }
             if (this.initScore !== -1) {
                 this.score = this.initScore;
             } else {
@@ -61,13 +52,10 @@
         methods: {
             ...mapActions({
             }),
-            ...mapMutations('clientBattery', ['setAnswer', 'setFocusAnswer']),
+            ...mapMutations('clientBattery', ['setFocusAnswer', 'setAnswer'])
         },
         computed: {
-            ...mapState({
-                answers: state => state.clientBattery.answers,
-                focusAnswer: state => state.clientBattery.focusAnswer
-            })
+            ...mapState('clientBattery', ['answers', 'focusAnswer'])
         }
     }
 </script>

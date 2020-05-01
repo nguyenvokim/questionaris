@@ -1,13 +1,13 @@
 <template>
     <div class="padding_8" v-if="detailTestResults.length">
-        <div class="test_dass" v-if="selectedTestId === 1">
+        <div class="test_dass" v-if="isViewDassType(selectedTestId)">
             <table class="table table-striped" v-if="firstDetailTestResult.config">
                 <tr>
                     <th>
                         Date
                         <button class="btn btn-transparent float-right" @click="toggleSort">
-                            <i v-if="sort === 'up'" class="fa fa-caret-up"></i>
-                            <i v-if="sort === 'down'" class="fa fa-caret-down"></i>
+                            <i v-if="sort === CONST.SORT_UP" class="fa fa-caret-up"></i>
+                            <i v-if="sort === CONST.SORT_DOWN" class="fa fa-caret-down"></i>
                         </button>
                     </th>
                     <th class="text-center" v-for="item in firstDetailTestResult.config.summaryOptions">
@@ -30,14 +30,14 @@
                 </tr>
             </table>
         </div>
-        <div class="test_sida" v-if="selectedTestId === 2">
+        <div class="test_sida" v-if="isViewSidaType(selectedTestId)">
             <table class="table table-striped" v-if="firstDetailTestResult.config">
                 <tr>
                     <th>
                         Date
                         <button class="btn btn-transparent float-right" @click="toggleSort">
-                            <i v-if="sort === 'up'" class="fa fa-caret-up"></i>
-                            <i v-if="sort === 'down'" class="fa fa-caret-down"></i>
+                            <i v-if="sort === CONST.SORT_UP" class="fa fa-caret-up"></i>
+                            <i v-if="sort === CONST.SORT_DOWN" class="fa fa-caret-down"></i>
                         </button>
                     </th>
                     <th class="text-center small">Frequency of thoughts</th>
@@ -61,13 +61,38 @@
                 </tr>
             </table>
         </div>
+        <div class="test_k10" v-if="isViewK10Type(selectedTestId)">
+            <table class="table table-striped" v-if="firstDetailTestResult.config">
+                <tr>
+                    <th>
+                        Date
+                        <button class="btn btn-transparent float-right" @click="toggleSort">
+                            <i v-if="sort === CONST.SORT_UP" class="fa fa-caret-up"></i>
+                            <i v-if="sort === CONST.SORT_DOWN" class="fa fa-caret-down"></i>
+                        </button>
+                    </th>
+                    <th class="text-center">Score</th>
+                </tr>
+                <tr v-for="detailTestResult in sortedDetailTestResults">
+                    <td>
+                        <button @click="showDetailTestResult(detailTestResult.id)" class="btn btn-transparent text-primary">
+                            <i class="fa fa-fw fa-search"></i>
+                            {{displayCreatedDate(detailTestResult.created_at)}}
+                        </button>
+                    </td>
+                    <td class="text-center">{{detailTestResult.config.score}}</td>
+                </tr>
+            </table>
+        </div>
         <b-modal size="lg" ref="test_result_detail" id="test_result_detail" ok-only title="Test result detail">
             <div v-if="clientDetailTestResult.id">
-                <test-result
+                <client-test-result-detail
                         :key="clientDetailTestResult.id"
                         :test="clientDetailTestResult"
                         :test-id="clientDetailTestResult.id"
                         :questions="clientDetailTestResult.test_result_questions"
+                        :view-only="true"
+                        :result-score="clientDetailTestResult.config.score"
                 />
             </div>
         </b-modal>
@@ -77,15 +102,19 @@
 <script>
 
     import { mapActions, mapState, mapMutations } from 'vuex';
-    import TestResult from './TestResult';
+    import ClientTestResultDetail from '../ClientBattery/Test';
     import { format, compareAsc, parse } from 'date-fns';
+    import CONST from '../../const';
+    import userDashboardMixin from './userDashboardMixin';
 
     export default {
-        components: {TestResult},
+        components: {ClientTestResultDetail},
+        mixins: [userDashboardMixin],
         props: {
         },
         data: function() {
             return {
+                CONST: CONST,
                 firstDetailTestResult: {},
                 dassStressLevels: [
                     [
@@ -170,7 +199,7 @@
                         },
                     ],
                 ],
-                sort: 'down',
+                sort: CONST.SORT_DOWN,
             }
         },
         async mounted() {
@@ -182,13 +211,8 @@
             });
         },
         methods: {
-            ...mapActions({
-                loadClientTestResult: 'userDashboard/loadClientTestResult',
-                loadClientDetailTestResult: 'userDashboard/loadClientDetailTestResult'
-            }),
-            ...mapMutations({
-                setClientDetailTestResult: 'userDashboard/setClientDetailTestResult'
-            }),
+            ...mapActions('userDashboard', ['loadClientTestResult', 'loadClientDetailTestResult']),
+            ...mapMutations('userDashboard', ['setClientDetailTestResult']),
             showDetailTestResult: function (testResultId) {
                 this.setClientDetailTestResult({id: 0});
                 this.loadClientDetailTestResult(testResultId);
@@ -209,20 +233,15 @@
                 return format(new Date(createdAt), 'dd-MM-yyyy');
             },
             toggleSort: function () {
-                if (this.sort === 'down') {
-                    this.sort = 'up';
+                if (this.sort === CONST.SORT_DOWN) {
+                    this.sort = CONST.SORT_UP;
                 } else {
-                    this.sort = 'down';
+                    this.sort = CONST.SORT_DOWN;
                 }
             }
         },
         computed: {
-            ...mapState({
-                detailTestResults: (state) => state.userDashboard.detailTestResults,
-                selectedTestId: (state) => state.userDashboard.selectedTestId,
-                selectedClient: (state) => state.userDashboard.selectedClient,
-                clientDetailTestResult: (state) => state.userDashboard.clientDetailTestResult,
-            }),
+            ...mapState('userDashboard', ['detailTestResults', 'selectedTestId', 'selectedClient', 'clientDetailTestResult']),
             sortedDetailTestResults: function () {
                 if (!this.detailTestResults) {
                     return [];

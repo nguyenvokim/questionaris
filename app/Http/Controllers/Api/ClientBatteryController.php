@@ -39,8 +39,6 @@ class ClientBatteryController extends Controller
         try {
             \DB::beginTransaction();
 
-            //$clientBattery = $this->getActivatingClientBatteryForTestOrFail($clientId);
-
             foreach ($testResultData as $testId => $testData) {
                 $test = Test::findOrFail($testId);
                 $clientTestResult = ClientTestResult::create([
@@ -55,6 +53,8 @@ class ClientBatteryController extends Controller
                     switch ($question->type) {
                         case Question::TYPE_FOUR_OPTIONS:
                         case Question::TYPE_TEN_OPTIONS:
+                        case Question::TYPE_FIVE_OPTIONS:
+                        case Question::TYPE_DYNAMIC_RANGE_SELECTION:
                             ClientTestResultQuestion::create([
                                 'test_result_id' => $clientTestResult->id,
                                 'question_id' => $question->id,
@@ -66,16 +66,15 @@ class ClientBatteryController extends Controller
                             break;
                     }
                 }
-                //For now, test data will not modify, it save to store on config
                 $clientTestResult->calcTestSummary();
             }
-            //$clientBattery->status = ClientBattery::STATUS_FINISHED;
-            //$clientBattery->save();
 
             \DB::commit();
         } catch (\Exception $ex) {
+            throw new \Exception($ex->getMessage());
             \DB::rollBack();
         }
+        return response()->json(['success' => 1]);
     }
 
     protected function getActivatingClientBatteryForTestOrFail($clientId) {

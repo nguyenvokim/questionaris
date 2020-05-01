@@ -113,6 +113,43 @@
   padding: 8px;
 }
 
+.question_five_block {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  padding: 0.5em;
+  &.gray {
+    background-color: #EFEFEF;
+  }
+  .title{
+    width: 35%;
+  }
+  .item {
+    width: 13%;
+    text-align: center;
+  }
+}
+.question_dymamic_range {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  padding: 0.5em;
+  &.gray {
+    background-color: #EFEFEF;
+  }
+  .title{
+    width: 35%;
+  }
+  .item {
+    width: 65%;
+    text-align: center;
+    padding-left: 32px;
+    select {
+      max-width: 300px;
+    }
+  }
+}
+
 @keyframes blinker {
   50% { opacity: 0; }
 }

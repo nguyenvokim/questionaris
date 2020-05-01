@@ -14,7 +14,7 @@
             <div class="card-header">
                 <client-battery-assign :key="selectedClient"></client-battery-assign>
             </div>
-            <client-test-info :key="selectedClient"></client-test-info>
+            <client-test :key="selectedClient"></client-test>
         </div>
     </div>
 </template>
@@ -23,10 +23,10 @@
 
     import { mapActions, mapState, mapMutations, mapGetters } from 'vuex';
     import ClientBatteryAssign from './ClientBatteryAssign';
-    import ClientTestInfo from './ClientTestInfo';
+    import ClientTest from './ClientTest';
 
     export default {
-        components: {ClientTestInfo, ClientBatteryAssign},
+        components: {ClientTest, ClientBatteryAssign},
         props: {
         },
         data: function() {
@@ -37,10 +37,6 @@
         async mounted() {
             await this.loadInitDashboard();
             this.$nextTick(() => {
-                // if (this.clients.length) {
-                //     this.preSelectClientId = this.clients[0].id;
-                //     this.viewClient()
-                // }
             })
         },
         methods: {

@@ -33,7 +33,6 @@
         },
         methods: {
             handleDelete: async function (e) {
-                console.log(e);
                 e.preventDefault();
                 const result = await this.$bvModal.msgBoxConfirm("Are you sure you want to delete?");
                 if (result) {

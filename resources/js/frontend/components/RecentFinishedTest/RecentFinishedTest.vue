@@ -2,9 +2,10 @@
     <div v-if="isShown">
         <div class="card mb-sm-2">
             <div class="card-body">
-                <h2>Welcome back, {{user.first_name}}</h2>
+                <h4>Welcome back, {{user.first_name}}. Recent Completed Test</h4>
             </div>
-            <table class="table table-striped">
+            <table class="table table-striped table-hover">
+                <thead>
                 <tr>
                     <th>Date</th>
                     <th>Client First Name</th>
@@ -12,16 +13,20 @@
                     <th>Personal Code</th>
                     <th>Test Name</th>
                 </tr>
-                <tr v-for="test in recentTests">
+                </thead>
+                <tbody>
+                <tr v-for="test in recentTests" @click="handleClickTest(test)">
                     <td>{{displayDate(test.updated_at)}}</td>
                     <td>
-                        <button @click="handleClickTest(test.client.id)" type="button" class="btn btn-transparent">{{test.client.first_name}}</button>
+                        {{test.client.first_name}}
                     </td>
                     <td>
-                        <button @click="handleClickTest(test.client.id)" type="button" class="btn btn-transparent">{{test.client.last_name}}</button>
+                        {{test.client.last_name}}
+                    </td>
                     <td>{{test.client.personal_code}}</td>
                     <td>{{test.test.title}}</td>
                 </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -33,10 +38,11 @@
             this.loadRecentTest();
         },
         methods: {
-            ...mapMutations('userDashboard', ['setSelectedClient']),
+            ...mapMutations('userDashboard', ['setSelectedClient', 'setSelectedTestId']),
             ...mapActions('userDashboard', ['loadRecentTest']),
-            handleClickTest(clientId) {
-                this.setSelectedClient(clientId);
+            handleClickTest(test) {
+                this.setSelectedTestId(test.test.id);
+                this.setSelectedClient(test.client.id);
             }
         },
         computed: {

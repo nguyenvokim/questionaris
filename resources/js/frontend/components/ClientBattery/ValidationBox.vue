@@ -89,10 +89,12 @@
                         test.questions.forEach((question) => {
                             switch (question.type) {
                                 case CONST.QUESTION_TYPE_FOUR_OPTION:
+                                case CONST.QUESTION_TYPE_TEN_OPTION:
+                                case CONST.QUESTION_TYPE_FIVE_OPTION:
                                     resultTemplate[test.id][question.id] = -1;
                                     break;
-                                case CONST.QUESTION_TYPE_TEN_OPTION:
-                                    resultTemplate[test.id][question.id] = -1;
+                                case CONST.QUESTION_TYPE_DYNAMIC_RANGE_SELECTION:
+                                    resultTemplate[test.id][question.id] = question.config.start;
                                     break;
                             }
                         })

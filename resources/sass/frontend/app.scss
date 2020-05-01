@@ -4,7 +4,6 @@
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
 // Bootstrap Overrides
-@import 'variables';
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
@@ -13,7 +12,9 @@
 // Pages
 @import 'pages/dashboard';
 @import 'pages/clientTest';
-
+.table {
+  margin-bottom: 0px;
+}
 .zero_width {
   width: 0px !important;
 }
@@ -54,10 +55,25 @@
       &:last-child {
         border-bottom: none;
       }
+      &:nth-child(2n + 0) {
+        background-color: #F8F8F8;
+      }
       >a {
         color: black;
         text-decoration: none;
+        width: 100%;
+        display: block;
       }
     }
   }
+}
+#app {
+  padding-top: 80px;
+}
+.navbar {
+  position: fixed;
+  z-index: 1;
+  width: 100vw;
+  left: 0px;
+  top: 0px;
 }

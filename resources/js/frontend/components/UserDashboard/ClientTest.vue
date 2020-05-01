@@ -34,34 +34,23 @@
         },
         async mounted() {
             this.setDetailTestResults([]);
-            this.loadClientTestsInfo(this.selectedClient).then(() => {
-                this.loaded = true;
-                this.$nextTick(() => {
-                    if (this.finishedTests.length > 0) {
-                        this.setSelectedTestId(this.finishedTests[0].id);
-                    }
-                })
-            });
+            await this.loadClientTestsInfo(this.selectedClient);
+            this.loaded = true;
+            this.$nextTick(() => {
+                if (!this.selectedTestId && this.finishedTests.length > 0) {
+                    this.setSelectedTestId(this.finishedTests[0].id);
+                }
+            })
         },
         methods: {
-            ...mapActions({
-                loadClientTestsInfo: 'userDashboard/loadClientTestsInfo'
-            }),
-            ...mapMutations({
-                setSelectedTestId: 'userDashboard/setSelectedTestId',
-                setDetailTestResults: 'userDashboard/setDetailTestResults'
-            }),
+            ...mapActions('userDashboard', ['loadClientTestsInfo']),
+            ...mapMutations('userDashboard', ['setSelectedTestId', 'setDetailTestResults']),
             assignTestId: function (testId) {
                 this.setSelectedTestId(testId);
             }
         },
         computed: {
-            ...mapState({
-                selectedClient: (state) => state.userDashboard.selectedClient,
-                client: (state) => state.userDashboard.client,
-                finishedTests: (state) => state.userDashboard.finishedTests,
-                selectedTestId: (state) => state.userDashboard.selectedTestId,
-            })
+            ...mapState('userDashboard', ['selectedClient', 'client', 'finishedTests', 'selectedTestId'])
         }
     }
 </script>

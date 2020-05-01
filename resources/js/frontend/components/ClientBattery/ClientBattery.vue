@@ -2,7 +2,7 @@
     <div id="form_battery">
         <validation-box v-if="!client.id && !isFinished"></validation-box>
         <div class="row justify-content-center align-items-center" v-if="client.id && !isFinished">
-            <div class="col col-sm-8 align-self-center">
+            <div class="col col-sm-12 col-md-10 align-self-center">
                 <div class="card">
                     <div class="card-header">
                         <h2>{{battery.name}}</h2>
@@ -32,7 +32,7 @@
             </div>
         </div>
         <div class="row justify-content-center align-items-center" v-if="isFinished">
-            <div class="col col-sm-8 align-self-center">
+            <div class="col col-sm-12 col-md-10 align-self-center">
                 <div class="card">
                     <div class="card-header">
                         <h2>THANK YOU</h2>
@@ -78,15 +78,8 @@
             document.addEventListener('keydown', this.handleKeyPress)
         },
         methods: {
-            ...mapActions({
-                validateClient: 'clientBattery/validateClient',
-                sendSaveAnswer: 'clientBattery/sendSaveAnswer'
-            }),
-            ...mapMutations({
-                setCurrentDisplayTestId: 'clientBattery/setCurrentDisplayTestId',
-                setBatteryId: 'clientBattery/setBatteryId',
-                setFocusAnswer: 'clientBattery/setFocusAnswer'
-            }),
+            ...mapActions('clientBattery', ['validateClient', 'sendSaveAnswer']),
+            ...mapMutations('clientBattery', ['setCurrentDisplayTestId', 'setBatteryId', 'setFocusAnswer']),
             nextTest: function () {
                 if (this.currentTestIndex !== -1 && this.tests[this.currentTestIndex + 1]) {
                     this.setCurrentDisplayTestId(this.tests[this.currentTestIndex + 1].id);
@@ -103,6 +96,18 @@
                     });
                 }
             },
+            checkIsHiddenQuestion: function(testId, questionId) {
+                const test = this.tests.find(t => {
+                    return t.id == testId;
+                });
+                if (!test) {
+                    return false;
+                }
+                if (!test.config.hiddenQuestionIds) {
+                    return false;
+                }
+                return test.config.hiddenQuestionIds.includes(parseInt(questionId));
+            },
             sendAnswer: function () {
                 //Validate answers got all response
                 if (this.onRequestSaving) {
@@ -111,7 +116,8 @@
                 let allQuestionGotAnswer = true;
                 Object.keys(this.answers).forEach((testId) => {
                     Object.keys(this.answers[testId]).forEach((questionId) => {
-                        if (this.answers[testId][questionId] === -1) {
+                        const isHiddenQuestion = this.checkIsHiddenQuestion(testId, questionId);
+                        if (!isHiddenQuestion && this.answers[testId][questionId] === -1) {
                             allQuestionGotAnswer = false;
                         }
                     })
@@ -131,9 +137,13 @@
             },
             handleKeyPress: function (e) {
                 const test = this.tests[this.currentTestIndex];
-                if (e.keyCode === 9 && test) { // Tab button
+                if (!test) {
+                    return;
+                }
+                const question = test.questions[this.focusAnswer.questionIndex];
+                if (e.keyCode === 9) { // Tab button
                     e.preventDefault();
-                    if (test.questions[this.focusAnswer.questionIndex + 1]) {
+                    if (this.isAbleToJumpQuestion(question, test.questions[this.focusAnswer.questionIndex + 1])) {
                         this.setFocusAnswer({
                             ...this.focusAnswer,
                             answerIndex: 0,
@@ -141,24 +151,29 @@
                         })
                     }
                 }
-                if (e.keyCode === 40 && test) { // Key down
+                if (e.keyCode === 40) { // Key down
                     e.preventDefault();
-                    if (test.questions[this.focusAnswer.questionIndex + 1]) {
+                    if (this.isAbleToJumpQuestion(question, test.questions[this.focusAnswer.questionIndex + 1])) {
                         this.setFocusAnswer({
                             ...this.focusAnswer,
                             questionIndex: this.focusAnswer.questionIndex + 1
                         })
                     }
                 }
-                if (e.keyCode === 38 && test) { // Key up
+                if (e.keyCode === 38) { // Key up
                     e.preventDefault();
-                    if (test.questions[this.focusAnswer.questionIndex - 1]) {
+                    if (this.isAbleToJumpQuestion(question, test.questions[this.focusAnswer.questionIndex - 1])) {
                         this.setFocusAnswer({
                             ...this.focusAnswer,
                             questionIndex: this.focusAnswer.questionIndex - 1
                         })
                     }
                 }
+            },
+            isAbleToJumpQuestion: function(fromQuestion, toQuestion) {
+                if (!toQuestion) return false;
+
+                return true;
             },
             setFocusOnCurrentTest: function () {
                 this.setFocusAnswer({
@@ -169,15 +184,15 @@
             }
         },
         computed: {
-            ...mapState({
-                client: (state) => state.clientBattery.client,
-                clientBattery: (state) => state.clientBattery.clientBattery,
-                tests: (state) => state.clientBattery.tests,
-                battery: (state) => state.clientBattery.battery,
-                answers: state => state.clientBattery.answers,
-                currentDisplayTestId: state => state.clientBattery.currentDisplayTestId,
-                focusAnswer: state => state.clientBattery.focusAnswer
-            }),
+            ...mapState('clientBattery', [
+                'client',
+                'clientBattery',
+                'tests',
+                'battery',
+                'answers',
+                'currentDisplayTestId',
+                'focusAnswer',
+            ]),
             currentTestIndex: function () {
                 return this.tests.findIndex((test) => {
                     return test.id === this.currentDisplayTestId;

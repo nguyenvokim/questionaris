@@ -12,7 +12,7 @@
                         <h4 class="card-title mb-0">
                             Edit Client Details
                             <small class="text-muted">
-                                &nbsp;{{$client->title}}&nbsp;{{$client->first_name}}
+                                &nbsp;{{$client->first_name}}&nbsp;{{$client->last_name}}
                             </small>
                         </h4>
                     </div>

@@ -43,7 +43,7 @@
             }
         },
         methods: {
-            ...mapMutations('userDashboard', ['setSelectedClient']),
+            ...mapMutations('userDashboard', ['setSelectedClient', 'setSelectedTestId']),
             textBoxFocus() {
                 this.isFocus = true;
             },
@@ -58,7 +58,7 @@
                 return fullName.replace(regex, '<mark>$1</mark>');
             },
             setClient(id) {
-                console.log(id);
+                this.setSelectedTestId(0);
                 this.setSelectedClient(id);
             }
         }

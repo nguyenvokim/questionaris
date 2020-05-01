@@ -11,15 +11,18 @@
 <script>
 
     import { mapActions, mapState, mapMutations } from 'vuex';
-    import TestResult from './TestResult';
     import { format, compareAsc } from 'date-fns';
+    import userDashboardMixin from './userDashboardMixin';
+    import CONST from '../../const';
 
     export default {
-        components: {TestResult},
+        components: {},
         props: {
         },
+        mixins: [userDashboardMixin],
         data: function() {
             return {
+                CONST,
                 firstDetailTestResult: {}
             }
         },
@@ -32,14 +35,10 @@
             }),
         },
         computed: {
-            ...mapState({
-                selectedTestId: (state) => state.userDashboard.selectedTestId,
-                detailTestResults: (state) => state.userDashboard.detailTestResults,
-                finishedTests: (state) => state.userDashboard.finishedTests,
-            }),
+            ...mapState('userDashboard', ['selectedTestId', 'detailTestResults', 'finishedTests']),
             currentTestName: function() {
                 const test = this.finishedTests.find((test) => {
-                    return test.id == this.selectedTestId;
+                    return test.id === this.selectedTestId;
                 });
                 if (test) {
                     return test.title;
@@ -90,7 +89,7 @@
                 }
             },
             series: function () {
-                if (this.selectedTestId === 2) {
+                if (this.isViewSidaType(this.selectedTestId) || this.isViewK10Type(this.selectedTestId)) {
                     const data = this.detailTestResults.map((detailTestResult) => {
                         return detailTestResult.config.score;
                     });
@@ -100,7 +99,7 @@
                             data
                         }
                     ]
-                } else if (this.selectedTestId === 1) {
+                } else if (this.isViewDassType(this.selectedTestId)) {
                     const firstData = this.detailTestResults[0].config.summaryOptions;
                     if (!firstData) {
                         return;

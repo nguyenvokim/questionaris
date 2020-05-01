@@ -43,5 +43,6 @@ class Question extends Model
 
     const TYPE_FOUR_OPTIONS = 1;
     const TYPE_TEN_OPTIONS = 2;
-
+    const TYPE_FIVE_OPTIONS = 3;
+    const TYPE_DYNAMIC_RANGE_SELECTION = 4;
 }

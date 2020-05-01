@@ -32,7 +32,8 @@ class Test extends Model
     //Test is hard code, feel safe to had const
     const TEST_DASS_ID = 1;
     const TEST_SIDAS_ID = 2;
-
+    const TEST_K10_ID = 3;
+    const TEST_K10_PLUS_ID = 4;
     protected $table = 'tests';
 
     protected $fillable = [

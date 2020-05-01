@@ -74,8 +74,19 @@ class ClientTestResult extends Model
             $config['summaryOptions'] = $summaryOptions;
         }
 
-        $config['score'] = ClientTestResultQuestion::where('test_result_id', '=', $this->id)
-            ->sum('score');
+        $clientTestResultQuestions = ClientTestResultQuestion::where('test_result_id', '=', $this->id)->get();
+        $hiddenQuestionIds = [];
+        if (isset($config['hiddenQuestionIds'])) {
+            $hiddenQuestionIds = $config['hiddenQuestionIds'];
+        };
+        //hidden question will not effect to score
+        $score = $clientTestResultQuestions->sum(function ($clientTestResultQuestion) use ($hiddenQuestionIds) {
+            if (in_array($clientTestResultQuestion->question_id, $hiddenQuestionIds)) {
+                return 0;
+            }
+            return $clientTestResultQuestion->score;
+        });
+        $config['score'] = $score;
         $this->config = $config;
         $this->save();
     }
