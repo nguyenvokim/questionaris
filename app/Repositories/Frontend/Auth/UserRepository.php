@@ -45,6 +45,20 @@ class UserRepository extends BaseRepository
         return false;
     }
 
+    /***
+     * @param $token
+     * @return bool|\Illuminate\Database\Eloquent\Model
+     */
+    public function findPasswordResetToken($token){
+        foreach (DB::table(config('auth.passwords.users.table'))->get() as $row) {
+            if (password_verify($token, $row->token)) {
+                return $row;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * @param $uuid
      *

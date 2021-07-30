@@ -41,8 +41,7 @@
             ...mapMutations('userDashboard', ['setSelectedClient', 'setSelectedTestId']),
             ...mapActions('userDashboard', ['loadRecentTest']),
             handleClickTest(test) {
-                this.setSelectedTestId(test.test.id);
-                this.setSelectedClient(test.client.id);
+                this.$router.push(`/detail/${test.client.id}/${test.test.id}`)
             }
         },
         computed: {

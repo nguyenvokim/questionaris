@@ -130,7 +130,7 @@
                 'answers',
             ]),
             showHeaderTestDASS21: function() {
-                return this.test.id === CONST.TEST_SIDAS_ID;
+                return this.test.id === CONST.TEST_DASS_21_ID;
             },
             showHeaderTestK10: function () {
                 return this.test.id === CONST.TEST_K10;

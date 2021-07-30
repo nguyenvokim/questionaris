@@ -36,19 +36,22 @@
         },
         async mounted() {
             await this.loadInitDashboard();
+            const clientId = this.$route.params.clientId;
+            const testId = this.$route.params.testId;
+            this.setSelectedTestId(parseInt(testId));
+            this.setSelectedClient(parseInt(clientId));
             this.$nextTick(() => {
             })
         },
         methods: {
             ...mapActions('userDashboard', ['loadInitDashboard']),
-            ...mapMutations({
-                setSelectedClient: 'userDashboard/setSelectedClient'
-            }),
+            ...mapMutations('userDashboard', ['setSelectedTestId', 'setSelectedClient']),
             getFullNameClient: function (client) {
                 return `${client.first_name} ${client.last_name}`;
             },
             handleBack: function () {
                 this.setSelectedClient(0);
+                window.history.back();
             }
         },
         computed: {

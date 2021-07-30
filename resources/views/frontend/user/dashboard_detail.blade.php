@@ -3,5 +3,5 @@
 @section('title', app_name() . ' | ' . __('navs.frontend.dashboard') )
 
 @section('content')
-    <router-view></router-view>
+    <user-dashboard client-id="{{$clientId}}" test-id="{{$testId}}"></user-dashboard>
 @endsection

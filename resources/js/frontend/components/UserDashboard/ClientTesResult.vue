@@ -84,7 +84,7 @@
                 </tr>
             </table>
         </div>
-        <b-modal size="lg" ref="test_result_detail" id="test_result_detail" ok-only title="Test result detail">
+        <b-modal size="lg" ref="test_result_detail" id="test_result_detail" ok-only title="Test completion details">
             <div v-if="clientDetailTestResult.id">
                 <client-test-result-detail
                         :key="clientDetailTestResult.id"

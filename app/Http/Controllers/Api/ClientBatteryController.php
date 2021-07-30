@@ -23,7 +23,7 @@ class ClientBatteryController extends Controller
         //$clientBattery = ClientBattery::getActivatingClientBatteryForTest($client->id);
         $battery = Battery::find($batteryId);
         if (!$client OR !$battery OR $client->user_id != $battery->user_id) {
-            return response()->json(['error' => true, 'message' => 'Your information is not correct']);
+            return response()->json(['error' => true, 'message' => 'The personal code/birth date combination entered is not recognised. Personal codes are case sensitive.']);
         }
         return response()->json([
             'client' => $client,

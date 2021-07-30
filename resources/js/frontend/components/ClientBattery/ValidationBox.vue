@@ -67,7 +67,7 @@
             }),
             startValidate: async function () {
                 if (!this.birthDate) {
-                    this.errorMsg = "Your birth date is not valid format";
+                    this.errorMsg = "The format of the birth date entered is not valid";
                     setTimeout(() => {
                         this.errorMsg = "";
                     }, 6000);

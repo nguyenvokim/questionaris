@@ -84,7 +84,8 @@
                         }
                     },
                     markers: {
-                        size: 6
+                        size: 6,
+                        shape: ['circle', 'square', 'circle', 'square', 'circle', 'square']
                     },
                 }
             },

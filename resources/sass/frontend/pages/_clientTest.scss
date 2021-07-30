@@ -51,7 +51,7 @@
       height: 0px;
       z-index: 1;
       border-radius: 50%;
-      background-color: rebeccapurple;
+      background-color: $primary;
       top: 2px;
       left: 2px;
       position: absolute;
@@ -78,7 +78,7 @@
   }
   &.active {
     .answer_ele {
-      border: solid 2px rebeccapurple;
+      border: solid 2px $primary;
       &:after {
         width: 12px;
         height: 12px;
@@ -156,4 +156,12 @@
 .sink_and_right {
   flex-grow: 1;
   text-align: right;
+}
+.test_dass,.test_sida,.test_k10, {
+    max-height: 354px;
+    overflow-y: auto;
+}
+.test_sida {
+    max-height: 354px;
+    overflow-y: auto;
 }

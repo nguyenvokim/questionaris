@@ -73,6 +73,7 @@ return [
             'password' => [
                 'change_mismatch' => 'That is not your old password.',
                 'reset_problem' => 'There was a problem resetting your password. Please resend the password reset email.',
+                'reset_expired' => 'The password reset link you have used has expired. Please request a new password reset link.',
             ],
 
             'registration_disabled' => 'Registration is currently closed.',

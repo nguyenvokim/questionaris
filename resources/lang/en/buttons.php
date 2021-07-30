@@ -22,7 +22,7 @@ return [
                 'deactivate' => 'Deactivate',
                 'delete_permanently' => 'Delete Permanently',
                 'login_as' => 'Login As :user',
-                'resend_email' => 'Resend Confirmation E-mail',
+                'resend_email' => 'Resend Confirmation Email',
                 'restore_user' => 'Restore User',
                 'unconfirm' => 'Un-confirm',
                 'unlink' => 'Unlink',

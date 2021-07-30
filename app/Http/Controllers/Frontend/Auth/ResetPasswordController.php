@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Auth;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Password;
@@ -46,8 +47,11 @@ class ResetPasswordController extends Controller
         if (! $token) {
             return redirect()->route('frontend.auth.password.email');
         }
-
-        $user = $this->userRepository->findByPasswordResetToken($token);
+        $user = false;
+        $passwordReset = $this->userRepository->findPasswordResetToken($token);
+        if ($passwordReset) {
+            $user = $this->userRepository->getByColumn($passwordReset->email, 'email');
+        }
 
         if ($user && resolve('auth.password.broker')->tokenExists($user, $token)) {
             return view('frontend.auth.passwords.reset')
@@ -55,8 +59,14 @@ class ResetPasswordController extends Controller
                 ->withEmail($user->email);
         }
 
+        $isExpired = Carbon::parse($passwordReset->created_at)->addSeconds(config('auth.passwords.users.expire'))->isPast();
+        $msg = 'exceptions.frontend.auth.password.reset_problem';
+        if ($isExpired) {
+            $msg = 'exceptions.frontend.auth.password.reset_expired';
+        }
+
         return redirect()->route('frontend.auth.password.email')
-            ->withFlashDanger(__('exceptions.frontend.auth.password.reset_problem'));
+            ->withFlashDanger(__($msg));
     }
 
     /**

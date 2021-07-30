@@ -1,12 +1,12 @@
 <template>
     <div class="padding_8" v-if="loaded">
         <div v-if="finishedTests.length">
-            <h5>Tests completed by this client</h5>
-            <div class="row">
-                <div :key="finishedTest.id" v-for="finishedTest in finishedTests" class="col-sm-4 col-md-3">
-                    <a v-bind:class="{'font-weight-bold': finishedTest.id === selectedTestId}" href="javascript:void(0)" @click="assignTestId(finishedTest.id)">{{finishedTest.title}}</a>
-                </div>
-            </div>
+<!--            <h5>Tests completed by this client</h5>-->
+<!--            <div class="row">-->
+<!--                <div :key="finishedTest.id" v-for="finishedTest in finishedTests" class="col-sm-4 col-md-3">-->
+<!--                    <a v-bind:class="{'font-weight-bold': finishedTest.id === selectedTestId}" href="javascript:void(0)" @click="assignTestId(finishedTest.id)">{{finishedTest.title}}</a>-->
+<!--                </div>-->
+<!--            </div>-->
             <client-tes-result v-if="selectedTestId" :key="selectedTestId"></client-tes-result>
             <client-test-result-chart :key="`chart_${selectedTestId}`"></client-test-result-chart>
         </div>

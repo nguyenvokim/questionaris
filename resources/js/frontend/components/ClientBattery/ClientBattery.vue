@@ -35,16 +35,16 @@
             <div class="col col-sm-12 col-md-10 align-self-center">
                 <div class="card">
                     <div class="card-header">
-                        <h2>THANK YOU</h2>
+                        <h2>Thank you!</h2>
                     </div>
                     <div class="card-body">
-                        <h5>Your responses have been saved</h5>
+                        <h5>Thank you for completing the questionnaire(s). Your responses have been successfully recorded.</h5>
                     </div>
                 </div>
             </div>
         </div>
-        <b-modal ref="notice_modal" id="notice_modal" title="Ops!!!" ok-only>
-            <h5>Please answer all the questions</h5>
+        <b-modal ref="notice_modal" id="notice_modal" title="It looks like you’ve missed some questions!" ok-only>
+            <h5>Please complete all the questions before submitting</h5>
         </b-modal>
     </div>
 </template>

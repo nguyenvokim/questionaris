@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\HtmlString;
 
 class BatteryLinkEmail extends Notification
 {
@@ -15,6 +16,7 @@ class BatteryLinkEmail extends Notification
 
     public $client;
     public $battery;
+    public $emailContent;
 
     /**
      * Create a new notification instance.
@@ -22,10 +24,11 @@ class BatteryLinkEmail extends Notification
      * @param Client $client
      * @param Battery $battery
      */
-    public function __construct(Client $client, Battery $battery)
+    public function __construct(Client $client, Battery $battery, string $emailContent)
     {
         $this->client = $client;
         $this->battery = $battery;
+        $this->emailContent = $emailContent;
     }
 
     /**
@@ -48,9 +51,10 @@ class BatteryLinkEmail extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
+            ->subject('Questionnaire(s) for Completion')
             ->greeting('Hello ' . $this->client->first_name)
-            ->line('We happy to send you the link for the test on our application')
-            ->action('Link to Test', route('frontend.battery.clientBattery', ['batteryId' => $this->battery->id]))
+            ->line(new HtmlString(nl2br($this->emailContent)))
+            ->action('Link to Questionnaire(s)', route('frontend.battery.clientBattery', ['batteryId' => $this->battery->id]))
             ->line('Thank you for using our application!');
     }
 

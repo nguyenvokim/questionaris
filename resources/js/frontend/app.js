@@ -12,6 +12,7 @@ import Datepicker from 'vuejs-datepicker';
 import BootstrapVue from 'bootstrap-vue';
 import VueApexCharts from 'vue-apexcharts';
 import Clipboard from 'v-clipboard';
+import VueRouter from 'vue-router';
 
 window.Vue = Vue;
 
@@ -26,19 +27,38 @@ window.Vue = Vue;
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
+const RecentFinishedTest = require('./components/RecentFinishedTest/RecentFinishedTest').default;
+const UserDashboard = require('./components/UserDashboard/UserDashboard').default;
+
 Vue.use(BootstrapVue)
 Vue.use(Clipboard);
 Vue.component('apexchart', VueApexCharts);
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 Vue.component('custom-select-list', require('./components/CustomSelectList').default);
 Vue.component('datepicker', Datepicker);
-Vue.component('user-dashboard', require('./components/UserDashboard/UserDashboard').default);
+Vue.component('user-dashboard', UserDashboard);
 Vue.component('client-battery', require('./components/ClientBattery/ClientBattery').default);
 Vue.component('button-copy', require('./common/ButtonCopy').default);
 Vue.component('delete-battery', require('./standalone/DeleteBattery').default);
 Vue.component('custom-datepicker', require('./common/CustomDatepicker').default);
 Vue.component('search-client-box', require('./components/SearchClientBox').default);
-Vue.component('recent-finished-test', require('./components/RecentFinishedTest/RecentFinishedTest').default);
+Vue.component('recent-finished-test', RecentFinishedTest);
+Vue.component('hash-guard', require('./components/HashGuard').default);
+
+Vue.use(VueRouter);
+const routes = [
+    {
+        path: '/',
+        component: RecentFinishedTest
+    },
+    {
+        path: '/detail/:clientId/:testId',
+        component: UserDashboard
+    }
+]
+const router = new VueRouter({
+    mode: 'hash',
+    routes
+})
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -52,5 +72,6 @@ Vue.mixin(require('./mixin').default);
 
 const app = new Vue({
     el: '#app',
-    store
+    store,
+    router
 });

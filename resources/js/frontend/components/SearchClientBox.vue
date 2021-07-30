@@ -3,7 +3,7 @@
         <input v-model="searchText"
                class="form-control mr-sm-2"
                type="search"
-               placeholder="Search"
+               placeholder="Client Search"
                @focus="textBoxFocus"
                @blur="textBoxBlur"
                aria-label="Search Clients">

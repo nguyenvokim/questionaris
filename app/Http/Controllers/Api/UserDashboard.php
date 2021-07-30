@@ -73,7 +73,8 @@ class UserDashboard extends Controller
             throw new \Exception("Client not correct");
         }
         $battery = Battery::findOrFail($batteryEmailLinkRequest->get('batteryId'));
-        $client->notify(new BatteryLinkEmail($client, $battery));
+        $emailContent = $batteryEmailLinkRequest->get('emailContent', 'We happy to send you the link for the test on our application');
+        $client->notify(new BatteryLinkEmail($client, $battery, $emailContent));
         ClientEmailLog::create([
             'client_id' => $client->id,
             'relate_object_id' => $battery->id,
