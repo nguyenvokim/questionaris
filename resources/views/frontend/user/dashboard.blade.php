@@ -5,3 +5,9 @@
 @section('content')
     <router-view></router-view>
 @endsection
+
+@prepend('before-scripts')
+    <script>
+        var useVueRoute = true;
+    </script>
+@endprepend

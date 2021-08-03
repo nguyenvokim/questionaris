@@ -44,21 +44,23 @@ Vue.component('search-client-box', require('./components/SearchClientBox').defau
 Vue.component('recent-finished-test', RecentFinishedTest);
 Vue.component('hash-guard', require('./components/HashGuard').default);
 
-Vue.use(VueRouter);
-const routes = [
-    {
-        path: '/',
-        component: RecentFinishedTest
-    },
-    {
-        path: '/detail/:clientId/:testId',
-        component: UserDashboard
-    }
-]
-const router = new VueRouter({
-    mode: 'hash',
-    routes
-})
+let router = null;
+if (window.useVueRoute) {
+    Vue.use(VueRouter);
+    const routes = [
+        {
+            path: '/',
+            component: RecentFinishedTest
+        },
+        {
+            path: '/detail/:clientId/:testId',
+            component: UserDashboard
+        }
+    ]
+    router = new VueRouter({
+        routes
+    })
+}
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
