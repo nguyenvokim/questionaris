@@ -28,7 +28,7 @@
                         <div class="form-group row">
                             <label class="col-md-2 form-control-lable">Battery Name</label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{$battery->name}}" name="name" id="name" placeholder="Battery Name" maxlength="191" required />
+                                <input type="text" class="form-control" value="{{$battery->name}}" name="name" id="name" placeholder="Battery Name" maxlength="30" required />
                             </div>
                         </div>
                         <div class="form-group row">

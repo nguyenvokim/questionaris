@@ -6,9 +6,7 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        @if(Route::is('frontend.user.dashboard'))
-            <search-client-box></search-client-box>
-        @endif
+        <search-client-box></search-client-box>
         <ul class="navbar-nav">
             @if(config('locale.status') && count(config('locale.languages')) > 1)
                 <li class="nav-item dropdown">

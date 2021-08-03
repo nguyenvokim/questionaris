@@ -58,6 +58,8 @@ if (window.useVueRoute) {
         }
     ]
     router = new VueRouter({
+        base: 'dashboard#/',
+        mode: 'hash',
         routes
     })
 }
@@ -71,9 +73,11 @@ if (window.useVueRoute) {
 import store from './store';
 
 Vue.mixin(require('./mixin').default);
-
-const app = new Vue({
+let vueConfig = {
     el: '#app',
-    store,
-    router
-});
+    store
+}
+if (window.useVueRoute) {
+    vueConfig['router'] = router;
+}
+const app = new Vue(vueConfig);

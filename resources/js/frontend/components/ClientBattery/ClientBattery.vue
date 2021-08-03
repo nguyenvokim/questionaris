@@ -18,15 +18,21 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-dark" @click="prevTest" v-if="currentTestIndex !== 0">
-                            <i class="fa fa-fw fa-caret-left"></i> Back
-                        </button>
-                        <button class="btn btn-success" @click="nextTest" v-if="currentTestIndex !== tests.length - 1">
-                            <i class="fa fa-fw fa-caret-right"></i> Next
-                        </button>
-                        <button class="btn btn-primary" @click="sendAnswer" v-if="currentTestIndex === tests.length - 1">
-                            <i class="fa fa-fw fa-save"></i> Submit
-                        </button>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <button class="btn btn-dark" @click="prevTest" v-if="currentTestIndex !== 0">
+                                    <i class="fa fa-fw fa-caret-left"></i> Back
+                                </button>
+                            </div>
+                            <div class="col-sm-6 text-right">
+                                <button class="btn btn-primary" @click="sendAnswer" v-if="currentTestIndex === tests.length - 1">
+                                    <i class="fa fa-fw fa-save"></i> Submit
+                                </button>
+                                <button class="btn btn-success" @click="nextTest" v-if="currentTestIndex !== tests.length - 1">
+                                    <i class="fa fa-fw fa-caret-right"></i> Next
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -45,6 +51,9 @@
         </div>
         <b-modal ref="notice_modal" id="notice_modal" title="It looks like you’ve missed some questions!" ok-only>
             <h5>Please complete all the questions before submitting</h5>
+        </b-modal>
+        <b-modal ref="notice_modal_for_test" id="notice_modal_for_test" title="It looks like you’ve missed some questions!" ok-only>
+            <h5>Please complete all the questions before go next</h5>
         </b-modal>
     </div>
 </template>
@@ -81,6 +90,10 @@
             ...mapActions('clientBattery', ['validateClient', 'sendSaveAnswer']),
             ...mapMutations('clientBattery', ['setCurrentDisplayTestId', 'setBatteryId', 'setFocusAnswer']),
             nextTest: function () {
+                if (this.checkAllQuestionGotAnswerForTest(this.currentDisplayTestId) === false) {
+                    this.$refs.notice_modal_for_test.show();
+                    return;
+                }
                 if (this.currentTestIndex !== -1 && this.tests[this.currentTestIndex + 1]) {
                     this.setCurrentDisplayTestId(this.tests[this.currentTestIndex + 1].id);
                     this.$nextTick(() => {
@@ -108,6 +121,16 @@
                 }
                 return test.config.hiddenQuestionIds.includes(parseInt(questionId));
             },
+            checkAllQuestionGotAnswerForTest(testId) {
+                let allQuestionGotAnswer = true;
+                Object.keys(this.answers[testId]).forEach((questionId) => {
+                    const isHiddenQuestion = this.checkIsHiddenQuestion(testId, questionId);
+                    if (!isHiddenQuestion && this.answers[testId][questionId] === -1) {
+                        allQuestionGotAnswer = false;
+                    }
+                });
+                return allQuestionGotAnswer;
+            },
             sendAnswer: function () {
                 //Validate answers got all response
                 if (this.onRequestSaving) {
@@ -115,12 +138,10 @@
                 }
                 let allQuestionGotAnswer = true;
                 Object.keys(this.answers).forEach((testId) => {
-                    Object.keys(this.answers[testId]).forEach((questionId) => {
-                        const isHiddenQuestion = this.checkIsHiddenQuestion(testId, questionId);
-                        if (!isHiddenQuestion && this.answers[testId][questionId] === -1) {
-                            allQuestionGotAnswer = false;
-                        }
-                    })
+                    let isAnswerAllForTestId = this.checkAllQuestionGotAnswerForTest(testId);
+                    if (!isAnswerAllForTestId) {
+                        allQuestionGotAnswer = false;
+                    }
                 });
                 if (!allQuestionGotAnswer) {
                     this.$refs.notice_modal.show();

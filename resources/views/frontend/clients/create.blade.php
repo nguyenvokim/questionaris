@@ -26,13 +26,13 @@
                         <div class="form-group row">
                             <label class="col-md-2 form-control-lable">First Name</label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{old('first_name')}}" name="first_name" id="first_name" placeholder="First Name" maxlength="191" required />
+                                <input type="text" class="form-control" value="{{old('first_name')}}" name="first_name" id="first_name" placeholder="First Name" maxlength="25" required />
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 form-control-lable">Last Name</label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{old('last_name')}}" name="last_name" id="last_name" placeholder="Last Name" maxlength="191" required />
+                                <input type="text" class="form-control" value="{{old('last_name')}}" name="last_name" id="last_name" placeholder="Last Name" maxlength="25" required />
                             </div>
                         </div>
                         <div class="form-group row">

@@ -93,7 +93,7 @@ class BatteryController extends Controller
             ]);
         }
 
-        return redirect(route('frontend.battery.editView', ['id' => $id]))->withFlashSuccess('Updated battery success');
+        return redirect(route('frontend.battery.editView', ['id' => $id]))->withFlashSuccess('Battery successfully updated!');
     }
 
     public function clientBattery($batteryId) {

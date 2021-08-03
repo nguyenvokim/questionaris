@@ -8,7 +8,7 @@
             <div class="row">
                 <div class="col-sm-6">
                     <div v-if="finishedTests.length" class="form-inline">
-                        <label class="mr-1">Displaying result for</label>
+                        <label class="mr-1">Displaying results for</label>
                         <select class="form-control" v-model="localSelectedTestId">
                             <option v-for="finishedTest in finishedTests" :value="finishedTest.id">{{finishedTest.title}}</option>
                         </select>
@@ -21,27 +21,49 @@
                 </div>
             </div>
         </div>
-        <b-modal ref="send_email_modal" id="send_email_modal" title="Email test/battery for client completion" @ok="handleSendBattery">
-            <div class="form">
-                <div v-if="errorMsg.length" role="alert" class="alert alert-danger">
-                    {{errorMsg}}
-                </div>
-                <div class="form-group">
-                    <label class="col-form-label">Select test/battery to email</label>
-                    <div>
-                        <select v-model="selectedBatteryId" class="form-control">
-                            <option v-for="battery in batteries" :value="battery.id">{{battery.name}}</option>
-                        </select>
+        <b-modal size="xl" ref="send_email_modal" id="send_email_modal" title="Email test/battery for client completion" @ok="handleSendBattery">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form">
+                        <div v-if="errorMsg.length" role="alert" class="alert alert-danger">
+                            {{errorMsg}}
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Select test/battery to email</label>
+                            <div>
+                                <select v-model="selectedBatteryId" class="form-control">
+                                    <option v-for="battery in batteries" :value="battery.id">{{battery.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Email Headline</label>
+                            <div>
+                                <input type="text" class="form-control" v-model="emailHeadline" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Email text</label>
+                            <div>
+                                <textarea class="form-control" v-model="emailText" rows="5"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Email bottom text</label>
+                            <div>
+                                <textarea class="form-control" v-model="emailFooterText" rows="4"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group" v-if="lastEmailBattery.id && false">
+                            <strong><i>Last email has been sent to clent at: {{lastEmailBattery.created_at}}</i></strong>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-form-label">Email text</label>
-                    <div>
-                        <textarea class="form-control" v-model="emailText" rows="7"></textarea>
-                    </div>
-                </div>
-                <div class="form-group" v-if="lastEmailBattery.id && false">
-                    <strong><i>Last email has been sent to clent at: {{lastEmailBattery.created_at}}</i></strong>
+                <div class="col-sm-6">
+                    <client-battery-email-preview
+                        :headline="emailHeadline"
+                        :body-text="emailText"
+                        :footer-text="emailFooterText"></client-battery-email-preview>
                 </div>
             </div>
         </b-modal>
@@ -57,8 +79,10 @@
 
 import {mapActions, mapMutations, mapState} from 'vuex';
     import axios from 'axios';
+import ClientBatteryEmailPreview from "./ClientBatteryEmailPreview";
 
     export default {
+        components: {ClientBatteryEmailPreview},
         props: {
         },
         data: function() {
@@ -68,6 +92,8 @@ import {mapActions, mapMutations, mapState} from 'vuex';
                 errorMsg: "",
                 isLoaded: false,
                 emailText: "",
+                emailFooterText: "",
+                emailHeadline: '',
                 lastEmailBattery: {},
             }
         },
@@ -88,7 +114,9 @@ import {mapActions, mapMutations, mapState} from 'vuex';
                 const data = {
                     clientId: this.selectedClient,
                     batteryId: this.selectedBatteryId,
-                    emailContent: this.emailText
+                    emailContent: this.emailText,
+                    emailFooterContent: this.emailFooterText,
+                    emailHeadline: this.emailHeadline
                 }
                 const response = await this.sendEmailBattery(data);
                 this.onAjaxRequesting = false;
@@ -101,7 +129,7 @@ import {mapActions, mapMutations, mapState} from 'vuex';
             }
         },
         computed: {
-            ...mapState('userDashboard', ['batteries', 'selectedClient', 'finishedTests', 'selectedTestId', 'client']),
+            ...mapState('userDashboard', ['batteries', 'selectedClient', 'finishedTests', 'selectedTestId', 'client', 'user']),
             localSelectedTestId: {
                 get: function () {
                     return this.selectedTestId;
@@ -113,14 +141,9 @@ import {mapActions, mapMutations, mapState} from 'vuex';
         },
         watch: {
             client: function () {
-                let emailText = `Dear ${this.client.first_name}`;
-                emailText += '\n';
-                emailText += '\n';
-                emailText += 'Please complete the questionnaire(s) as soon as possible, using the below link.';
-                emailText += '\n';
-                emailText += '\n';
-                emailText += `Thank you ${this.client.first_name} ${this.client.last_name} `;
-                this.emailText = emailText;
+                this.emailHeadline = `Dear ${this.client.first_name}`;
+                this.emailText = 'Please complete the questionnaire(s) as soon as possible, using the below link.';
+                this.emailFooterText = `Thank you ${this.user.first_name} ${this.user.last_name} `;
             }
         }
     }

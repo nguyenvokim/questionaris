@@ -28,8 +28,8 @@ class CreateClientRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => [FormRequestValidateOption::REQUIRED],
-            'last_name' => [FormRequestValidateOption::REQUIRED],
+            'first_name' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::maxLength(25)],
+            'last_name' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::maxLength(25)],
             'personal_code' => [FormRequestValidateOption::REQUIRED],
             'email' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::EMAIL],
             'birth_date' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::DATE],

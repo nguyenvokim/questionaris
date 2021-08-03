@@ -1,8 +1,8 @@
 <template>
-    <div v-if="isShown">
+    <div>
         <div class="card mb-sm-2">
             <div class="card-body">
-                <h4>Welcome back, {{user.first_name}}. Recent Completed Test</h4>
+                <h4>{{user.first_name}}, here are your most recently completed tests</h4>
             </div>
             <table class="table table-striped table-hover">
                 <thead>
@@ -45,10 +45,7 @@
             }
         },
         computed: {
-            ...mapState('userDashboard', ['recentTests', 'user', 'selectedClient']),
-            isShown() {
-                return this.user.id && !this.selectedClient
-            }
+            ...mapState('userDashboard', ['recentTests', 'user', 'selectedClient', 'clients']),
         }
     }
 </script>

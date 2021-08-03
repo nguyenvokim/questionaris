@@ -43,7 +43,7 @@ class ClientController extends Controller
         $createClientArr['user_id'] = \Auth::id();
         $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);
         Client::create($createClientArr);
-        return redirect(route('frontend.client.index'))->withFlashSuccess('Create client success');
+        return redirect(route('frontend.client.index'))->withFlashSuccess('Client successfully created');
     }
 
     public function editView($id) {
@@ -73,6 +73,6 @@ class ClientController extends Controller
         $createClientArr = $createClientRequest->toArray();
         $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);
         $client->update($createClientArr);
-        return redirect(route('frontend.client.editView', ['id' => $id]))->withFlashSuccess('Updated client success');
+        return redirect(route('frontend.client.editView', ['id' => $id]))->withFlashSuccess('Client details successfully updated');
     }
 }

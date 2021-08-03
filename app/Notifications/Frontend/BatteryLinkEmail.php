@@ -17,6 +17,8 @@ class BatteryLinkEmail extends Notification
     public $client;
     public $battery;
     public $emailContent;
+    public $emailFooter;
+    public $emailHeadline;
 
     /**
      * Create a new notification instance.
@@ -24,11 +26,13 @@ class BatteryLinkEmail extends Notification
      * @param Client $client
      * @param Battery $battery
      */
-    public function __construct(Client $client, Battery $battery, string $emailContent)
+    public function __construct(Client $client, Battery $battery, string $emailContent, string $emailFooter, string $emailHeadline)
     {
         $this->client = $client;
         $this->battery = $battery;
         $this->emailContent = $emailContent;
+        $this->emailFooter = $emailFooter;
+        $this->emailHeadline = $emailHeadline;
     }
 
     /**
@@ -52,10 +56,10 @@ class BatteryLinkEmail extends Notification
     {
         return (new MailMessage)
             ->subject('Questionnaire(s) for Completion')
-            ->greeting('Hello ' . $this->client->first_name)
-            ->line(new HtmlString(nl2br($this->emailContent)))
+            ->greeting($this->emailHeadline)
+            ->line(new HtmlString(nl2br($this->emailContent . "\n")))
             ->action('Link to Questionnaire(s)', route('frontend.battery.clientBattery', ['batteryId' => $this->battery->id]))
-            ->line('Thank you for using our application!');
+            ->line(new HtmlString(nl2br($this->emailFooter)));
     }
 
     /**

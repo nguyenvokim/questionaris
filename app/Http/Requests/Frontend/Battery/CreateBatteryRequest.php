@@ -29,7 +29,7 @@ class CreateBatteryRequest extends FormRequest
     {
         return [
             'test_ids' => [FormRequestValidateOption::REQUIRED],
-            'name' => [FormRequestValidateOption::REQUIRED]
+            'name' => [FormRequestValidateOption::REQUIRED, FormRequestValidateOption::maxLength(30)]
         ];
     }
 

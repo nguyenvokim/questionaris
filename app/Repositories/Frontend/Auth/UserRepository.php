@@ -157,6 +157,9 @@ class UserRepository extends BaseRepository
 
         // Upload profile image if necessary
         if ($image) {
+            if (auth()->user()->avatar_location !== '') {
+                Storage::disk('public')->delete(auth()->user()->avatar_location);
+            }
             $user->avatar_location = $image->store('/avatars', 'public');
         } else {
             // No image being passed
@@ -165,13 +168,6 @@ class UserRepository extends BaseRepository
                 if (auth()->user()->avatar_location === '') {
                     throw new GeneralException('You must supply a profile image.');
                 }
-            } else {
-                // If there is a current image, and they are not using it anymore, get rid of it
-                if (auth()->user()->avatar_location !== '') {
-                    Storage::disk('public')->delete(auth()->user()->avatar_location);
-                }
-
-                $user->avatar_location = null;
             }
         }
 

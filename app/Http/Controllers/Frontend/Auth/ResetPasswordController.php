@@ -59,10 +59,12 @@ class ResetPasswordController extends Controller
                 ->withEmail($user->email);
         }
 
-        $isExpired = Carbon::parse($passwordReset->created_at)->addSeconds(config('auth.passwords.users.expire'))->isPast();
-        $msg = 'exceptions.frontend.auth.password.reset_problem';
-        if ($isExpired) {
-            $msg = 'exceptions.frontend.auth.password.reset_expired';
+        $msg = 'exceptions.frontend.auth.password.reset_expired';
+        if ($passwordReset) {
+            $isExpired = Carbon::parse($passwordReset->created_at)->addSeconds(config('auth.passwords.users.expire'))->isPast();
+            if ($isExpired) {
+                $msg = 'exceptions.frontend.auth.password.reset_expired';
+            }
         }
 
         return redirect()->route('frontend.auth.password.email')

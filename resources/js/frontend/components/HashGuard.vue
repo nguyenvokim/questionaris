@@ -8,9 +8,7 @@
     export default {
         mounted() {
             window.onhashchange = () => {
-                if (window.location.hash == '') {
-                    this.setSelectedClient(0);
-                }
+                console.log("Hash change");
             }
         },
 

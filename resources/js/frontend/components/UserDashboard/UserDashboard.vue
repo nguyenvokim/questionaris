@@ -3,7 +3,9 @@
         <div class="card mb-sm-2">
             <div class="card-body">
                 <h2>
-                    {{clientFullName}}
+                    <a class="text-dark" :href="`/clients/edit/${selectedClientData.id}`">
+                        {{clientFullName}}
+                    </a>
                     <button class="float-right btn btn-light" @click="handleBack">
                         <i class="fa fa-fw fa-backward"></i> Back
                     </button>
@@ -40,11 +42,12 @@
             const testId = this.$route.params.testId;
             this.setSelectedTestId(parseInt(testId));
             this.setSelectedClient(parseInt(clientId));
-            this.$nextTick(() => {
-            })
+            if (!this.user || !this.user.id) {
+                this.loadRecentTest();
+            }
         },
         methods: {
-            ...mapActions('userDashboard', ['loadInitDashboard']),
+            ...mapActions('userDashboard', ['loadInitDashboard', 'loadRecentTest']),
             ...mapMutations('userDashboard', ['setSelectedTestId', 'setSelectedClient']),
             getFullNameClient: function (client) {
                 return `${client.first_name} ${client.last_name}`;
@@ -55,7 +58,7 @@
             }
         },
         computed: {
-            ...mapState('userDashboard', ['clients', 'batteries', 'selectedClient']),
+            ...mapState('userDashboard', ['clients', 'batteries', 'selectedClient', 'user']),
             ...mapGetters('userDashboard', ['selectedClientData']),
             clientFullName: function () {
                 if (!this.selectedClientData) return '';

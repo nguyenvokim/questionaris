@@ -74,7 +74,9 @@ class UserDashboard extends Controller
         }
         $battery = Battery::findOrFail($batteryEmailLinkRequest->get('batteryId'));
         $emailContent = $batteryEmailLinkRequest->get('emailContent', 'We happy to send you the link for the test on our application');
-        $client->notify(new BatteryLinkEmail($client, $battery, $emailContent));
+        $emailHeadline = $batteryEmailLinkRequest->get('emailHeadline', '');
+        $emailFooter = $batteryEmailLinkRequest->get('emailFooterContent', '');
+        $client->notify(new BatteryLinkEmail($client, $battery, $emailContent, $emailFooter, $emailHeadline));
         ClientEmailLog::create([
             'client_id' => $client->id,
             'relate_object_id' => $battery->id,

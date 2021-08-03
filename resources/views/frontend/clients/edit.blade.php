@@ -10,9 +10,11 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <h4 class="card-title mb-0">
-                            Edit Client Details
+                            Client Details
                             <small class="text-muted">
-                                &nbsp;{{$client->first_name}}&nbsp;{{$client->last_name}}
+                                <br/><br/>
+                                {{$client->first_name}}&nbsp;{{$client->last_name}}
+                                <br/>
                             </small>
                         </h4>
                     </div>
@@ -28,13 +30,13 @@
                         <div class="form-group row">
                             <label class="col-md-2 form-control-lable">First Name</label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{$client->first_name}}" name="first_name" id="first_name" placeholder="First Name" maxlength="191" required />
+                                <input type="text" class="form-control" value="{{$client->first_name}}" name="first_name" id="first_name" placeholder="First Name" maxlength="25" required />
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-md-2 form-control-lable">Last Name</label>
                             <div class="col-md-10">
-                                <input type="text" class="form-control" value="{{$client->last_name}}" name="last_name" id="last_name" placeholder="Last Name" maxlength="191" required />
+                                <input type="text" class="form-control" value="{{$client->last_name}}" name="last_name" id="last_name" placeholder="Last Name" maxlength="25" required />
                             </div>
                         </div>
                         <div class="form-group row">
