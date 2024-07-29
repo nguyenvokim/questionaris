@@ -76,9 +76,8 @@
 
     <!-- Scripts -->
     @stack('before-scripts')
-    {!! script(mix('js/manifest.js')) !!}
-    {!! script(mix('js/vendor.js')) !!}
-    {!! script(mix('js/backend.js')) !!}
+    {!! script(mix('/js/vendor.js')) !!}
+    {!! script(mix('/js/backend.js')) !!}
     @stack('after-scripts')
 </body>
 </html>

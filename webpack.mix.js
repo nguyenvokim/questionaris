@@ -11,43 +11,47 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.setPublicPath('public')
-    .setResourceRoot('../') // Turns assets paths in css relative to css file
+mix.setPublicPath('public');
+mix.setResourceRoot('../'); // Turns assets paths in css relative to css file
     // .options({
     //     processCssUrls: false,
     // })
-    .sass('resources/sass/frontend/app.scss', 'css/frontend.css')
-    .sass('resources/sass/backend/app.scss', 'css/backend.css')
-    .js('resources/js/frontend/app.js', 'js/frontend.js')
-    .js([
+mix.sass('resources/sass/frontend/app.scss', 'css/frontend.css');
+mix.sass('resources/sass/backend/app.scss', 'css/backend.css');
+mix.js('resources/js/frontend/app.js', 'js/frontend.js')
+    .vue()
+mix.webpackConfig({
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js'
+        }
+    }
+});
+mix.js([
         'resources/js/backend/before.js',
         'resources/js/backend/app.js',
         'resources/js/backend/after.js'
-    ], 'js/backend.js')
-    .extract([
-        // Extract packages from node_modules to vendor.js
-        'jquery',
-        'bootstrap',
-        'popper.js',
-        'axios',
-        'sweetalert2',
-        'lodash',
-        'vuejs-datepicker',
-        'bootstrap-vue',
-        'apexcharts'
-    ])
-    .sourceMaps();
+    ], 'js/backend.js');
+
+mix.js('resources/js/frontend/libraries.js', 'js/vendor.js');
+
+// mix.extract([
+//     // Extract packages from node_modules to vendor.js
+//     'jquery',
+//     'bootstrap',
+//     'popper.js',
+//     'axios',
+//     'sweetalert2',
+//     'lodash',
+//     'vuejs-datepicker',
+//     'bootstrap-vue',
+//     'apexcharts'
+// ]);
+
 
 if (mix.inProduction()) {
     mix.version()
-        .options({
-            // Optimize JS minification process
-            terser: {
-                cache: true,
-                parallel: true,
-                sourceMap: true
-            }
-        });
+
 } else {
     // Uses inline source-maps on development
     mix.webpackConfig({

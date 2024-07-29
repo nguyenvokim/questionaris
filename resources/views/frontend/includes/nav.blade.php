@@ -6,7 +6,9 @@
     </button>
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-        <search-client-box></search-client-box>
+        @auth
+            <search-client-box></search-client-box>
+        @endauth
         <ul class="navbar-nav">
             @if(config('locale.status') && count(config('locale.languages')) > 1)
                 <li class="nav-item dropdown">
@@ -39,7 +41,7 @@
                 @endif
             @else
                 <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuUser" data-toggle="dropdown"
+                    <a href="javascript:void(0)" class="nav-link dropdown-toggle" id="navbarDropdownMenuUser" data-toggle="dropdown"
                        aria-haspopup="true" aria-expanded="false">{{ $logged_in_user->name }}</a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuUser">

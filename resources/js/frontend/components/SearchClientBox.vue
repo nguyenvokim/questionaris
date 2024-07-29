@@ -9,7 +9,7 @@
                aria-label="Search Clients">
         <ul v-if="isShowResult" class="search_result_wrapper">
             <li v-for="client in clientSearchResult">
-                <a @click="setClient(client.id)" href="javascript:void(0)" v-html="displayClientTextHighlight(client)"></a>
+                <a @click.prevent="setClient(client.id)" v-html="displayClientTextHighlight(client)"></a>
             </li>
         </ul>
     </div>
@@ -17,6 +17,7 @@
 
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex';
+import {RouteName} from "../const";
     export default {
         data() {
             return {
@@ -62,6 +63,17 @@ import {mapState, mapMutations, mapActions} from 'vuex';
             setClient(id) {
                 this.setSelectedTestId(0);
                 this.setSelectedClient(id);
+                if (this.$router) {
+                    this.$router.push({
+                        name: RouteName.ClientTestResult,
+                        params: {
+                            clientId: id,
+                            testId: 0,
+                        }
+                    })
+                } else {
+                    window.location.href = `dashboard#/detail/${id}/0`
+                }
             }
         }
     }

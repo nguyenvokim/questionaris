@@ -15,3 +15,9 @@ const CONST = {
 };
 
 export default CONST;
+
+
+export const RouteName = {
+    Dashboard: 'Dashboard',
+    ClientTestResult: 'ClientTestResult',
+}

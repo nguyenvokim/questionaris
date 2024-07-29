@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center align-items-center">
-        <div class="col col-sm-8 align-self-center">
+        <div class="col col-sm-8 align-self-center" v-if="!hideFormValidate">
             <div class="card">
                 <div class="card-header">
                     <strong>Enter your personal code and birth date</strong>
@@ -50,15 +50,38 @@
             return {
                 personalCode: "",
                 birthDate: null,
-                errorMsg: ""
+                errorMsg: "",
+                hideFormValidate: false,
             }
         },
-        mounted() {
+        async created() {
+            const code = (new URLSearchParams(window.location.search)).get('code')
+            if (code) {
+                this.hideFormValidate = true
+            }
+        },
+        async mounted() {
+            const code = (new URLSearchParams(window.location.search)).get('code')
+            await this.$nextTick()
+            if (code) {
+                this.hideFormValidate = true
+                const response = await this.validateClientWithCode({
+                    code,
+                    batteryId: this.batteryId,
+                });
+                if (response.error) {
+                    this.hideFormValidate = false;
+                    this.errorMsg = response.message;
+                } else {
+                    this.buildTestResultTemplate()
+                }
+            }
             document.addEventListener('keydown', this.handleKeyPress)
         },
         methods: {
             ...mapActions({
                 validateClient: 'clientBattery/validateClient',
+                validateClientWithCode: 'clientBattery/validateClientWithCode',
             }),
             ...mapMutations({
                 setInitAnswers: 'clientBattery/setInitAnswers',
@@ -81,31 +104,33 @@
                 if (response.error) {
                     this.errorMsg = response.message;
                 } else {
-                    //build test result template
-                    const resultTemplate = {};
-                    this.setCurrentDisplayTestId(this.tests[0].id);
-                    this.tests.forEach((test) => {
-                        resultTemplate[test.id] = {};
-                        test.questions.forEach((question) => {
-                            switch (question.type) {
-                                case CONST.QUESTION_TYPE_FOUR_OPTION:
-                                case CONST.QUESTION_TYPE_TEN_OPTION:
-                                case CONST.QUESTION_TYPE_FIVE_OPTION:
-                                    resultTemplate[test.id][question.id] = -1;
-                                    break;
-                                case CONST.QUESTION_TYPE_DYNAMIC_RANGE_SELECTION:
-                                    resultTemplate[test.id][question.id] = question.config.start;
-                                    break;
-                            }
-                        })
-                    })
-                    this.setInitAnswers(resultTemplate);
-                    this.setFocusAnswer({
-                        testId: this.tests[0].id,
-                        answerIndex: 0,
-                        questionIndex: 0
-                    });
+                    this.buildTestResultTemplate()
                 }
+            },
+            buildTestResultTemplate: function () {
+                const resultTemplate = {};
+                this.setCurrentDisplayTestId(this.tests[0].id);
+                this.tests.forEach((test) => {
+                    resultTemplate[test.id] = {};
+                    test.questions.forEach((question) => {
+                        switch (question.type) {
+                            case CONST.QUESTION_TYPE_FOUR_OPTION:
+                            case CONST.QUESTION_TYPE_TEN_OPTION:
+                            case CONST.QUESTION_TYPE_FIVE_OPTION:
+                                resultTemplate[test.id][question.id] = -1;
+                                break;
+                            case CONST.QUESTION_TYPE_DYNAMIC_RANGE_SELECTION:
+                                resultTemplate[test.id][question.id] = question.config.start;
+                                break;
+                        }
+                    })
+                })
+                this.setInitAnswers(resultTemplate);
+                this.setFocusAnswer({
+                    testId: this.tests[0].id,
+                    answerIndex: 0,
+                    questionIndex: 0
+                });
             },
             handleKeyPress: function (e) {
                 if (e.keyCode === 13) { // Enter button

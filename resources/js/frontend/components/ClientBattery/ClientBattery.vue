@@ -81,9 +81,7 @@
         },
         async mounted() {
             this.setBatteryId(this.batteryId);
-            this.$nextTick(() => {
-
-            });
+            await this.$nextTick()
             document.addEventListener('keydown', this.handleKeyPress)
         },
         methods: {

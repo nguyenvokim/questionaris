@@ -33,6 +33,7 @@
 </template>
 <script>
     import {mapState, mapActions, mapMutations} from 'vuex'
+    import {RouteName} from "../../const";
     export default {
         mounted() {
             this.loadRecentTest();
@@ -41,7 +42,13 @@
             ...mapMutations('userDashboard', ['setSelectedClient', 'setSelectedTestId']),
             ...mapActions('userDashboard', ['loadRecentTest']),
             handleClickTest(test) {
-                this.$router.push(`/detail/${test.client.id}/${test.test.id}`)
+                this.$router.push({
+                    name: RouteName.ClientTestResult,
+                    params: {
+                        clientId: test.client.id,
+                        testId: test.test.id,
+                    }
+                })
             }
         },
         computed: {

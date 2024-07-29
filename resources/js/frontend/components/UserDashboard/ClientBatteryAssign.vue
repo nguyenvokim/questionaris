@@ -43,13 +43,13 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">Email text</label>
+                            <label class="col-form-label">Email Text</label>
                             <div>
                                 <textarea class="form-control" v-model="emailText" rows="5"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label">Email bottom text</label>
+                            <label class="col-form-label">Email Bottom Text</label>
                             <div>
                                 <textarea class="form-control" v-model="emailFooterText" rows="4"></textarea>
                             </div>
@@ -141,9 +141,9 @@ import ClientBatteryEmailPreview from "./ClientBatteryEmailPreview";
         },
         watch: {
             client: function () {
-                this.emailHeadline = `Dear ${this.client.first_name}`;
+                this.emailHeadline = `Dear ${this.client.first_name},`;
                 this.emailText = 'Please complete the questionnaire(s) as soon as possible, using the below link.';
-                this.emailFooterText = `Thank you ${this.user.first_name} ${this.user.last_name} `;
+                this.emailFooterText = `Thank you\n${this.user.first_name} ${this.user.last_name} `;
             }
         }
     }

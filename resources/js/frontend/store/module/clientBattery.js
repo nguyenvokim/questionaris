@@ -30,6 +30,16 @@ const actions = {
             return error.response.data;
         });
     },
+    validateClientWithCode: async function ({state, commit}, data) {
+        return axios.post('/api/clientBattery/validateClient', data).then((response) => {
+            if (!response.data.error) {
+                commit('setInitData', response.data);
+            }
+            return response.data;
+        }).catch((error) => {
+            return error.response.data;
+        });
+    },
     sendSaveAnswer: async function({state, commit}, data) {
         return axios.post('/api/clientBattery/save', data).then((response) => {
             return response.data;

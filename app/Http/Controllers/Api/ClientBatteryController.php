@@ -18,9 +18,20 @@ class ClientBatteryController extends Controller
         $personalCode = $request->get('personalCode');
         $birthDate = $request->get('birthDate');
         $batteryId = $request->get('batteryId');
+        $code = $request->get('code');
+        if ($code) {
+            try {
+                $result = \Crypt::decryptString($code);
+                $parts = explode('_', $result);
+                $personalCode = $parts[0];
+                $birthDate = $parts[1];
+            } catch (\Exception $e) {
+                return response()->json(['error' => true, 'message' => 'The code invalid']);
+            }
+        }
+
         $client = Client::getClientByPersonalCodeAndBirthDate($personalCode, $birthDate);
 
-        //$clientBattery = ClientBattery::getActivatingClientBatteryForTest($client->id);
         $battery = Battery::find($batteryId);
         if (!$client OR !$battery OR $client->user_id != $battery->user_id) {
             return response()->json(['error' => true, 'message' => 'The personal code/birth date combination entered is not recognised. Personal codes are case sensitive.']);

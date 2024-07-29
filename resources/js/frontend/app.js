@@ -13,7 +13,10 @@ import BootstrapVue from 'bootstrap-vue';
 import VueApexCharts from 'vue-apexcharts';
 import Clipboard from 'v-clipboard';
 import VueRouter from 'vue-router';
+import VueCompositionAPI from '@vue/composition-api'
+import UserDashboard from "./components/UserDashboard/UserDashboard.vue";
 
+Vue.use(VueCompositionAPI)
 window.Vue = Vue;
 
 /**
@@ -28,7 +31,6 @@ window.Vue = Vue;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 const RecentFinishedTest = require('./components/RecentFinishedTest/RecentFinishedTest').default;
-const UserDashboard = require('./components/UserDashboard/UserDashboard').default;
 
 Vue.use(BootstrapVue)
 Vue.use(Clipboard);
@@ -50,11 +52,13 @@ if (window.useVueRoute) {
     const routes = [
         {
             path: '/',
-            component: RecentFinishedTest
+            component: RecentFinishedTest,
+            name: RouteName.Dashboard,
         },
         {
             path: '/detail/:clientId/:testId',
-            component: UserDashboard
+            component: UserDashboard,
+            name: RouteName.ClientTestResult,
         }
     ]
     router = new VueRouter({
@@ -71,6 +75,8 @@ if (window.useVueRoute) {
  */
 
 import store from './store';
+import {RouteName} from "./const";
+import Ro from "vuejs-datepicker/dist/locale/translations/ro";
 
 Vue.mixin(require('./mixin').default);
 let vueConfig = {

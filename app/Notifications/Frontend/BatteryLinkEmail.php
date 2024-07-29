@@ -54,11 +54,19 @@ class BatteryLinkEmail extends Notification
      */
     public function toMail($notifiable)
     {
+        $time = strtotime($this->client->birth_date);
+        $code = $this->client->personal_code . '_' . date("Y-m-d", $time);
+        $link = route('frontend.battery.clientBattery', [
+            'batteryId' => $this->battery->id,
+            'code' => \Crypt::encryptString($code),
+        ]);
+
+
         return (new MailMessage)
             ->subject('Questionnaire(s) for Completion')
             ->greeting($this->emailHeadline)
             ->line(new HtmlString(nl2br($this->emailContent . "\n")))
-            ->action('Link to Questionnaire(s)', route('frontend.battery.clientBattery', ['batteryId' => $this->battery->id]))
+            ->action('Link to Questionnaire(s)', $link)
             ->line(new HtmlString(nl2br($this->emailFooter)));
     }
 

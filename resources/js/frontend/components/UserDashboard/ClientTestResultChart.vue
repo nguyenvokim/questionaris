@@ -56,7 +56,7 @@
                         align: 'center'
                     },
                     stroke: {
-                        curve: 'smooth'
+                        curve: 'straight'
                     },
                     chart: {
                         id: 'vuechart-example'
@@ -84,8 +84,9 @@
                         }
                     },
                     markers: {
-                        size: 6,
-                        shape: ['circle', 'square', 'circle', 'square', 'circle', 'square']
+                        size: [6,6,8,6,6,8],
+                        strokeWidth: [2,2,4,2,2,4],
+                        shape: ['circle', 'square', 'cross', 'square', 'circle', 'cross']
                     },
                 }
             },
