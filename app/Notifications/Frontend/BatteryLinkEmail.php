@@ -67,7 +67,8 @@ class BatteryLinkEmail extends Notification
             ->greeting($this->emailHeadline)
             ->line(new HtmlString(nl2br($this->emailContent . "\n")))
             ->action('Link to Questionnaire(s)', $link)
-            ->line(new HtmlString(nl2br($this->emailFooter)));
+            ->line(new HtmlString(nl2br($this->emailFooter)))
+            ->salutation(new HtmlString(" "));
     }
 
     /**

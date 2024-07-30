@@ -143,7 +143,7 @@ import ClientBatteryEmailPreview from "./ClientBatteryEmailPreview";
             client: function () {
                 this.emailHeadline = `Dear ${this.client.first_name},`;
                 this.emailText = 'Please complete the questionnaire(s) as soon as possible, using the below link.';
-                this.emailFooterText = `Thank you\n${this.user.first_name} ${this.user.last_name} `;
+                this.emailFooterText = `Thank you,\n${this.user.first_name} ${this.user.last_name} `;
             }
         }
     }
