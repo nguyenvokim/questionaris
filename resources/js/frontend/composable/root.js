@@ -1,5 +1,17 @@
-import store from './../store';
+import {getCurrentInstance} from "vue";
 
 export const useStore = () => {
-    return store
+    const app = getCurrentInstance();
+
+    if (app) {
+        return app.proxy.$root.$store;
+    }
+}
+
+export const useBvModal = () => {
+    const app = getCurrentInstance();
+
+    if (app) {
+        return app.proxy.$root.$bvModal;
+    }
 }

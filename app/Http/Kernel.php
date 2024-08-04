@@ -54,6 +54,10 @@ class Kernel extends HttpKernel
             'password_expires',
             'permission:view backend',
         ],
+        'master' => [
+            'auth',
+            'checkOrgMaster',
+        ]
     ];
 
     /**
@@ -76,6 +80,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'checkOrgMaster' => \App\Http\Middleware\CheckOrgMaster::class,
     ];
 
     /**

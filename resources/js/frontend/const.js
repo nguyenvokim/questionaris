@@ -16,8 +16,14 @@ const CONST = {
 
 export default CONST;
 
+export const OrgRole = {
+    Master: 'MASTER',
+    Supervisor: 'SUPERVISOR',
+    Member: 'MEMBER',
+}
 
 export const RouteName = {
     Dashboard: 'Dashboard',
     ClientTestResult: 'ClientTestResult',
+    UserManager: 'userManager',
 }

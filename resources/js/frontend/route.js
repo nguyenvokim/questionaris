@@ -1,7 +1,8 @@
 import {RouteName} from "./const";
-import UserDashboard from "./components/UserDashboard/UserDashboard.vue";
+import UserDashboard from "./views/UserDashboard.vue";
 import VueRouter from "vue-router";
-import RecentFinishedTest from "./components/RecentFinishedTest/RecentFinishedTest.vue";
+import RecentFinishedTest from "./views/RecentFinishedTest.vue";
+import UserManager from "./views/UserManager.vue";
 
 const routes = [
     {
@@ -13,6 +14,11 @@ const routes = [
         path: '/dashboard/detail/:clientId/:testId',
         component: UserDashboard,
         name: RouteName.ClientTestResult,
+    },
+    {
+        path: '/userManager',
+        component: UserManager,
+        name: RouteName.UserManager,
     }
 ]
 export const router = new VueRouter({

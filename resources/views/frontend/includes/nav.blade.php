@@ -29,6 +29,11 @@
                 <li class="nav-item">
                     <a href="{{route('frontend.battery.index')}}" class="nav-link {{ active_class(Route::is('frontend.battery.index')) }}">Manage Batteries</a>
                 </li>
+                @if(Auth::user()->isOrgMaster())
+                    <li class="nav-item">
+                        <a href="{{route('frontend.userManager.index')}}" class="nav-link {{ active_class(Route::is('frontend.userManager.index')) }}">Manage Users</a>
+                    </li>
+                @endif
             @endauth
 
             @guest

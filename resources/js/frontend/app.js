@@ -13,6 +13,7 @@ import BootstrapVue from 'bootstrap-vue';
 import VueApexCharts from 'vue-apexcharts';
 import Clipboard from 'v-clipboard';
 import VueRouter from 'vue-router';
+import vueCountryRegionSelect from 'vue-country-region-select'
 
 /**
  * The following block of code may be used to automatically register your
@@ -25,7 +26,7 @@ import VueRouter from 'vue-router';
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-
+Vue.use(vueCountryRegionSelect)
 Vue.use(BootstrapVue)
 Vue.use(Clipboard);
 Vue.component('apexchart', VueApexCharts);

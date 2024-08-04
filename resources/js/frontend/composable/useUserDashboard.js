@@ -26,6 +26,7 @@ export default () => {
     const batteries = computed(() => store.state.userDashboard.batteries)
     const selectedClient = computed(() => store.state.userDashboard.selectedClient)
     const user = computed(() => store.state.userDashboard.user)
+    const recentTests = computed(() => store.state.userDashboard.recentTests)
     const selectedClientData = computed(() => store.getters['userDashboard/selectedClientData'])
 
     return {
@@ -38,5 +39,6 @@ export default () => {
         selectedClient,
         user,
         selectedClientData,
+        recentTests,
     }
 }

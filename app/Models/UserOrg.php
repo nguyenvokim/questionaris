@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -21,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserOrg whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserOrg whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Auth\User $user
  */
 class UserOrg extends Model
 {
@@ -30,4 +32,9 @@ class UserOrg extends Model
         'user_id',
         'name',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

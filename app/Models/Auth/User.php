@@ -6,6 +6,8 @@ use App\Models\Auth\Traits\Scope\UserScope;
 use App\Models\Auth\Traits\Method\UserMethod;
 use App\Models\Auth\Traits\Attribute\UserAttribute;
 use App\Models\Auth\Traits\Relationship\UserRelationship;
+use App\Models\UserOrg;
+use App\Models\UserOrgRole;
 
 /**
  * Class User.
@@ -83,4 +85,23 @@ class User extends BaseUser
         UserMethod,
         UserRelationship,
         UserScope;
+
+
+    public function getOrgRole(int $orgId) {
+        $role = UserOrgRole::join('user_orgs', 'user_orgs.id', '=', 'uor.org_id')
+            ->select(['uor.*'])
+            ->from('user_org_roles', 'uor')
+            ->where('user_orgs.id', '=', $orgId)
+            ->first();
+
+        return $role->role;
+
+    }
+
+    public function isOrgMaster()
+    {
+        $role = UserOrgRole::whereUserId($this->id)->first();
+
+        return $role->role == UserOrgRole::ROLE_MASTER;
+    }
 }
