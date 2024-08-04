@@ -19,14 +19,14 @@ mix.setResourceRoot('../'); // Turns assets paths in css relative to css file
 mix.sass('resources/sass/frontend/app.scss', 'css/frontend.css');
 mix.sass('resources/sass/backend/app.scss', 'css/backend.css');
 mix.js('resources/js/frontend/app.js', 'js/frontend.js')
-    .vue()
-mix.webpackConfig({
-    resolve: {
-        alias: {
-            'vue$': 'vue/dist/vue.esm.js'
-        }
-    }
-});
+    .vue();
+//     .webpackConfig({
+//     resolve: {
+//         alias: {
+//             'vue$': 'vue/dist/vue.esm.js'
+//         }
+//     }
+// });
 mix.js([
         'resources/js/backend/before.js',
         'resources/js/backend/app.js',

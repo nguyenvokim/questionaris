@@ -20,50 +20,58 @@
         </div>
     </div>
 </template>
-
 <script>
+import {computed, defineComponent} from 'vue'
+import useUserDashboard from "../../composable/useUserDashboard";
+import ClientTest from "./ClientTest.vue";
+import ClientBatteryAssign from "./ClientBatteryAssign.vue";
+import {useRouter} from "vue-router/composables";
 
-    import { mapActions, mapState, mapMutations, mapGetters } from 'vuex';
-    import ClientBatteryAssign from './ClientBatteryAssign';
-    import ClientTest from './ClientTest';
+export default defineComponent({
+    components: {ClientTest, ClientBatteryAssign},
+    setup() {
+        const router = useRouter()
+        const {
+            setSelectedTestId,
+            setSelectedClient,
+            loadInitDashboard,
+            loadRecentTest,
+            clients,
+            batteries,
+            selectedClient,
+            user,
+            selectedClientData,
+        } = useUserDashboard()
+        const clientFullName = computed(() => {
+            if (!selectedClientData.value) return '';
+            return `Client: ${selectedClientData.value.first_name} ${selectedClientData.value.last_name}`
+        })
 
-    export default {
-        components: {ClientTest, ClientBatteryAssign},
-        props: {
-        },
-        data: function() {
-            return {
-                preSelectClientId: 0
-            }
-        },
-        async mounted() {
-            await this.loadInitDashboard();
-            const clientId = this.$route.params.clientId;
-            const testId = this.$route.params.testId;
-            this.setSelectedTestId(parseInt(testId));
-            this.setSelectedClient(parseInt(clientId));
-            if (!this.user || !this.user.id) {
-                this.loadRecentTest();
-            }
-        },
-        methods: {
-            ...mapActions('userDashboard', ['loadInitDashboard', 'loadRecentTest']),
-            ...mapMutations('userDashboard', ['setSelectedTestId', 'setSelectedClient']),
-            getFullNameClient: function (client) {
-                return `${client.first_name} ${client.last_name}`;
-            },
-            handleBack: function () {
-                this.setSelectedClient(0);
-                window.history.back();
-            }
-        },
-        computed: {
-            ...mapState('userDashboard', ['clients', 'batteries', 'selectedClient', 'user']),
-            ...mapGetters('userDashboard', ['selectedClientData']),
-            clientFullName: function () {
-                if (!this.selectedClientData) return '';
-                return `Client: ${this.selectedClientData.first_name} ${this.selectedClientData.last_name}`
-            }
+        const handleBack = () => {
+            setSelectedClient(0);
+            router.back()
         }
+
+        return {
+            setSelectedTestId,
+            setSelectedClient,
+            loadInitDashboard,
+            loadRecentTest,
+            clients,
+            batteries,
+            selectedClient,
+            user,
+            selectedClientData,
+            clientFullName,
+            handleBack,
+        }
+    },
+    async mounted() {
+        await this.loadInitDashboard()
+        const clientId = 3
+        const testId = 4
+        this.setSelectedTestId(Number(testId))
+        this.setSelectedClient(Number(clientId))
     }
+})
 </script>

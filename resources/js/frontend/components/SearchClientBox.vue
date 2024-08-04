@@ -72,7 +72,7 @@ import {RouteName} from "../const";
                         }
                     })
                 } else {
-                    window.location.href = `dashboard#/detail/${id}/0`
+                    window.location.href = `dashboard/detail/${id}/0`
                 }
             }
         }

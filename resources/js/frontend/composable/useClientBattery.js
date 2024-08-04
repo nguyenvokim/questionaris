@@ -1,5 +1,5 @@
 import {useStore} from "./root";
-import {computed} from "@vue/composition-api";
+import {computed} from "vue";
 
 export default () => {
     const store = useStore()

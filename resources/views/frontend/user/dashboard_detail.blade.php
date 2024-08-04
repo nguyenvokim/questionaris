@@ -3,5 +3,11 @@
 @section('title', app_name() . ' | ' . __('navs.frontend.dashboard') )
 
 @section('content')
-    <user-dashboard client-id="{{$clientId}}" test-id="{{$testId}}"></user-dashboard>
+    <router-view></router-view>
 @endsection
+
+@prepend('before-scripts')
+    <script>
+        var useVueRoute = true;
+    </script>
+@endprepend
