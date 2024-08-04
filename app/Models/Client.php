@@ -38,6 +38,9 @@ use Illuminate\Notifications\Notifiable;
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Client whereGender($value)
+ * @property-read \App\Models\Auth\User $user
+ * @property int $org_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Client whereOrgId($value)
  */
 class Client extends Model
 {
@@ -58,7 +61,8 @@ class Client extends Model
         'personal_code',
         'birth_date',
         'user_id',
-        'gender'
+        'gender',
+        'org_id',
     ];
 
     protected $dates = [

@@ -7,6 +7,7 @@ use App\Http\Requests\Frontend\Client\CreateClientRequest;
 use App\Models\Client;
 use App\Http\Controllers\Controller;
 use App\Models\ClientTestResult;
+use App\Models\UserOrg;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -42,6 +43,8 @@ class ClientController extends Controller
         $createClientArr = $createClientRequest->toArray();
         $createClientArr['user_id'] = \Auth::id();
         $createClientArr['birth_date'] = Carbon::createFromFormat('d-m-Y', $createClientArr['birth_date']);
+        $userOrg = UserOrg::whereUserId(\Auth::id())->first();
+        $createClientArr['org_id'] = $userOrg->id;
         Client::create($createClientArr);
         return redirect(route('frontend.client.index'))->withFlashSuccess('Client successfully created');
     }

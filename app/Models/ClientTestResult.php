@@ -31,6 +31,8 @@ use Illuminate\Database\Query\Builder;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\ClientTestResult whereConfig($value)
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\ClientTestResultQuestion[] $test_result_questions
  * @property-read int|null $test_result_questions_count
+ * @property-read \App\Models\Client $client
+ * @property-read \App\Models\Test $test
  */
 class ClientTestResult extends Model
 {
