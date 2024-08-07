@@ -51,7 +51,7 @@ class InviteUserEmail extends Notification
         $inviter = User::find($this->userInvite->inviter_id);
         return (new MailMessage)
             ->subject('GoMetrics invitation!')
-            ->greeting('Hi ' . $this->userInvite->first_anme . ',')
+            ->greeting('Hi ' . $this->userInvite->fist_name . ',')
             ->line($inviter->first_name . ' has invited you to collaborate with them. Use the button below to set up your account and get started:')
             ->action('Register', $link)
             ->salutation('Welcome aboard,');

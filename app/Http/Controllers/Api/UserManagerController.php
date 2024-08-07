@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Api\InviteUserRequest;
 use App\Models\UserInvite;
+use App\Models\UserOrgRole;
 use App\Notifications\InviteUserEmail;
+use Illuminate\Http\Request;
 
 class UserManagerController extends Controller {
     public function inviteUser(InviteUserRequest $request)
@@ -23,5 +25,40 @@ class UserManagerController extends Controller {
             ->notifyNow(new InviteUserEmail($userInvite));
 
         return response()->json(['success' => 1]);
+    }
+
+    public function invites()
+    {
+        $userInvites = UserInvite::whereInviterId(\Auth::id())->get();
+
+        return response()->json($userInvites);
+    }
+
+    public function users()
+    {
+        $userOrg = \Auth::user()->getUserOrg();
+        $userOrgRoles = UserOrgRole::with(['user'])
+            ->where([
+                ['org_id', '=', $userOrg->id],
+                ['user_id', '!=', \Auth::id()]
+            ])->get();
+
+        return response()->json($userOrgRoles);
+    }
+
+    public function resendInvite($id)
+    {
+        $userInvite = UserInvite::where([
+            ['id', '=', $id],
+            ['inviter_id', '=', \Auth::id()]
+        ])->first();
+
+        if ($userInvite) {
+            \Notification::route('mail', $userInvite->email)
+                ->notifyNow(new InviteUserEmail($userInvite));
+        }
+
+
+        return response()->json($userInvite);
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="invite-user" ref="invite-user" title="Invite User" ok-title="Send Invitation Email" @ok.prevent="handleSendEmail" size="lg">
+    <b-modal id="invite-user" ref="invite-user" title="Invite User" size="lg">
         <display-form-error v-if="errors" :errors="errors" />
         <div class="form">
             <div class="row">
@@ -33,6 +33,16 @@
                 </div>
             </div>
         </div>
+        <template #modal-footer>
+            <div class="d-flex justify-content-end">
+                <common-button variant="secondary" @click.prevent="handleClose" class="mr-2">
+                    Cancel
+                </common-button>
+                <common-button variant="primary" @click.prevent="handleSendEmail" :loading="isLoading">
+                    Send Invitation Email
+                </common-button>
+            </div>
+        </template>
     </b-modal>
 </template>
 
@@ -42,12 +52,14 @@ import {computed, defineComponent, ref} from "vue";
 import {OrgRole} from "../../const";
 import useUserManager from "../../composable/useUserManager";
 import DisplayFormError from "../../common/DisplayFormError.vue";
-import {useBvModal} from "../../composable/root";
+import {useBvModal, useBvToast} from "../../composable/root";
+import CommonButton from "../../common/CommonButton.vue";
 
 export default defineComponent({
-    components: {DisplayFormError},
+    components: {CommonButton, DisplayFormError},
     setup() {
         const bvModal = useBvModal()
+        const bvToast = useBvToast()
         const {
             sendInviteMail
         } = useUserManager()
@@ -71,6 +83,11 @@ export default defineComponent({
                     email: email.value,
                     role: role.value,
                 })
+                bvToast.toast('Email has been sent successfully.', {
+                    title: 'Successful',
+                    variant: 'success',
+                    solid: true,
+                });
                 bvModal.hide('invite-user');
             } catch (e) {
                 if (e?.response?.status === 422) {
@@ -84,6 +101,10 @@ export default defineComponent({
             }
         }
 
+        const handleClose = () => {
+            bvModal.hide('invite-user');
+        }
+
         const roleOptions = computed(() => {
             return [
                 { value: OrgRole.Supervisor, text: 'Supervisor'},
@@ -92,6 +113,7 @@ export default defineComponent({
         })
 
         return {
+            handleClose,
             handleSendEmail,
             firstName,
             lastName,

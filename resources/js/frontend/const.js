@@ -22,6 +22,11 @@ export const OrgRole = {
     Member: 'MEMBER',
 }
 
+export const UserInviteStatus = {
+    Pending: 'PENDING',
+    Approved: 'APPROVED',
+}
+
 export const RouteName = {
     Dashboard: 'Dashboard',
     ClientTestResult: 'ClientTestResult',

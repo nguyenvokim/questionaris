@@ -6,9 +6,9 @@
                     <h4 class="card-title mb-0"><small class="text-muted">Manager Users</small></h4>
                 </div>
                 <div>
-                    <a @click.prevent="showPopupSendInvite" class="btn btn-success">
+                    <common-button @click.prevent="showPopupSendInvite" variant="success">
                         <i class="fa fa-plus-circle"></i> Invite User
-                    </a>
+                    </common-button>
                 </div>
             </div>
             <div class="mt-4">
@@ -16,7 +16,9 @@
                     <b-tab title="Users" active>
                         <div>123</div>
                     </b-tab>
-                    <b-tab title="Invitations Sent"></b-tab>
+                    <b-tab title="Invitations Sent">
+                        <user-manager-invite />
+                    </b-tab>
                 </b-tabs>
             </div>
         </div>
@@ -27,9 +29,11 @@
 import {defineComponent, ref} from 'vue'
 import {useBvModal} from "../composable/root";
 import UserManagerSendInvite from "../components/UserManager/UserManagerSendInvite.vue";
+import CommonButton from "../common/CommonButton.vue";
+import UserManagerInvite from "../components/UserManager/UserManagerInvite.vue";
 
 export default defineComponent({
-    components: {UserManagerSendInvite},
+    components: {UserManagerInvite, CommonButton, UserManagerSendInvite},
     setup(_, context) {
         const country = ref('AU');
         const bvModal = useBvModal();

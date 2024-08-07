@@ -12,3 +12,9 @@ export const useBvModal = () => {
     const app = getCurrentInstance();
     return app.proxy.$root.$bvModal;
 }
+
+export const useBvToast = () => {
+    const app = getCurrentInstance();
+    return app.proxy.$root.$bvToast;
+}
+
