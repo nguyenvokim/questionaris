@@ -39,9 +39,11 @@ class BatteryController extends Controller
             return redirect(route('frontend.battery.createView'))
                 ->withFlashDanger('There is already another battery with the same name. Please choose a different name for this battery.');
         }
+        $userOrg = \Auth::user()->getUserOrg();
         $battery = Battery::create([
             'user_id' => \Auth::id(),
-            'name' => $name
+            'name' => $name,
+            'org_id' => $userOrg->id,
         ]);
         foreach ($testIds as $testId) {
             BatteryTest::create([

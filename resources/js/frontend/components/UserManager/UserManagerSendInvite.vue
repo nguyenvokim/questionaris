@@ -42,11 +42,12 @@ import {computed, defineComponent, ref} from "vue";
 import {OrgRole} from "../../const";
 import useUserManager from "../../composable/useUserManager";
 import DisplayFormError from "../../common/DisplayFormError.vue";
+import {useBvModal} from "../../composable/root";
 
 export default defineComponent({
     components: {DisplayFormError},
     setup() {
-
+        const bvModal = useBvModal()
         const {
             sendInviteMail
         } = useUserManager()
@@ -70,7 +71,7 @@ export default defineComponent({
                     email: email.value,
                     role: role.value,
                 })
-                this.$refs['invite-user'].hide();
+                bvModal.hide('invite-user');
             } catch (e) {
                 if (e?.response?.status === 422) {
                     errors.value = e.response.data.errors

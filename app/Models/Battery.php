@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -23,6 +24,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Battery whereUserId($value)
  * @property int $is_default
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Battery whereIsDefault($value)
+ * @property int $org_id
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Battery whereOrgId($value)
  */
 class Battery extends Model
 {
@@ -34,7 +37,8 @@ class Battery extends Model
     protected $fillable = [
         'user_id',
         'name',
-        'is_default'
+        'is_default',
+        'org_id',
     ];
 
     protected $attributes = [
@@ -77,13 +81,15 @@ class Battery extends Model
         ])->get();
     }
 
-    public static function createDefaultBatteryForUser($user) {
+    public static function createDefaultBatteryForUser(User $user) {
         $tests = Test::all();
+        $userOrg = $user->getUserOrg();
         foreach ($tests as $test) {
             $battery = \App\Models\Battery::create([
                 'user_id' => $user->id,
                 'name' => $test->title,
-                'is_default' => self::BATTERY_DEFAULT
+                'is_default' => self::BATTERY_DEFAULT,
+                'org_id' => $userOrg->id,
             ]);
             BatteryTest::create([
                 'test_id' => $test->id,

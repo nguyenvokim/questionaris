@@ -17,25 +17,30 @@
                         <div class="row">
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    {{ html()->label(__('validation.attributes.frontend.first_name'))->for('first_name') }}
-
-                                    {{ html()->text('first_name')
-                                        ->class('form-control')
-                                        ->placeholder(__('validation.attributes.frontend.first_name'))
-                                        ->attribute('maxlength', 191)
-                                        ->required()}}
+                                    <label for="first_name">{{ __('validation.attributes.frontend.first_name') }}</label>
+                                    <input
+                                            type="text"
+                                            id="first_name"
+                                            name="first_name"
+                                            class="form-control"
+                                            placeholder="{{ __('validation.attributes.frontend.first_name') }}"
+                                            required
+                                            @if(!empty($preFirstName)) value="{{$preFirstName}}" readonly  @endif
+                                    >
                                 </div><!--col-->
                             </div><!--row-->
 
                             <div class="col-12 col-md-6">
                                 <div class="form-group">
-                                    {{ html()->label(__('validation.attributes.frontend.last_name'))->for('last_name') }}
-
-                                    {{ html()->text('last_name')
-                                        ->class('form-control')
-                                        ->placeholder(__('validation.attributes.frontend.last_name'))
-                                        ->attribute('maxlength', 191)
-                                        ->required() }}
+                                    <label for="last_name">{{ __('validation.attributes.frontend.last_name') }}</label>
+                                    <input type="text"
+                                           id="last_name"
+                                           name="last_name"
+                                           class="form-control"
+                                           placeholder="{{ __('validation.attributes.frontend.last_name') }}"
+                                           required
+                                           @if(!empty($preLastName)) value="{{$preLastName}}" readonly  @endif
+                                    >
                                 </div><!--form-group-->
                             </div><!--col-->
                         </div><!--row-->
@@ -43,16 +48,41 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    {{ html()->label(__('validation.attributes.frontend.email'))->for('email') }}
-
-                                    {{ html()->email('email')
-                                        ->class('form-control')
-                                        ->placeholder(__('validation.attributes.frontend.email'))
-                                        ->attribute('maxlength', 191)
-                                        ->required() }}
+                                    <label for="email">{{ __('validation.attributes.frontend.email') }}</label>
+                                    <input type="text"
+                                           id="email"
+                                           name="email"
+                                           class="form-control"
+                                           placeholder="{{ __('validation.attributes.frontend.email') }}"
+                                           required
+                                           @if(!empty($preEmail)) value="{{$preEmail}}" readonly  @endif
+                                    >
                                 </div><!--form-group-->
                             </div><!--col-->
                         </div><!--row-->
+
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="email">Country</label>
+
+                                    <div>
+                                        <country-select value="AU" />
+                                    </div>
+                                </div><!--form-group-->
+                            </div><!--col-->
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="email">Profession</label>
+
+                                    <div>
+                                        <profession-select value="0" />
+                                    </div>
+                                </div><!--form-group-->
+                            </div><!--col-->
+                        </div>
 
                         <div class="row">
                             <div class="col">
@@ -95,7 +125,8 @@
                                     {{ form_submit(__('labels.frontend.auth.register_button')) }}
                                 </div><!--form-group-->
                             </div><!--col-->
-                        </div><!--row-->
+                        </div>
+                    @if(!empty($code)) <input type="hidden" value="{{ $code }}" name="code">  @endif
                     {{ html()->form()->close() }}
 
                     <div class="row">

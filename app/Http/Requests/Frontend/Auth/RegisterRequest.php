@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Http\FormRequestValidateOption;
 use App\Http\Requests\CustomPasswordRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -32,6 +33,8 @@ class RegisterRequest extends FormRequest
         return [
             'first_name' => ['required', 'string'],
             'last_name' => ['required', 'string'],
+            'country' => [FormRequestValidateOption::REQUIRED],
+            'profession' => [FormRequestValidateOption::REQUIRED],
             'email' => ['required', 'string', 'email', Rule::unique('users')],
             'password' => CustomPasswordRule::register($this->email),
             'g-recaptcha-response' => ['required_if:captcha_status,true', 'captcha'],

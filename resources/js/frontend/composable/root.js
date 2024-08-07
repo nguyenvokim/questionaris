@@ -10,8 +10,5 @@ export const useStore = () => {
 
 export const useBvModal = () => {
     const app = getCurrentInstance();
-
-    if (app) {
-        return app.proxy.$root.$bvModal;
-    }
+    return app.proxy.$root.$bvModal;
 }

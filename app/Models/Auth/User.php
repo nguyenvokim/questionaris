@@ -78,6 +78,10 @@ use App\Models\UserOrgRole;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\User whereUuid($value)
  * @mixin \Eloquent
+ * @property int $profession
+ * @property string $country
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\User whereCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Auth\User whereProfession($value)
  */
 class User extends BaseUser
 {
@@ -85,6 +89,25 @@ class User extends BaseUser
         UserMethod,
         UserRelationship,
         UserScope;
+
+    const P_PSYCHOLOGIST = 0;
+    const P_PSYCHIATRIST = 1;
+    const P_PROVISIONAL_PSYCHOLOGIST = 2;
+    const P_COUNSELLOR = 3;
+    const P_MEDICAL_PRACTITIONER = 4;
+    const P_OCCUPATIONAL_THERAPIST = 5;
+    const P_PSYCHIATRIC_NURSE = 6;
+    const P_SOCIAL_WORKER = 7;
+    const P_STUDENT = 8;
+    const P_RESEARCHER = 9;
+    const P_PRACTICE_ADMINISTRATOR = 10;
+    const P_OTHER = 11;
+
+
+    public function getUserOrg()
+    {
+        return UserOrg::whereUserId($this->id)->first();
+    }
 
 
     public function getOrgRole(int $orgId) {

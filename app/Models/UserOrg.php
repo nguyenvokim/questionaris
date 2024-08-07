@@ -23,6 +23,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserOrg whereUserId($value)
  * @mixin \Eloquent
  * @property-read \App\Models\Auth\User $user
+ * @property string $status
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserOrg whereStatus($value)
  */
 class UserOrg extends Model
 {

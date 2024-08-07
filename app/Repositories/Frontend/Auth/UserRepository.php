@@ -114,6 +114,8 @@ class UserRepository extends BaseRepository
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
                 'active' => true,
                 'password' => $data['password'],
+                'country' => $data['country'],
+                'profession' => $data['profession'],
                 // If users require approval or needs to confirm email
                 'confirmed' => ! (config('access.users.requires_approval') || config('access.users.confirm_email')),
             ]);
