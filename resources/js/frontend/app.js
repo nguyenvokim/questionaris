@@ -17,6 +17,9 @@ import store from './store';
 import {router} from "./route";
 import CountrySelect from "./common/form/CountrySelect.vue";
 import ProfessionSelect from "./common/form/ProfessionSelect.vue";
+import CountryDisplay from "./common/display/CountryDisplay.vue";
+import ProfessionDisplay from "./common/display/ProfessionDisplay.vue";
+import OrgRoleDisplay from "./common/display/OrgRoleDisplay.vue";
 
 
 Vue.use(BootstrapVue)
@@ -32,6 +35,9 @@ Vue.component('search-client-box', require('./components/SearchClientBox').defau
 Vue.component('hash-guard', require('./components/HashGuard').default);
 Vue.component('country-select', CountrySelect);
 Vue.component('profession-select', ProfessionSelect);
+Vue.component('country-display', CountryDisplay);
+Vue.component('profession-display', ProfessionDisplay);
+Vue.component('org-role-display', OrgRoleDisplay);
 
 Vue.mixin(require('./mixin').default);
 let vueConfig = {

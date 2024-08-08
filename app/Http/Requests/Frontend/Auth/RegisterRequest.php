@@ -35,6 +35,7 @@ class RegisterRequest extends FormRequest
             'last_name' => ['required', 'string'],
             'country' => [FormRequestValidateOption::REQUIRED],
             'profession' => [FormRequestValidateOption::REQUIRED],
+            'business_name' => [FormRequestValidateOption::REQUIRED],
             'email' => ['required', 'string', 'email', Rule::unique('users')],
             'password' => CustomPasswordRule::register($this->email),
             'g-recaptcha-response' => ['required_if:captcha_status,true', 'captcha'],

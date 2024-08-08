@@ -87,7 +87,7 @@ class RegisterController extends Controller
     {
         abort_unless(config('access.registration'), 404);
 
-        $params = $request->only('first_name', 'last_name', 'email', 'password', 'country', 'profession');
+        $params = $request->only('first_name', 'last_name', 'email', 'password', 'country', 'profession', 'business_name');
         $code = $request->get('code');
         $userInvite = null;
         if ($code) {

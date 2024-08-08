@@ -116,6 +116,7 @@ class UserRepository extends BaseRepository
                 'password' => $data['password'],
                 'country' => $data['country'],
                 'profession' => $data['profession'],
+                'business_name' => $data['business_name'],
                 // If users require approval or needs to confirm email
                 'confirmed' => ! (config('access.users.requires_approval') || config('access.users.confirm_email')),
             ]);
@@ -156,6 +157,9 @@ class UserRepository extends BaseRepository
         $user->first_name = $input['first_name'];
         $user->last_name = $input['last_name'];
         $user->avatar_type = $input['avatar_type'];
+        $user->country = $input['country'];
+        $user->profession = $input['profession'];
+        $user->business_name = $input['business_name'];
 
         // Upload profile image if necessary
         if ($image) {

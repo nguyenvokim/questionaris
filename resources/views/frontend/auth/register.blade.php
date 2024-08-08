@@ -60,7 +60,16 @@
                                 </div><!--form-group-->
                             </div><!--col-->
                         </div><!--row-->
-
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-group">
+                                    <label for="email">Practice/Business Name</label>
+                                    <div>
+                                        <input type="text" name="business_name" id="business_name" value="" placeholder="Enter Practice/Business Name" maxlength="191" required="required" class="form-control">
+                                    </div>
+                                </div><!--form-group-->
+                            </div><!--col-->
+                        </div>
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">

@@ -130,8 +130,12 @@ class User extends BaseUser
 
     public function isOrgMaster()
     {
-        $role = UserOrgRole::whereUserId($this->id)->first();
+        return $this->getOrgRoleAttribute() == UserOrgRole::ROLE_MASTER;
+    }
 
-        return $role->role == UserOrgRole::ROLE_MASTER;
+    public function getOrgRoleAttribute()
+    {
+        $role = UserOrgRole::whereUserId($this->id)->first();
+        return $role->role;
     }
 }

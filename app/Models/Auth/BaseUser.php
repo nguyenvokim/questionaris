@@ -49,6 +49,7 @@ abstract class BaseUser extends Authenticatable implements Recordable
         'to_be_logged_out',
         'country',
         'profession',
+        'business_name',
     ];
 
     /**
