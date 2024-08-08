@@ -26,6 +26,8 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin \Eloquent
  * @property-read \App\Models\UserOrg $org
  * @property-read \App\Models\Auth\User $user
+ * @property string $status
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\UserOrgRole whereStatus($value)
  */
 class UserOrgRole extends Model
 {
@@ -33,10 +35,14 @@ class UserOrgRole extends Model
     const ROLE_SUPERVISOR = 'SUPERVISOR';
     const ROLE_MEMBER = 'MEMBER';
 
+    const STATUS_ACTIVE = 'ACTIVE';
+    const STATUS_DE_ACTIVE = 'DE_ACTIVE';
+
     protected $fillable = [
         'user_id',
         'org_id',
-        'role'
+        'role',
+        'status',
     ];
 
     public function user()

@@ -15,8 +15,8 @@ import Clipboard from 'v-clipboard';
 import VueRouter from 'vue-router';
 import store from './store';
 import {router} from "./route";
-import CountrySelect from "./common/CountrySelect.vue";
-import ProfessionSelect from "./common/ProfessionSelect.vue";
+import CountrySelect from "./common/form/CountrySelect.vue";
+import ProfessionSelect from "./common/form/ProfessionSelect.vue";
 
 
 Vue.use(BootstrapVue)

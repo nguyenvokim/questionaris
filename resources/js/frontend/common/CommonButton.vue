@@ -1,5 +1,5 @@
 <template>
-    <b-button class="position-relative" :variant="variant" v-on="$listeners">
+    <b-button :size="size" class="position-relative" :variant="variant" v-on="$listeners">
         <span :class="{ hidden: loading }">
             <slot></slot>
         </span>
@@ -20,6 +20,10 @@ export default defineComponent({
         variant: {
             type: String,
             default: 'success'
+        },
+        size: {
+            type: String,
+            default: ''
         }
     },
     setup(props) {

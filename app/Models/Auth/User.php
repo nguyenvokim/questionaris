@@ -103,10 +103,17 @@ class User extends BaseUser
     const P_PRACTICE_ADMINISTRATOR = 10;
     const P_OTHER = 11;
 
+    public function isOrgDeActive() {
+        $userOrgRole = UserOrgRole::whereUserId($this->id)->first();
+
+        return $userOrgRole->status === UserOrgRole::STATUS_DE_ACTIVE;
+    }
 
     public function getUserOrg()
     {
-        return UserOrg::whereUserId($this->id)->first();
+        $userOrgRole = UserOrgRole::whereUserId($this->id)->first();
+
+        return UserOrg::whereId($userOrgRole->org_id)->first();
     }
 
 

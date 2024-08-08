@@ -14,7 +14,7 @@
             <div class="mt-4">
                 <b-tabs>
                     <b-tab title="Users" active>
-                        <div>123</div>
+                        <user-manage-user />
                     </b-tab>
                     <b-tab title="Invitations Sent">
                         <user-manager-invite />
@@ -31,9 +31,10 @@ import {useBvModal} from "../composable/root";
 import UserManagerSendInvite from "../components/UserManager/UserManagerSendInvite.vue";
 import CommonButton from "../common/CommonButton.vue";
 import UserManagerInvite from "../components/UserManager/UserManagerInvite.vue";
+import UserManageUser from "../components/UserManager/UserManageUser.vue";
 
 export default defineComponent({
-    components: {UserManagerInvite, CommonButton, UserManagerSendInvite},
+    components: {UserManageUser, UserManagerInvite, CommonButton, UserManagerSendInvite},
     setup(_, context) {
         const country = ref('AU');
         const bvModal = useBvModal();

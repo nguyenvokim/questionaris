@@ -28,7 +28,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <label>Select role</label>
-                        <b-form-select v-model="role" :options="roleOptions"></b-form-select>
+                        <org-role-select v-model="role" />
                     </div>
                 </div>
             </div>
@@ -54,9 +54,10 @@ import useUserManager from "../../composable/useUserManager";
 import DisplayFormError from "../../common/DisplayFormError.vue";
 import {useBvModal, useBvToast} from "../../composable/root";
 import CommonButton from "../../common/CommonButton.vue";
+import OrgRoleSelect from "../../common/form/OrgRoleSelect.vue";
 
 export default defineComponent({
-    components: {CommonButton, DisplayFormError},
+    components: {OrgRoleSelect, CommonButton, DisplayFormError},
     setup() {
         const bvModal = useBvModal()
         const bvToast = useBvToast()
@@ -105,13 +106,6 @@ export default defineComponent({
             bvModal.hide('invite-user');
         }
 
-        const roleOptions = computed(() => {
-            return [
-                { value: OrgRole.Supervisor, text: 'Supervisor'},
-                { value: OrgRole.Member, text: 'Practitioner'},
-            ]
-        })
-
         return {
             handleClose,
             handleSendEmail,
@@ -119,7 +113,6 @@ export default defineComponent({
             lastName,
             email,
             role,
-            roleOptions,
             isLoading,
             errors,
         }

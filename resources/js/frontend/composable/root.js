@@ -2,10 +2,7 @@ import {getCurrentInstance} from "vue";
 
 export const useStore = () => {
     const app = getCurrentInstance();
-
-    if (app) {
-        return app.proxy.$root.$store;
-    }
+    return app.proxy.$root.$store;
 }
 
 export const useBvModal = () => {

@@ -32,3 +32,8 @@ export const RouteName = {
     ClientTestResult: 'ClientTestResult',
     UserManager: 'userManager',
 }
+
+export const OrgStatus = {
+    Active: 'ACTIVE',
+    DeActive: 'DE_ACTIVE',
+}

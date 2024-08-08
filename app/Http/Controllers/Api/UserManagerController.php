@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\Api\InviteUserRequest;
 use App\Models\UserInvite;
+use App\Models\UserOrg;
 use App\Models\UserOrgRole;
 use App\Notifications\InviteUserEmail;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ class UserManagerController extends Controller {
     public function users()
     {
         $userOrg = \Auth::user()->getUserOrg();
-        $userOrgRoles = UserOrgRole::with(['user'])
+        $userOrgRoles = UserOrgRole::with(['user', 'org'])
             ->where([
                 ['org_id', '=', $userOrg->id],
                 ['user_id', '!=', \Auth::id()]
@@ -60,5 +61,25 @@ class UserManagerController extends Controller {
 
 
         return response()->json($userInvite);
+    }
+
+    public function updateUser(int $id, Request $request) {
+        var_dump($id);
+        $status = $request->get('status', UserOrgRole::STATUS_ACTIVE);
+        $role = $request->get('role', UserOrgRole::ROLE_MEMBER);
+
+        if (!\Auth::user()->isOrgMaster()) {
+            return response()->json(['success' => false]);
+        }
+
+
+        $updateOrgRole = UserOrgRole::whereUserId($id)->first();
+        if ($updateOrgRole) {
+            $updateOrgRole->role = $role;
+            $updateOrgRole->status = $status;
+            $updateOrgRole->save();
+        }
+
+        return response()->json(['success' => true]);
     }
 }
